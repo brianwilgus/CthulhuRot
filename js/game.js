@@ -1,11 +1,49 @@
 var Game = {
     _display: null,
+    _currentScreen: null,
+    
     init: function() {
         // Any necessary initialization will go here.
         this._display = new ROT.Display({width: 80, height: 24});
+        
+        // create a helper function for binding to the current screen
+        var game = this;  // make sure we keep our scope
+        var bindEventToScreen = function(event) {
+        	window.addEventListener(event, function(e) {
+        		// forward events to active screen
+        		if(game._currentScreen !== null) {
+        			game._currentScreen.handleInput(event, e);
+        		}
+        	})
+        }
+        
+        // Bind keyboard input events
+        bindEventToScreen('keydown');
+        bindEventToScreen('keyup');
+        bindEventToScreen('keypress');
     },
+    
     getDisplay: function() {
         return this._display;
+    },
+    
+    switchScreen: function(screen) {
+    	// if we had a screen notify it that we exited
+    	if(this._currentScreen !== null){
+    		this._currentScreen.exit();
+    	}
+    	
+    	// Clear the display
+    	this.getDisplay().clear();
+    	
+    	// update our current screen
+    	this._currentScreen = screen;
+    	
+    	// notify the new screen that we entered
+    	if(!this._currentScreen !== null) {
+    		this._currentScreen.enter();
+    		this._currentScreen.render(this._display);
+    	}
     }
 }
 
@@ -15,23 +53,12 @@ window.onload = function() {
 	} else {
         // Initialize the game
         Game.init();
+        
         // Add the container to our HTML page
         document.body.appendChild(Game.getDisplay().getContainer());
-
-    	var foreground, background, colors;
-	    for (var i = 0; i < 15; i++) {
-	        // Calculate the foreground color, getting progressively darker
-	        // and the background color, getting progressively lighter.
-	        foreground = ROT.Color.toRGB([255 - (i*20),
-	                                      255 - (i*20),
-	                                      255 - (i*20)]);
-	        background = ROT.Color.toRGB([i*20, i*20, i*20]);
-	        // Create the color format specifier.
-	        colors = "%c{" + foreground + "}%b{" + background + "}";
-	        // Draw the text two columns in and at the row specified
-	        // by i
-	        Game.getDisplay().drawText(2, i, colors + "Hello, world!");
-	    }
+        
+        // Load the start screen
+        Game.switchScreen(Game.Screen.startScreen);
 	}
 }
 
