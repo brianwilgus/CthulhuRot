@@ -197,6 +197,18 @@ Game.Mixins.FungusActor = {
     }
 }
 
+//This signifies our entity posseses a field of vision of a given radius.
+Game.Mixins.Sight = {
+    name: 'Sight',
+    groupName: 'Sight',
+    init: function(template) {
+        this._sightRadius = template['sightRadius'] || 5;
+    },
+    getSightRadius: function() {
+        return this._sightRadius;
+    }
+}
+
 //TEMPLATES
 //=======================
 //Player template
@@ -206,9 +218,10 @@ Game.PlayerTemplate = {
 	background: 'black',
 	maxHp: 40,
 	attackValue: 10,
+    sightRadius: 6,
 	mixins: [Game.Mixins.Moveable, Game.Mixins.PlayerActor,
 	         Game.Mixins.Attacker, Game.Mixins.Destructible,
-	         Game.Mixins.MessageRecipient]
+	         Game.Mixins.Sight, Game.Mixins.MessageRecipient]
 }
 
 //Fungus template

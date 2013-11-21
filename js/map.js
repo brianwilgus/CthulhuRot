@@ -5,6 +5,10 @@ Game.Map = function(tiles, player) {
     this._width = tiles[0].length;
     this._height = tiles[0][0].length;
     
+    // setup the field of visions
+    this._fov = [];
+    this.setupFov();
+    
     // create a list which will hold the entities
     this._entities = [];
     
@@ -150,3 +154,26 @@ Game.Map.prototype.getEntitiesWithinRadius = function(centerX, centerY,
 Game.Map.prototype.getDepth = function() {
     return this._depth;
 };
+
+Game.Map.prototype.setupFov = function() {
+    // Keep this in 'map' variable so that we don't lose it.
+    var map = this;
+    // Iterate through each depth level, setting up the field of vision
+    for (var z = 0; z < this._depth; z++) {
+        // We have to put the following code in it's own scope to prevent the
+        // depth variable from being hoisted out of the loop.
+        (function() {
+            // For each depth, we need to create a callback which figures out
+            // if light can pass through a given tile.
+            var depth = z;
+            map._fov.push(
+                new ROT.FOV.DiscreteShadowcasting(function(x, y) {
+                    return !map.getTile(x, y, depth).isBlockingLight();
+                }, {topology: 4}));
+        })();
+    }
+}
+
+Game.Map.prototype.getFov = function(depth) {
+    return this._fov[depth];
+}
