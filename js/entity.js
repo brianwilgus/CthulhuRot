@@ -7,10 +7,12 @@ Game.Entity = function(properties) {
     this._x = properties['x'] || 0;
     this._y = properties['y'] || 0;
     this._map = null;
+    
     // Create an object which will keep track what mixins we have
     // attached to this entity based on the name property
     this._attachedMixins = {};
     this._attachedMixinGroups = {};
+    
     // Setup the object's mixins
     var mixins = properties['mixins'] || [];
     for (var i = 0; i < mixins.length; i++) {
@@ -23,6 +25,7 @@ Game.Entity = function(properties) {
                 this[key] = mixins[i][key];
             }
         }
+        
         // Add the name of this mixin to our attached mixins
         this._attachedMixins[mixins[i].name] = true;
 
@@ -37,6 +40,7 @@ Game.Entity = function(properties) {
         }
     }
 }
+
 // Make entities inherit all the functionality from glyphs
 Game.Entity.extend(Game.Glyph);
 

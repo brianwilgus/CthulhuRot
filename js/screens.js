@@ -32,8 +32,8 @@ Game.Screen.playScreen = {
 
 		// create an empty map
 		var map = [];
-		var mapWidth = 500;
-		var mapHeight = 500;
+		var mapWidth = 100;
+		var mapHeight = 48;
 	    for (var x = 0; x < mapWidth; x++) {
 	        // Create the nested array for the y values
 	        map.push([]);
