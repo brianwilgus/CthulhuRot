@@ -27,6 +27,7 @@ Game.Screen.startScreen = {
 Game.Screen.playScreen = {
     _map : null,
     _player: null,
+    _gameEnded: false,
     
 	enter: function() { 
 		console.log("Entered play screen"); 
@@ -115,8 +116,8 @@ Game.Screen.playScreen = {
         
         // Render the entities
         var entities = this._map.getEntities();
-        for (var i = 0; i < entities.length; i++) {
-            var entity = entities[i];
+        for (var key in entities) {
+            var entity = entities[key];
             // Only render the entitiy if they would show up on the screen
             if (entity.getX() >= topLeftX && entity.getY() >= topLeftY &&
                 entity.getX() < topLeftX + screenWidth &&
@@ -152,6 +153,14 @@ Game.Screen.playScreen = {
         display.drawText(0, screenHeight, stats);
 	},
 	handleInput: function(inputType, inputData) {
+        // If the game is over, enter will bring the user to the losing screen.
+        if (this._gameEnded) {
+            if (inputType === 'keyup' && inputData.keyCode === ROT.VK_RETURN) {
+                Game.switchScreen(Game.Screen.loseScreen);
+            }
+            // Return to make sure the user can't still play
+            return;
+        }
 		if(inputType == 'keyup') {
 			// If enter is pressed, go to the win screen
             if (inputData.keyCode === ROT.VK_RETURN) {
@@ -195,6 +204,9 @@ Game.Screen.playScreen = {
             this._map.getEngine().unlock();
         } 
 	},
+    setGameEnded: function(gameEnded) {
+        this._gameEnded = gameEnded;
+    },
 	move: function(dX, dY, dZ) {
         var newX = this._player.getX() + dX;
         var newY = this._player.getY() + dY;

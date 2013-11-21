@@ -8,9 +8,9 @@ Game.Map = function(tiles, player) {
     // setup the field of visions
     this._fov = [];
     this.setupFov();
-    
-    // create a list which will hold the entities
-    this._entities = [];
+
+    // Create a table which will hold the entities
+    this._entities = {};
     
     // create the engine and scheduler
     this._scheduler = new ROT.Scheduler.Simple();
@@ -20,12 +20,16 @@ Game.Map = function(tiles, player) {
     // add the player
     this.addEntityAtRandomPosition(player, 0);
     
-    // add random fungi
-	console.log("add fungi."); 
+
+    // Add random enemies to each floor.
+    var templates = [Game.FungusTemplate, Game.BatTemplate, Game.NewtTemplate];
     for (var z = 0; z < this._depth; z++) {
-	    for (var i = 0; i < 50; i++) {
-	        this.addEntityAtRandomPosition(new Game.Entity(Game.FungusTemplate), z);
-	    }
+        for (var i = 0; i < 15; i++) {
+            // Randomly select a template
+            var template = templates[Math.floor(Math.random() * templates.length)];
+            // Place the entity
+            this.addEntityAtRandomPosition(new Game.Entity(template), z);
+        }
     }
     
     // Setup the explored array
@@ -34,36 +38,28 @@ Game.Map = function(tiles, player) {
 };
 
 Game.Map.prototype.addEntity = function(entity) {
-    // Make sure the entity's position is within bounds
-    if (entity.getX() < 0 || entity.getX() >= this._width ||
-        entity.getY() < 0 || entity.getY() >= this._height ||
-        entity.getZ() < 0 || entity.getZ() >= this._depth) {
-        throw new Error('Adding entity out of bounds.');
-    }
     // Update the entity's map
     entity.setMap(this);
-    // Add the entity to the list of entities
-    this._entities.push(entity);
+    // Update the map with the entity's position
+    this.updateEntityPosition(entity);
     // Check if this entity is an actor, and if so add
     // them to the scheduler
     if (entity.hasMixin('Actor')) {
        this._scheduler.add(entity, true);
     }
-}
+};
 
 Game.Map.prototype.removeEntity = function(entity) {
-    // Find the entity in the list of entities if it is present
-    for (var i = 0; i < this._entities.length; i++) {
-        if (this._entities[i] == entity) {
-            this._entities.splice(i, 1);
-            break;
-        }
+    // Remove the entity from the map
+    var key = entity.getX() + ',' + entity.getY() + ',' + entity.getZ();
+    if (this._entities[key] == entity) {
+        delete this._entities[key];
     }
     // If the entity is an actor, remove them from the scheduler
     if (entity.hasMixin('Actor')) {
         this._scheduler.remove(entity);
     }
-}
+};
 
 Game.Map.prototype.addEntityAtRandomPosition = function(entity, z) {
     var position = this.getRandomFloorPosition(z);
@@ -71,7 +67,7 @@ Game.Map.prototype.addEntityAtRandomPosition = function(entity, z) {
     entity.setY(position.y);
     entity.setZ(position.z);
     this.addEntity(entity);
-}
+};
 
 Game.Map.prototype.getRandomFloorPosition = function(z) {
     // Randomly generate a tile which is a floor
@@ -81,12 +77,13 @@ Game.Map.prototype.getRandomFloorPosition = function(z) {
         y = Math.floor(Math.random() * this._height);
     } while(!this.isEmptyFloor(x, y, z));
     return {x: x, y: y, z: z};
-}
+};
 
 // Standard getters
 Game.Map.prototype.getWidth = function() {
     return this._width;
 };
+
 Game.Map.prototype.getHeight = function() {
     return this._height;
 };
@@ -105,55 +102,24 @@ Game.Map.prototype.getTile = function(x, y, z) {
 
 Game.Map.prototype.getEngine = function() {
     return this._engine;
-}
+};
+
 Game.Map.prototype.getEntities = function() {
     return this._entities;
-}
-Game.Map.prototype.getEntityAt = function(x, y, z){
-    // Iterate through all entities searching for one with
-    // matching position
-    for (var i = 0; i < this._entities.length; i++) {
-        if (this._entities[i].getX() == x && this._entities[i].getY() == y &&
-            this._entities[i].getZ() == z) {
-            return this._entities[i];
-        }
-    }
-    return false;
-}
+};
 
 Game.Map.prototype.dig = function(x, y, z) {
     // If the tile is diggable, update it to a floor
     if (this.getTile(x, y, z).isDiggable()) {
         this._tiles[z][x][y] = Game.Tile.floorTile;
     }
-}
+};
 
 Game.Map.prototype.isEmptyFloor = function(x, y, z) {
     // Check if the tile is floor and also has no entity
     return this.getTile(x, y, z) == Game.Tile.floorTile &&
            !this.getEntityAt(x, y, z);
-}
-
-Game.Map.prototype.getEntitiesWithinRadius = function(centerX, centerY,
-                                                      centerZ, radius) {
-    results = [];
-    // Determine our bounds
-    var leftX = centerX - radius;
-    var rightX = centerX + radius;
-    var topY = centerY - radius;
-    var bottomY = centerY + radius;
-    // Iterate through our entities, adding any which are within the bounds
-    for (var i = 0; i < this._entities.length; i++) {
-        if (this._entities[i].getX() >= leftX &&
-            this._entities[i].getX() <= rightX && 
-            this._entities[i].getY() >= topY &&
-            this._entities[i].getY() <= bottomY &&
-            this._entities[i].getZ() == centerZ) {
-            results.push(this._entities[i]);
-        }
-    }
-    return results;
-}
+};
 
 Game.Map.prototype.getDepth = function() {
     return this._depth;
@@ -176,11 +142,11 @@ Game.Map.prototype.setupFov = function() {
                 }, {topology: 4}));
         })();
     }
-}
+};
 
 Game.Map.prototype.getFov = function(depth) {
     return this._fov[depth];
-}
+};
 
 Game.Map.prototype._setupExploredArray = function() {
     for (var z = 0; z < this._depth; z++) {
@@ -208,4 +174,52 @@ Game.Map.prototype.isExplored = function(x, y, z) {
     } else {
         return false;
     }
+};
+
+Game.Map.prototype.getEntityAt = function(x, y, z){
+    // Get the entity based on position key 
+    return this._entities[x + ',' + y + ',' + z];
+};
+
+Game.Map.prototype.getEntitiesWithinRadius = function(centerX, centerY,
+                                                      centerZ, radius) {
+    results = [];
+    // Determine our bounds
+    var leftX = centerX - radius;
+    var rightX = centerX + radius;
+    var topY = centerY - radius;
+    var bottomY = centerY + radius;
+    // Iterate through our entities, adding any which are within the bounds
+    for (var key in this._entities) {
+        var entity = this._entities[key];
+        if (entity.getX() >= leftX && entity.getX() <= rightX && 
+            entity.getY() >= topY && entity.getY() <= bottomY &&
+            entity.getZ() == centerZ) {
+            results.push(entity);
+        }
+    }
+    return results;
+};
+
+Game.Map.prototype.updateEntityPosition = function(entity, oldX, oldY, oldZ) {
+    // Delete the old key if it is the same entity and we have old positions.
+    if (oldX) {
+        var oldKey = oldX + ',' + oldY + ',' + oldZ;
+        if (this._entities[oldKey] == entity) {
+            delete this._entities[oldKey];
+        }
+    }
+    // Make sure the entity's position is within bounds
+    if (entity.getX() < 0 || entity.getX() >= this._width ||
+        entity.getY() < 0 || entity.getY() >= this._height ||
+        entity.getZ() < 0 || entity.getZ() >= this._depth) {
+        throw new Error("Entity's position is out of bounds.");
+    }
+    // Sanity check to make sure there is no entity at the new position.
+    var key = entity.getX() + ',' + entity.getY() + ',' + entity.getZ();
+    if (this._entities[key]) {
+        throw new Error('Tried to add an entity at an occupied position.');
+    }
+    // Add the entity to the table of entities
+    this._entities[key] = entity;
 };
