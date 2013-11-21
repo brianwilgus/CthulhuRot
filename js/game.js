@@ -82,4 +82,4 @@ window.onload = function() {
 	}
 }
 
-// dropoff http://www.codingcookies.com/2013/04/05/building-a-roguelike-in-javascript-part-3a/
+// dropoff http://www.codingcookies.com/2013/08/31/building-a-roguelike-in-javascript-part-10a/
