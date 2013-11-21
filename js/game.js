@@ -14,20 +14,27 @@ var Game = {
         // create a helper function for binding to the current screen
         var game = this;  // so we don't lose this
         var bindEventToScreen = function(event) {
-        	window.addEventListener(event, function(e) {
-        		// forward events to active screen
-        		if(game._currentScreen !== null) {
-        			game._currentScreen.handleInput(event, e);
-                    game._display.clear(); // Clear the screen
-                    game._currentScreen.render(game._display); // Render the screen
-        		}
-        	})
+            window.addEventListener(event, function(e) {
+                // When an event is received, send it to the
+                // screen if there is one
+                if (game._currentScreen !== null) {
+                    // Send the event type and data to the screen
+                    game._currentScreen.handleInput(event, e);
+                }
+            });
         }
         
         // Bind keyboard input events
         bindEventToScreen('keydown');
         bindEventToScreen('keyup');
         bindEventToScreen('keypress');
+    },
+
+    refresh: function() {
+        // Clear the screen
+        this._display.clear();
+        // Render the screen
+        this._currentScreen.render(this._display);
     },
     
     getDisplay: function() {
@@ -55,7 +62,7 @@ var Game = {
     	// notify the new screen that we entered
     	if(!this._currentScreen !== null) {
     		this._currentScreen.enter();
-    		this._currentScreen.render(this._display);
+    		this.refresh();
     	}
     }
 }
