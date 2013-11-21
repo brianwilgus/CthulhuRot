@@ -8,7 +8,7 @@ var Game = {
         // Any necessary initialization will go here.
         this._display = new ROT.Display({
         	width: this._screenWidth, 
-        	height: this._screenHeight
+        	height: this._screenHeight +1 // adding one extra line for the player status bar
     	});
         
         // create a helper function for binding to the current screen
