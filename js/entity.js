@@ -6,6 +6,7 @@ Game.Entity = function(properties) {
     this._name = properties['name'] || '';
     this._x = properties['x'] || 0;
     this._y = properties['y'] || 0;
+    this._z = properties['z'] || 0;
     this._map = null;
     
     // Create an object which will keep track what mixins we have
@@ -62,6 +63,12 @@ Game.Entity.prototype.getX = function() {
 Game.Entity.prototype.getY   = function() {
     return this._y;
 }
+Game.Entity.prototype.setZ = function(z) {
+    this._z = z;
+}
+Game.Entity.prototype.getZ = function() {
+    return this._z;
+}
 Game.Entity.prototype.setMap = function(map) {
     this._map = map;
 }
@@ -75,4 +82,9 @@ Game.Entity.prototype.hasMixin = function(obj) {
     } else {
         return this._attachedMixins[obj] || this._attachedMixinGroups[obj];
     }
+}
+Game.Entity.prototype.setPosition = function(x, y, z) {
+    this._x = x;
+    this._y = y;
+    this._z = z;
 }
