@@ -1,18 +1,25 @@
 var Game = {
     _display: null,
     _currentScreen: null,
+    _screenWidth: 80,
+    _screenHeight: 24,
     
     init: function() {
         // Any necessary initialization will go here.
-        this._display = new ROT.Display({width: 80, height: 24});
+        this._display = new ROT.Display({
+        	width: this._screenWidth, 
+        	height: this._screenHeight
+    	});
         
         // create a helper function for binding to the current screen
-        var game = this;  // make sure we keep our scope
+        var game = this;  // so we don't lose this
         var bindEventToScreen = function(event) {
         	window.addEventListener(event, function(e) {
         		// forward events to active screen
         		if(game._currentScreen !== null) {
         			game._currentScreen.handleInput(event, e);
+                    game._display.clear(); // Clear the screen
+                    game._currentScreen.render(game._display); // Render the screen
         		}
         	})
         }
@@ -25,6 +32,12 @@ var Game = {
     
     getDisplay: function() {
         return this._display;
+    },
+    getScreenWidth: function() {
+        return this._screenWidth;
+    },
+    getScreenHeight: function() {
+        return this._screenHeight;
     },
     
     switchScreen: function(screen) {
@@ -62,4 +75,4 @@ window.onload = function() {
 	}
 }
 
-// dropoff http://www.codingcookies.com/2013/04/03/building-a-roguelike-in-javascript-part-2/
+// dropoff http://www.codingcookies.com/2013/04/05/building-a-roguelike-in-javascript-part-3a/
