@@ -7,10 +7,15 @@ Game.PlayerTemplate = {
     sightRadius: 16,
     inventorySlots: 22,
     mixins: [Game.EntityMixins.PlayerActor,
-             Game.EntityMixins.Attacker, Game.EntityMixins.Destructible,
-             Game.EntityMixins.InventoryHolder, Game.EntityMixins.FoodConsumer,
-             Game.EntityMixins.Sight, Game.EntityMixins.MessageRecipient,
-             Game.EntityMixins.Equipper]
+             Game.EntityMixins.Attacker, 
+             Game.EntityMixins.Destructible,
+             Game.EntityMixins.InventoryHolder, 
+             Game.EntityMixins.FoodConsumer,
+             Game.EntityMixins.Sight, 
+             Game.EntityMixins.MessageRecipient,
+             Game.EntityMixins.Equipper,
+             Game.EntityMixins.ExperienceGainer, 
+             Game.EntityMixins.PlayerStatGainer]
 };
 
 // Create our central entity repository
@@ -22,7 +27,10 @@ Game.EntityRepository.define('fungus', {
     foreground: 'green',
     maxHp: 10,
     speed: 250,
-    mixins: [Game.EntityMixins.FungusActor, Game.EntityMixins.Destructible]
+    mixins: [Game.EntityMixins.FungusActor, 
+             Game.EntityMixins.Destructible,
+             Game.EntityMixins.ExperienceGainer, 
+             Game.EntityMixins.RandomStatGainer]
 });
 
 Game.EntityRepository.define('bat', {
@@ -36,7 +44,9 @@ Game.EntityRepository.define('bat', {
     mixins: [Game.EntityMixins.TaskActor,
              Game.EntityMixins.CorpseDropper,
              Game.EntityMixins.Attacker, 
-             Game.EntityMixins.Destructible]
+             Game.EntityMixins.Destructible,
+             Game.EntityMixins.ExperienceGainer, 
+             Game.EntityMixins.RandomStatGainer]
 });
 
 Game.EntityRepository.define('newt', {
@@ -49,7 +59,9 @@ Game.EntityRepository.define('newt', {
     mixins: [Game.EntityMixins.TaskActor,
              Game.EntityMixins.CorpseDropper,
              Game.EntityMixins.Attacker, 
-             Game.EntityMixins.Destructible]
+             Game.EntityMixins.Destructible,
+             Game.EntityMixins.ExperienceGainer, 
+             Game.EntityMixins.RandomStatGainer]
 });
 
 Game.EntityRepository.define('kobold', {
@@ -64,5 +76,7 @@ Game.EntityRepository.define('kobold', {
 	         Game.EntityMixins.Sight,
              Game.EntityMixins.CorpseDropper,
              Game.EntityMixins.Attacker, 
-             Game.EntityMixins.Destructible]
+             Game.EntityMixins.Destructible,
+             Game.EntityMixins.ExperienceGainer, 
+             Game.EntityMixins.RandomStatGainer]
 });
