@@ -4,59 +4,16 @@ Game.Map = function(tiles, player) {
     this._depth = tiles.length
     this._width = tiles[0].length;
     this._height = tiles[0][0].length;
-    
     // setup the field of visions
     this._fov = [];
     this.setupFov();
-
     // Create a table which will hold the entities
     this._entities = {};
-    
-
     // Create a table which will hold the items
     this._items = {};
-    
     // create the engine and scheduler
     this._scheduler = new ROT.Scheduler.Speed();
     this._engine = new ROT.Engine(this._scheduler);
-
-	console.log("add player."); 
-    // add the player
-	this._player = player;
-    this.addEntityAtRandomPosition(player, 0);
-    
-    // Add random entities and items to each floor.
-    for (var z = 0; z < this._depth; z++) {
-        // 15 entities per floor
-        for (var i = 0; i < 15; i++) {
-        	var entity = Game.EntityRepository.createRandom();
-        	
-            // Add a random entity
-            this.addEntityAtRandomPosition(entity, z);
-
-            // Level up the entity based on the floor
-            if (entity.hasMixin('ExperienceGainer')) {
-                for (var level = 0; level < z; level++) {
-                    entity.giveExperience(entity.getNextLevelExperience() -
-                        entity.getExperience());
-                }
-            }
-        }
-        // 15 items per floor
-        for (var i = 0; i < 15; i++) {
-            // Add a random entity
-            this.addItemAtRandomPosition(Game.ItemRepository.createRandom(), z);
-        }
-    }
-    
-    // Add weapons and armor to the map in random positions
-    var templates = ['dagger', 'sword', 'staff', 
-        'tunic', 'chainmail', 'platemail'];
-    for (var i = 0; i < templates.length; i++) {
-        this.addItemAtRandomPosition(Game.ItemRepository.create(templates[i]),
-            Math.floor(this._depth * Math.random()));
-    }
-    
     // Setup the explored array
     this._explored = new Array(this._depth);
     this._setupExploredArray();
@@ -72,6 +29,10 @@ Game.Map.prototype.addEntity = function(entity) {
     if (entity.hasMixin('Actor')) {
        this._scheduler.add(entity, true);
     }
+    // If the entity is the player, set the player.
+    if (entity.hasMixin(Game.EntityMixins.PlayerActor)) {
+        this._player = entity;
+    }
 };
 
 Game.Map.prototype.removeEntity = function(entity) {
@@ -83,6 +44,10 @@ Game.Map.prototype.removeEntity = function(entity) {
     // If the entity is an actor, remove them from the scheduler
     if (entity.hasMixin('Actor')) {
         this._scheduler.remove(entity);
+    }
+    // If the entity is the player, update the player field.
+    if (entity.hasMixin(Game.EntityMixins.PlayerActor)) {
+        this._player = undefined;
     }
 };
 

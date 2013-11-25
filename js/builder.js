@@ -20,13 +20,11 @@ Game.Builder = function(width, height, depth) {
         }
     }
 
-	console.log("creating regions."); 
     // create our regions
     for (var z = 0; z < this._depth; z++) {
         this._setupRegions(z);
     }
 
-	console.log("connecting depths."); 
     // place our stairs
     this._connectAllRegions();
 };
@@ -159,7 +157,6 @@ Game.Builder.prototype._findRegionOverlaps = function(z, r1, r2) {
 //This tries to connect two regions by calculating 
 //where they overlap and adding stairs
 Game.Builder.prototype._connectRegions = function(z, r1, r2) {
-	//console.log("_connectRegions "+z+" "+r1+" "+r2); 
 	 var overlap = this._findRegionOverlaps(z, r1, r2);
 	 // Make sure there was overlap
 	 if (overlap.length == 0) {
