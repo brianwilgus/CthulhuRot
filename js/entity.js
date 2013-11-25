@@ -132,9 +132,18 @@ Game.Entity.prototype.tryMove = function(x, y, z, map) {
     // Check if we can walk on the tile
     // and if so simply walk onto it
     } else if (tile.isWalkable()) {        
-        // Update the entity's position
-        this.setPosition(x, y, z);
-        return true;
+	    // Update the entity's position
+	    this.setPosition(x, y, z);
+	    // Notify the entity that there are items at this position
+	    var items = this.getMap().getItemsAt(x, y, z);
+	    if (items) {
+	        if (items.length === 1) {
+	            Game.sendMessage(this, "You see %s.", [items[0].describeA()]);
+	        } else {
+	            Game.sendMessage(this, "There are several objects here.");
+	        }
+	    }
+	    return true;
     // Check if the tile is diggable
     } else if (tile.isDiggable()) {
         // Only dig if the the entity is the player
