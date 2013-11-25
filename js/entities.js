@@ -9,7 +9,8 @@ Game.PlayerTemplate = {
     mixins: [Game.EntityMixins.PlayerActor,
              Game.EntityMixins.Attacker, Game.EntityMixins.Destructible,
              Game.EntityMixins.InventoryHolder, Game.EntityMixins.FoodConsumer,
-             Game.EntityMixins.Sight, Game.EntityMixins.MessageRecipient]
+             Game.EntityMixins.Sight, Game.EntityMixins.MessageRecipient,
+             Game.EntityMixins.Equipper]
 };
 
 // Create our central entity repository
@@ -29,7 +30,7 @@ Game.EntityRepository.define('bat', {
     foreground: 'white',
     maxHp: 5,
     attackValue: 4,
-    corpseDropRate:50,
+    corpseDropRate:90,
     mixins: [Game.EntityMixins.WanderActor, Game.EntityMixins.CorpseDropper,
              Game.EntityMixins.Attacker, Game.EntityMixins.Destructible]
 });
@@ -40,7 +41,7 @@ Game.EntityRepository.define('newt', {
     foreground: 'yellow',
     maxHp: 3,
     attackValue: 2,
-    corpseDropRate:101,
+    corpseDropRate:100,
     mixins: [Game.EntityMixins.WanderActor, Game.EntityMixins.CorpseDropper,
              Game.EntityMixins.Attacker, Game.EntityMixins.Destructible]
 });
