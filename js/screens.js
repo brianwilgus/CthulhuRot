@@ -27,11 +27,12 @@ Game.Screen.startScreen = {
 Game.Screen.playScreen = {
     _map : null,
     _player: null,
-    _gameEnded: false,
+    _gameEnded: null,
     _subScreen: null,
     
 	enter: function() { 
 		console.log("Entered play screen"); 
+		this._gameEnded = false;
         // Create a map based on our size parameters
         var width = 100;
         var height = 48;
@@ -68,6 +69,7 @@ Game.Screen.playScreen = {
         // Store this._map and player's z to prevent losing it in callbacks
         var map = this._map;
         var currentDepth = this._player.getZ();
+        
         // Find all visible cells and update the object
         map.getFov(currentDepth).compute(
             this._player.getX(), this._player.getY(),
@@ -77,6 +79,7 @@ Game.Screen.playScreen = {
                 // Mark cell as explored
                 map.setExplored(x, y, currentDepth, true);
             });
+        
         // Render the explored map cells
         for (var x = topLeftX; x < topLeftX + screenWidth; x++) {
             for (var y = topLeftY; y < topLeftY + screenHeight; y++) {
@@ -116,6 +119,7 @@ Game.Screen.playScreen = {
                 }
             }
         }
+        
         // Get the messages in the player's queue and render them
         var messages = this._player.getMessages();
         var messageY = 0;
@@ -127,10 +131,15 @@ Game.Screen.playScreen = {
                 '%c{white}%b{black}' + messages[i]
             );
         }
+        
         // Render player HP
         var stats = '%c{white}%b{black}';
         stats += vsprintf('HP: %d/%d ', [this._player.getHp(), this._player.getMaxHp()]);
         display.drawText(0, screenHeight, stats);
+        
+        // Render hunger state
+        var hungerState = this._player.getHungerState();
+        display.drawText(screenWidth - hungerState.length, screenHeight, hungerState);
     },
     handleInput: function(inputType, inputData) {
         // If the game is over, enter will bring the user to the losing screen.
@@ -164,25 +173,30 @@ Game.Screen.playScreen = {
                 } else if (inputData.keyCode === ROT.VK_DOWN) {
                     this.move(0, 1, 0);
                 } else if (inputData.keyCode === ROT.VK_I) {
-                    if (this._player.getItems().filter(function(x){return x;}).length === 0) {
-                        // If the player has no items, send a message and don't take a turn
+                    // Show the inventory
+                    if (Game.Screen.inventoryScreen.setup(this._player, this._player.getItems())) {
+                        this.setSubScreen(Game.Screen.inventoryScreen);
+                    } else {
                         Game.sendMessage(this._player, "You are not carrying anything!");
                         Game.refresh();
-                    } else {
-                        // Show the inventory
-                        Game.Screen.inventoryScreen.setup(this._player, this._player.getItems());
-                        this.setSubScreen(Game.Screen.inventoryScreen);
                     }
                     return;
                 } else if (inputData.keyCode === ROT.VK_D) {
-                    if (this._player.getItems().filter(function(x){return x;}).length === 0) {
-                        // If the player has no items, send a message and don't take a turn
+                    // Show the drop screen
+                    if (Game.Screen.dropScreen.setup(this._player, this._player.getItems())) {
+                        this.setSubScreen(Game.Screen.dropScreen);
+                    } else {
                         Game.sendMessage(this._player, "You have nothing to drop!");
                         Game.refresh();
+                    }
+                    return;
+                } else if (inputData.keyCode === ROT.VK_E) {
+                    // Show the drop screen
+                    if (Game.Screen.eatScreen.setup(this._player, this._player.getItems())) {
+                        this.setSubScreen(Game.Screen.eatScreen);
                     } else {
-                        // Show the drop screen
-                        Game.Screen.dropScreen.setup(this._player, this._player.getItems());
-                        this.setSubScreen(Game.Screen.dropScreen);
+                        Game.sendMessage(this._player, "You have nothing to eat!");
+                        Game.refresh();
                     }
                     return;
                 } else if (inputData.keyCode === ROT.VK_COMMA) {
@@ -306,6 +320,10 @@ Game.Screen.ItemListScreen = function(template) {
     // Set up based on the template
     this._caption = template['caption'];
     this._okFunction = template['ok'];
+    // By default, we use the identity function
+    this._isAcceptableFunction = template['isAcceptable'] || function(x) {
+        return x;
+    }
     // Whether the user can select items at all.
     this._canSelectItem = template['canSelect'];
     // Whether the user can select multiple items.
@@ -315,9 +333,22 @@ Game.Screen.ItemListScreen = function(template) {
 Game.Screen.ItemListScreen.prototype.setup = function(player, items) {
     this._player = player;
     // Should be called before switching to the screen.
-    this._items = items;
+    var count = 0;
+    // Iterate over each item, keeping only the acceptable ones and counting
+    // the number of acceptable items.
+    var that = this;
+    this._items = items.map(function(item) {
+        // Transform the item into null if it's not acceptable
+        if (that._isAcceptableFunction(item)) {
+            count++;
+            return item;
+        } else {
+            return null;
+        }
+    });
     // Clean set of selected indices
     this._selectedIndices = {};
+    return count;
 };
 
 Game.Screen.ItemListScreen.prototype.render = function(display) {
@@ -418,6 +449,26 @@ Game.Screen.dropScreen = new Game.Screen.ItemListScreen({
     ok: function(selectedItems) {
         // Drop the selected item
         this._player.dropItem(Object.keys(selectedItems)[0]);
+        return true;
+    }
+});
+
+Game.Screen.eatScreen = new Game.Screen.ItemListScreen({
+    caption: 'Choose the item you wish to eat',
+    canSelect: true,
+    canSelectMultipleItems: false,
+    isAcceptable: function(item) {
+        return item && item.hasMixin('Edible');
+    },
+    ok: function(selectedItems) {
+        // Eat the item, removing it if there are no consumptions remaining.
+        var key = Object.keys(selectedItems)[0];
+        var item = selectedItems[key];
+        Game.sendMessage(this._player, "You eat %s.", [item.describeThe()]);
+        item.eat(this._player);
+        if (!item.hasRemainingConsumptions()) {
+            this._player.removeItem(key);
+        }
         return true;
     }
 });
