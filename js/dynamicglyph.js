@@ -9,6 +9,8 @@ Game.DynamicGlyph = function(properties) {
     this._attachedMixins = {};
     // Create a similar object for groups
     this._attachedMixinGroups = {};
+    // Set up an object for listeners
+    this._listeners = {};
     // Setup the object's mixins
     var mixins = properties['mixins'] || [];
     for (var i = 0; i < mixins.length; i++) {
@@ -17,7 +19,8 @@ Game.DynamicGlyph = function(properties) {
         // also make sure not to override a property that
         // already exists on the entity.
         for (var key in mixins[i]) {
-            if (key != 'init' && key != 'name' && !this.hasOwnProperty(key)) {
+            if (key != 'init' && key != 'name' && key != 'listeners' 
+                && !this.hasOwnProperty(key)) {
                 this[key] = mixins[i][key];
             }
         }
@@ -26,6 +29,18 @@ Game.DynamicGlyph = function(properties) {
         // If a group name is present, add it
         if (mixins[i].groupName) {
             this._attachedMixinGroups[mixins[i].groupName] = true;
+        }
+        // Add all of our listeners
+        if (mixins[i].listeners) {
+            for (var key in mixins[i].listeners) {
+                // If we don't already have a key for this event in our listeners
+                // array, add it.
+                if (!this._listeners[key]) {
+                    this._listeners[key] = [];
+                }
+                // Add the listener.
+                this._listeners[key].push(mixins[i].listeners[key]);
+            }
         }
         // Finally call the init function if there is one
         if (mixins[i].init) {
@@ -56,6 +71,7 @@ Game.DynamicGlyph.prototype.getName = function() {
 Game.DynamicGlyph.prototype.describe = function() {
     return this._name;
 };
+
 Game.DynamicGlyph.prototype.describeA = function(capitalize) {
     // Optional parameter to capitalize the a/an.
     var prefixes = capitalize ? ['A', 'An'] : ['a', 'an'];
@@ -66,7 +82,21 @@ Game.DynamicGlyph.prototype.describeA = function(capitalize) {
 
     return prefixes[prefix] + ' ' + string;
 };
+
 Game.DynamicGlyph.prototype.describeThe = function(capitalize) {
     var prefix = capitalize ? 'The' : 'the';
     return prefix + ' ' + this.describe();
+};
+
+Game.DynamicGlyph.prototype.raiseEvent = function(event) {
+    // Make sure we have at least one listener, or else exit
+    if (!this._listeners[event]) {
+        return;
+    }
+    // Extract any arguments passed, removing the event name
+    var args = Array.prototype.slice.call(arguments, 1)
+    // Invoke each listener, with this entity as the context and the arguments
+    for (var i = 0; i < this._listeners[event].length; i++) {
+        this._listeners[event][i].apply(this, args);
+    }
 };

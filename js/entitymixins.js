@@ -169,27 +169,17 @@ Game.EntityMixins.Destructible = {
         if (this._hp <= 0) {
             Game.sendMessage(attacker, 'You kill the %s!', [this.getName()]);
             
-            // If the entity is a corpse dropper, try to add a corpse
-            if (this.hasMixin(Game.EntityMixins.CorpseDropper)) {
-                this.tryDropCorpse();
-            }
-            this.kill();
+            // Raise events
+            this.raiseEvent('onDeath', attacker);
+            attacker.raiseEvent('onKill', this);
             
-            // Give the attacker experience points.
-            if (attacker.hasMixin('ExperienceGainer')) {
-                var exp = this.getMaxHp() + this.getDefenseValue();
-                if (this.hasMixin('Attacker')) {
-                    exp += this.getAttackValue();
-                }
-                // Account for level differences
-                if (this.hasMixin('ExperienceGainer')) {
-                    exp -= (attacker.getLevel() - this.getLevel()) * 3;
-                }
-                // Only give experience if more than 0.
-                if (exp > 0) {
-                    attacker.giveExperience(exp);
-                }
-            }
+            this.kill();
+        }
+    },
+    listeners: {
+        onGainLevel: function() {
+            // Heal the entity.
+            this.setHp(this.getMaxHp());
         }
     }
 };
@@ -412,14 +402,17 @@ Game.EntityMixins.CorpseDropper = {
         // Chance of dropping a corpse (out of 100).
         this._corpseDropRate = template['corpseDropRate'] || 100;
     },
-    tryDropCorpse: function() {
-        if (Math.round(Math.random() * 100) < this._corpseDropRate) {
-            // Create a new corpse item and drop it.
-            this._map.addItem(this.getX(), this.getY(), this.getZ(),
-                Game.ItemRepository.create('corpse', {
-                    name: this._name + ' corpse',
-                    foreground: this._foreground
-                }));
+    listeners: {
+        onDeath: function(attacker) {
+            // Check if we should drop a corpse.
+            if (Math.round(Math.random() * 100) <= this._corpseDropRate) {
+                // Create a new corpse item and drop it.
+                this._map.addItem(this.getX(), this.getY(), this.getZ(),
+                    Game.ItemRepository.create('corpse', {
+                        name: this._name + ' corpse',
+                        foreground: this._foreground
+                    }));
+            }    
         }
     }
 };
@@ -594,12 +587,22 @@ Game.EntityMixins.ExperienceGainer = {
         // Check if we gained at least one level.
         if (levelsGained > 0) {
             Game.sendMessage(this, "You advance to level %d.", [this._level]);
-            // Heal the entity if possible.
-            if (this.hasMixin('Destructible')) {
-                this.setHp(this.getMaxHp());
+            this.raiseEvent('onGainLevel');
+        }
+    },
+    listeners: {
+        onKill: function(victim) {
+            var exp = victim.getMaxHp() + victim.getDefenseValue();
+            if (victim.hasMixin('Attacker')) {
+                exp += victim.getAttackValue();
             }
-            if (this.hasMixin('StatGainer')) {
-                this.onGainLevel();
+            // Account for level differences
+            if (victim.hasMixin('ExperienceGainer')) {
+                exp -= (this.getLevel() - victim.getLevel()) * 3;
+            }
+            // Only give experience if more than 0.
+            if (exp > 0) {
+                this.giveExperience(exp);
             }
         }
     }
@@ -608,24 +611,28 @@ Game.EntityMixins.ExperienceGainer = {
 Game.EntityMixins.RandomStatGainer = {
     name: 'RandomStatGainer',
     groupName: 'StatGainer',
-    onGainLevel: function() {
-        var statOptions = this.getStatOptions();
-        // Randomly select a stat option and execute the callback for each
-        // stat point.
-        while (this.getStatPoints() > 0) {
-            // Call the stat increasing function with this as the context.
-            statOptions.random()[1].call(this);
-            this.setStatPoints(this.getStatPoints() - 1);
-        }
+    listeners: {
+	    onGainLevel: function() {
+	        var statOptions = this.getStatOptions();
+	        // Randomly select a stat option and execute the callback for each
+	        // stat point.
+	        while (this.getStatPoints() > 0) {
+	            // Call the stat increasing function with this as the context.
+	            statOptions.random()[1].call(this);
+	            this.setStatPoints(this.getStatPoints() - 1);
+	        }
+	    }
     }
 };
 
 Game.EntityMixins.PlayerStatGainer = {
     name: 'PlayerStatGainer',
     groupName: 'StatGainer',
-    onGainLevel: function() {
-        // Setup the gain stat screen and show it.
-        Game.Screen.gainStatScreen.setup(this);
-        Game.Screen.playScreen.setSubScreen(Game.Screen.gainStatScreen);
+    listeners: {
+        onGainLevel: function() {
+            // Setup the gain stat screen and show it.
+            Game.Screen.gainStatScreen.setup(this);
+            Game.Screen.playScreen.setSubScreen(Game.Screen.gainStatScreen);
+        }
     }
 };

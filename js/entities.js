@@ -4,7 +4,7 @@ Game.PlayerTemplate = {
     foreground: 'white',
     maxHp: 40,
     attackValue: 10,
-    sightRadius: 16,
+    sightRadius: 8,
     inventorySlots: 22,
     mixins: [Game.EntityMixins.PlayerActor,
              Game.EntityMixins.Attacker, 
