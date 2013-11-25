@@ -8,6 +8,8 @@ Game.Entity = function(properties) {
     this._z = properties['z'] || 0;
     this._map = null;
     this._alive = true;
+    // Acting speed
+    this._speed = properties['speed'] || 1000;
 };
 
 // Make entities inherit all the functionality from glyphs
@@ -38,6 +40,9 @@ Game.Entity.prototype.setPosition = function(x, y, z) {
         this._map.updateEntityPosition(this, oldX, oldY, oldZ);
     }
 };
+Game.Entity.prototype.setSpeed = function(speed) {
+    this._speed = speed;
+};
 
 Game.Entity.prototype.getX = function() {
     return this._x;
@@ -50,6 +55,9 @@ Game.Entity.prototype.getZ = function() {
 };
 Game.Entity.prototype.getMap = function() {
     return this._map;
+};
+Game.Entity.prototype.getSpeed = function() {
+    return this._speed;
 };
 
 Game.Entity.prototype.tryMove = function(x, y, z, map) {

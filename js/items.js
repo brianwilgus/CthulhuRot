@@ -34,19 +34,6 @@ Game.ItemRepository.define('corpse', {
 	}
 );
 
-// try to wear, wield and eat the pumpkin!
-Game.ItemRepository.define('pumpkin', {
-    name: 'pumpkin',
-    character: '%',
-    foreground: 'orange',
-    foodValue: 50,
-    attackValue: 2,
-    defenseValue: 2,
-    wearable: true,
-    wieldable: true,
-    mixins: [Game.ItemMixins.Edible, Game.ItemMixins.Equippable]
-});
-
 
 // Weapons
 // ======================================
@@ -118,4 +105,21 @@ Game.ItemRepository.define('platemail', {
     mixins: [Game.ItemMixins.Equippable]
 }, {
     disableRandomCreation: true
+});
+
+
+// Combo Items
+//======================================
+
+//try to wear, wield and eat the pumpkin!
+Game.ItemRepository.define('pumpkin', {
+ name: 'pumpkin',
+ character: '%',
+ foreground: 'orange',
+ foodValue: 50,
+ attackValue: 2,
+ defenseValue: 2,
+ wearable: true,
+ wieldable: true,
+ mixins: [Game.ItemMixins.Edible, Game.ItemMixins.Equippable]
 });

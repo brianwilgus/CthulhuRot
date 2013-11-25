@@ -17,11 +17,12 @@ Game.Map = function(tiles, player) {
     this._items = {};
     
     // create the engine and scheduler
-    this._scheduler = new ROT.Scheduler.Simple();
+    this._scheduler = new ROT.Scheduler.Speed();
     this._engine = new ROT.Engine(this._scheduler);
 
 	console.log("add player."); 
     // add the player
+	this._player = player;
     this.addEntityAtRandomPosition(player, 0);
     
     // Add random entities and items to each floor.
@@ -100,6 +101,10 @@ Game.Map.prototype.getWidth = function() {
 
 Game.Map.prototype.getHeight = function() {
     return this._height;
+};
+
+Game.Map.prototype.getPlayer = function() {
+    return this._player;
 };
 
 // Gets the tile for a given coordinate set
