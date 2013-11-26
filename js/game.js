@@ -8,7 +8,9 @@ var Game = {
         // Any necessary initialization will go here.
         this._display = new ROT.Display({
         	width: this._screenWidth, 
-        	height: this._screenHeight +1 // adding one extra line for the player status bar
+        	height: this._screenHeight +1, // adding one extra line for the player status bar
+        	fontSize: 28,
+        	fontFamily: "droid sans mono, monospace"
     	});
         
         // create a helper function for binding to the current screen
@@ -81,5 +83,3 @@ window.onload = function() {
         Game.switchScreen(Game.Screen.startScreen);
 	}
 }
-
-// http://www.codingcookies.com/2013/09/04/building-a-roguelike-in-javascript-part-10b/
