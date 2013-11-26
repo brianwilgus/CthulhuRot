@@ -71,7 +71,7 @@ var Game = {
 
 window.onload = function() {
 	if(!ROT.isSupported()) {
-		alert("The rot.js library isn't supported by your browser.");
+		alert("The rot.js library isn't supported by your browser. Please use a modern browser that supports canvas element such as Chrome or Firefox.");
 	} else {
         // Initialize the game
         Game.init();

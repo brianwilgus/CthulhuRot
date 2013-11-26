@@ -27,12 +27,8 @@ Game.Tile.prototype.getGlyph = function() {
     return this._glyph;
 };
 
-Game.Tile.floorTile = new Game.Tile({
-    character: '.',
-    isWalkable: true
-});
-
 Game.Tile.nullTile = new Game.Tile();
+
 Game.Tile.floorTile = new Game.Tile({
     character: '.',
     walkable: true,
@@ -43,21 +39,65 @@ Game.Tile.wallTile = new Game.Tile({
     foreground: 'goldenrod',
     diggable: true
 });
+Game.Tile.grassFloor = new Game.Tile({
+    character: '.',
+    foreground: 'darkgreen',
+    walkable: true,
+    blocksLight: false
+});
+Game.Tile.dirtFloor = new Game.Tile({
+    character: '.',
+    foreground: 'saddlebrown',
+    walkable: true,
+    blocksLight: false
+});
+Game.Tile.stoneFloor = new Game.Tile({
+    character: '.',
+    foreground: 'dimgray',
+    walkable: true,
+    blocksLight: false
+});
+Game.Tile.evilFloor = new Game.Tile({
+    character: '.',
+    foreground: 'darkmagenta',
+    walkable: true,
+    blocksLight: false
+});
+Game.Tile.forestWall = new Game.Tile({
+    character: '#',
+    foreground: 'olivedrab',
+    diggable: true
+});
+Game.Tile.stoneWall = new Game.Tile({
+    character: '#',
+    foreground: 'darkgray',
+    diggable: true
+});
+Game.Tile.dirtWall = new Game.Tile({
+    character: '#',
+    foreground: 'peru',
+    diggable: true
+});
+Game.Tile.evilWall = new Game.Tile({
+    character: '#',
+    foreground: 'magenta',
+    diggable: true
+});
 Game.Tile.stairsUpTile = new Game.Tile({
     character: '<',
-    foreground: 'white',
+    foreground: 'peru',
     walkable: true,
     blocksLight: false
 });
 Game.Tile.stairsDownTile = new Game.Tile({
     character: '>',
-    foreground: 'white',
+    foreground: 'peru',
     walkable: true,
     blocksLight: false
 });
 Game.Tile.holeToCavernTile = new Game.Tile({
     character: 'O',
-    foreground: 'white',
+    foreground: 'peru',
     walkable: true,
     blocksLight: false
 });
