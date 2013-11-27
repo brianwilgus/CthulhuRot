@@ -71,7 +71,7 @@ Game.Tile.forestWall = new Game.Tile({
 Game.Tile.stoneWall = new Game.Tile({
     character: '#',
     foreground: 'darkgray',
-    diggable: true
+    diggable: false
 });
 Game.Tile.dirtWall = new Game.Tile({
     character: '#',
@@ -81,7 +81,7 @@ Game.Tile.dirtWall = new Game.Tile({
 Game.Tile.evilWall = new Game.Tile({
     character: '#',
     foreground: 'magenta',
-    diggable: true
+    diggable: false
 });
 Game.Tile.stairsUpTile = new Game.Tile({
     character: '<',

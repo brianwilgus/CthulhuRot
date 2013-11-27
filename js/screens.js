@@ -10,8 +10,8 @@ Game.Screen.startScreen = {
 	},
 	render: function(display) {
 		// Render our prompt to the screen
-		display.drawText(1,1,"%c{lightgreen}Cthulhu Rot");
-		display.drawText(1,2,"%c{yellow}Javascript Roguelike");
+		display.drawText(1,1,"%c{lightgreen}Welcome to Cthulhu Rot");
+		display.drawText(1,2,"%c{yellow}A Javascript Roguelike");
 		display.drawText(1,3, "Press [ENTER] to start!");
 	},
 	handleInput: function(inputType, inputData) {
@@ -103,18 +103,20 @@ Game.Screen.playScreen = {
                         }
                         // Update the foreground color in case our glyph changed
                         foreground = glyph.getForeground();
+                        background = glyph.getBackground();
                     } else {
                         // Since the tile was previously explored but is not
                         // visible, we want to change the foreground color to
                         // dark gray.
                         foreground = 'darkGray';
+                        background = '#111';
                     }
                     display.draw(
                         x - topLeftX,
                         y - topLeftY,
                         glyph.getChar(),
                         foreground,
-                        glyph.getBackground());
+                        background);
                 }
             }
         }

@@ -7,8 +7,9 @@ Game.Builder = function(width, height, depth) {
     
     // Instantiate the arrays to be multi-dimension
     for (var z = 0; z < depth; z++) {
-        // Create a new cave at each level
-		this._tiles[z] = this._generateLevel();
+        // Create a new cave at each level, themed by depth
+    	this._tiles[z] = this._generateLevel(Game.Tile.floorTile, Game.Tile.wallTile);
+		
         // Setup the regions array for each depth
         this._regions[z] = new Array(width);
         for (var x = 0; x < width; x++) {
@@ -29,7 +30,7 @@ Game.Builder = function(width, height, depth) {
     this._connectAllRegions();
 };
 
-Game.Builder.prototype._generateLevel = function() {
+Game.Builder.prototype._generateLevel = function(floorType, wallType) {
     // Create the empty map
     var map = new Array(this._width);
     for (var w = 0; w < this._width; w++) {

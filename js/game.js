@@ -1,16 +1,18 @@
 var Game = {
     _display: null,
     _currentScreen: null,
-    _screenWidth: 80,
-    _screenHeight: 24,
+    _screenWidth: 60,
+    _screenHeight: 18,
     
     init: function() {
         // Any necessary initialization will go here.
         this._display = new ROT.Display({
         	width: this._screenWidth, 
         	height: this._screenHeight +1, // adding one extra line for the player status bar
-        	fontSize: 28,
-        	fontFamily: "droid sans mono, monospace"
+        	fontSize: 20,
+        	fontFamily: "droid sans mono, monospace",
+        	fg: '#dedede',
+        	bg: '#111',
     	});
         
         // create a helper function for binding to the current screen
