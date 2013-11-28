@@ -50,17 +50,17 @@ Game.Map.BossCavern.prototype._generateTiles = function(width, height) {
     this._fillCircle(tiles, width / 2, height / 2, radius, Game.Tile.floorTile);
 
     // Now we randomly position lakes (3 - 6 lakes)
-    var lakes = Math.round(Math.random() * 3) + 3;
+    var lakes = Math.round(ROT.RNG.getUniform() * 3) + 3;
     var maxRadius = 2;
     for (var i = 0; i < lakes; i++) {
         // Random position, taking into consideration the radius to make sure
         // we are within the bounds.
-        var centerX = Math.floor(Math.random() * (width - (maxRadius * 2)));
-        var centerY = Math.floor(Math.random() * (height - (maxRadius * 2)));
+        var centerX = Math.floor(ROT.RNG.getUniform() * (width - (maxRadius * 2)));
+        var centerY = Math.floor(ROT.RNG.getUniform() * (height - (maxRadius * 2)));
         centerX += maxRadius;
         centerY += maxRadius;
         // Random radius
-        var radius = Math.floor(Math.random() * maxRadius) + 1;
+        var radius = Math.floor(ROT.RNG.getUniform() * maxRadius) + 1;
         // Position the lake!
         this._fillCircle(tiles, centerX, centerY, radius, Game.Tile.waterTile);
     }

@@ -5,14 +5,19 @@ var Game = {
     _screenHeight: 18,
     
     init: function() {
+    	// our seed for future random number generation
+    	//var seed = ROT.RNG.getSeed();
+    	ROT.RNG.setSeed(12345);
+    	console.log("ROT using seed '"+ROT.RNG.getSeed()+"'");
+    	
         // Any necessary initialization will go here.
         this._display = new ROT.Display({
         	width: this._screenWidth, 
         	height: this._screenHeight +1, // adding one extra line for the player status bar
-        	fontSize: 20,
+        	fontSize: 18,
         	fontFamily: "droid sans mono, monospace",
         	fg: '#dedede',
-        	bg: '#000',
+        	bg: '#000'
     	});
         
         // create a helper function for binding to the current screen
@@ -73,7 +78,7 @@ var Game = {
 
 window.onload = function() {
 	if(!ROT.isSupported()) {
-		alert("The rot.js library isn't supported by your browser. Please use a modern browser that supports canvas element such as Chrome or Firefox.");
+		alert("The rot.js library isn't supported by your browser. Please use a modern browser that supports the HTML5 canvas element such as Chrome or Firefox.");
 	} else {
         // Initialize the game
         Game.init();

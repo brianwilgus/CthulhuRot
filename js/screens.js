@@ -12,7 +12,8 @@ Game.Screen.startScreen = {
 		// Render our prompt to the screen
 		display.drawText(1,1,"%c{lightgreen}Welcome to Cthulhu Rot");
 		display.drawText(1,2,"%c{yellow}A Javascript Roguelike");
-		display.drawText(1,3, "Press [ENTER] to start!");
+		display.drawText(1,3,"%c{aqua}Using SEED: "+ROT.RNG.getSeed());
+		display.drawText(1,4, "Press [ENTER] to start!");
 	},
 	handleInput: function(inputType, inputData) {
 		if(inputType == 'keyup') {
@@ -35,7 +36,7 @@ Game.Screen.playScreen = {
         // Create a map based on our size parameters
         var width = 100;
         var height = 48;
-        var depth = 6;
+        var depth = 7;
         // Create our map from the tiles and player
         this._player = new Game.Entity(Game.PlayerTemplate);
         var tiles = new Game.Builder(width, height, depth).getTiles();
@@ -214,12 +215,11 @@ Game.Screen.playScreen = {
                     this.showItemsSubScreen(Game.Screen.pickupScreen, items,
                         'There is nothing here to pick up.');
                 } 
-            /** dev command to test end boss
+            /** dev command to test end boss  **/
             } else if (inputData.keyCode === ROT.VK_P) {
             	console.log("warp to end boss");
                 Game.sendMessage(this._player, "warp to end boss");
                 this._player.switchMap(new Game.Map.BossCavern());
-            **/
             } else {
                 // Not a valid key
                 return;

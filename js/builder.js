@@ -58,7 +58,7 @@ Game.Builder.prototype._generateLevel = function(z) {
 		// stone caves
 		wallTypes = [Game.Tile.stoneWall, Game.Tile.stoneWallDark, Game.Tile.stoneWallLight];
 		floorTypes = [Game.Tile.stoneFloor, Game.Tile.stoneFloorDark, Game.Tile.stoneFloorLight];
-	} else if(z<6){
+	} else if(z<7){
 		// evil caves
 		wallTypes = [Game.Tile.evilWall, Game.Tile.evilWallDark, Game.Tile.evilWallLight];
 		floorTypes = [Game.Tile.evilFloor, Game.Tile.evilFloorDark, Game.Tile.evilFloorLight];

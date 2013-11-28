@@ -37,13 +37,13 @@ Game.EntityMixins.FungusActor = {
     act: function() {
         // Check if we are going to try growing this turn
         if (this._growthsRemaining > 0) {
-            if (Math.random() <= 0.02) {
+            if (ROT.RNG.getUniform() <= 0.02) {
                 // Generate the coordinates of a random adjacent square by
                 // generating an offset between [-1, 0, 1] for both the x and
                 // y directions. To do this, we generate a number from 0-2 and then
                 // subtract 1.
-                var xOffset = Math.floor(Math.random() * 3) - 1;
-                var yOffset = Math.floor(Math.random() * 3) - 1;
+                var xOffset = Math.floor(ROT.RNG.getUniform() * 3) - 1;
+                var yOffset = Math.floor(ROT.RNG.getUniform() * 3) - 1;
                 // Make sure we aren't trying to spawn on the same tile as us
                 if (xOffset != 0 || yOffset != 0) {
                     // Check if we can actually spawn at that location, and if so
@@ -129,9 +129,9 @@ Game.EntityMixins.TaskActor = {
     },
     wander: function() {
         // Flip coin to determine if moving by 1 in the positive or negative direction
-        var moveOffset = (Math.round(Math.random()) === 1) ? 1 : -1;
+        var moveOffset = (Math.round(ROT.RNG.getUniform()) === 1) ? 1 : -1;
         // Flip coin to determine if moving in x direction or y direction
-        if (Math.round(Math.random()) === 1) {
+        if (Math.round(ROT.RNG.getUniform()) === 1) {
             this.tryMove(this.getX() + moveOffset, this.getY(), this.getZ());
         } else {
             this.tryMove(this.getX(), this.getY() + moveOffset, this.getZ());
@@ -154,7 +154,7 @@ Game.EntityMixins.GiantZombieActor = Game.extend(Game.EntityMixins.TaskActor, {
             return this.getHp() <= 20 && !this._hasGrownArm;
         // Spawn a slime only a 10% of turns.
         } else if (task === 'spawnSlime') {
-            return Math.round(Math.random() * 100) <= 10;
+            return Math.round(ROT.RNG.getUniform() * 100) <= 10;
         // Call parent canDoTask
         } else {
             return Game.EntityMixins.TaskActor.canDoTask.call(this, task);
@@ -170,8 +170,8 @@ Game.EntityMixins.GiantZombieActor = Game.extend(Game.EntityMixins.TaskActor, {
     },
     spawnSlime: function() {
         // Generate a random position nearby.
-        var xOffset = Math.floor(Math.random() * 3) - 1;
-        var yOffset = Math.floor(Math.random() * 3) - 1;
+        var xOffset = Math.floor(ROT.RNG.getUniform() * 3) - 1;
+        var yOffset = Math.floor(ROT.RNG.getUniform() * 3) - 1;
 
         // Check if we can spawn an entity at that position.
         if (!this.getMap().isEmptyFloor(this.getX() + xOffset, this.getY() + yOffset,
@@ -229,7 +229,7 @@ Game.EntityMixins.Attacker = {
             var attack = this.getAttackValue();
             var defense = target.getDefenseValue();
             var max = Math.max(0, attack - defense);
-            var damage = 1 + Math.floor(Math.random() * max);
+            var damage = 1 + Math.floor(ROT.RNG.getUniform() * max);
 
             Game.sendMessage(this, 'You strike the %s for %d damage!',
                 [target.getName(), damage]);
@@ -532,7 +532,7 @@ Game.EntityMixins.CorpseDropper = {
     listeners: {
         onDeath: function(attacker) {
             // Check if we should drop a corpse.
-            if (Math.round(Math.random() * 100) <= this._corpseDropRate) {
+            if (Math.round(ROT.RNG.getUniform() * 100) <= this._corpseDropRate) {
                 // Create a new corpse item and drop it.
                 this._map.addItem(this.getX(), this.getY(), this.getZ(),
                     Game.ItemRepository.create('corpse', {

@@ -63,8 +63,8 @@ Game.Map.prototype.getRandomFloorPosition = function(z) {
     // Randomly generate a tile which is a floor
     var x, y;
     do {
-        x = Math.floor(Math.random() * this._width);
-        y = Math.floor(Math.random() * this._height);
+        x = Math.floor(ROT.RNG.getUniform() * this._width);
+        y = Math.floor(ROT.RNG.getUniform() * this._height);
     } while(!this.isEmptyFloor(x, y, z));
     return {x: x, y: y, z: z};
 };
