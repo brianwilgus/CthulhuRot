@@ -99,14 +99,42 @@ Game.Tile.dirtFloorDark = new Game.Tile({
 });
 Game.Tile.stoneFloor = new Game.Tile({
     character: '.',
-    foreground: 'dimgray',
+    foreground: '#7A7A52',
+    walkable: true,
+    blocksLight: false,
+    floor: true
+});
+Game.Tile.stoneFloorLight = new Game.Tile({
+    character: '.',
+    foreground: '#8A8A5C',
+    walkable: true,
+    blocksLight: false,
+    floor: true
+});
+Game.Tile.stoneFloorDark = new Game.Tile({
+    character: '.',
+    foreground: '#6B6B47',
     walkable: true,
     blocksLight: false,
     floor: true
 });
 Game.Tile.evilFloor = new Game.Tile({
     character: '.',
-    foreground: 'darkmagenta',
+    foreground: '#520052',
+    walkable: true,
+    blocksLight: false,
+    floor: true
+});
+Game.Tile.evilFloorLight = new Game.Tile({
+    character: '.',
+    foreground: '#5C005C',
+    walkable: true,
+    blocksLight: false,
+    floor: true
+});
+Game.Tile.evilFloorDark = new Game.Tile({
+    character: '.',
+    foreground: '#470047',
     walkable: true,
     blocksLight: false,
     floor: true
@@ -131,34 +159,60 @@ Game.Tile.forestWallDark = new Game.Tile({
 });
 Game.Tile.stoneWall = new Game.Tile({
     character: '#',
-    foreground: 'darkgray',
+    foreground: '#B8B894',
+    diggable: false,
+    wall: true
+});
+Game.Tile.stoneWallLight = new Game.Tile({
+    character: '#',
+    foreground: '#C2C2A3',
+    diggable: false,
+    wall: true
+});
+Game.Tile.stoneWallDark = new Game.Tile({
+    character: '#',
+    foreground: '#ADAD85',
     diggable: false,
     wall: true
 });
 Game.Tile.dirtWall = new Game.Tile({
     character: '#',
-    foreground: 'peru',
+    foreground: '#CC6600',
     diggable: true,
     wall: true
 });
 Game.Tile.dirtWallLight = new Game.Tile({
     character: '#',
-    foreground: '#D29152',
+    foreground: '#D17519',
     diggable: true,
     wall: true
 });
 Game.Tile.dirtWallDark = new Game.Tile({
     character: '#',
-    foreground: '#B87839',
+    foreground: '#B85C00',
     diggable: true,
     wall: true
 });
 Game.Tile.evilWall = new Game.Tile({
     character: '#',
-    foreground: 'magenta',
+    foreground: '#751975',
     diggable: false,
     wall: true
 });
+Game.Tile.evilWallLight = new Game.Tile({
+    character: '#',
+    foreground: '#853385',
+    diggable: false,
+    wall: true
+});
+Game.Tile.evilWallDark = new Game.Tile({
+    character: '#',
+    foreground: '#660066',
+    diggable: false,
+    wall: true
+});
+
+
 Game.Tile.stairsUpTile = new Game.Tile({
     character: '<',
     foreground: 'peru',
