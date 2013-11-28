@@ -108,8 +108,8 @@ Game.Screen.playScreen = {
                         // Since the tile was previously explored but is not
                         // visible, we want to change the foreground color to
                         // dark gray.
-                        foreground = 'darkGray';
-                        background = '#111';
+                        foreground = '#232323';
+                        background = '#000';
                     }
                     display.draw(
                         x - topLeftX,

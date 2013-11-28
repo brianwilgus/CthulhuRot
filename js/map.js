@@ -105,13 +105,13 @@ Game.Map.prototype.getEntities = function() {
 Game.Map.prototype.dig = function(x, y, z) {
     // If the tile is diggable, update it to a floor
     if (this.getTile(x, y, z).isDiggable()) {
-        this._tiles[z][x][y] = Game.Tile.floorTile;
+        this._tiles[z][x][y] = Game.Tile.dirtFloor;
     }
 };
 
 Game.Map.prototype.isEmptyFloor = function(x, y, z) {
     // Check if the tile is floor and also has no entity
-    return this.getTile(x, y, z) == Game.Tile.floorTile &&
+    return this.getTile(x, y, z)._floor == true &&
            !this.getEntityAt(x, y, z);
 };
 

@@ -12,7 +12,7 @@ var Game = {
         	fontSize: 20,
         	fontFamily: "droid sans mono, monospace",
         	fg: '#dedede',
-        	bg: '#111',
+        	bg: '#000',
     	});
         
         // create a helper function for binding to the current screen

@@ -7,8 +7,8 @@ Game.Builder = function(width, height, depth) {
     
     // Instantiate the arrays to be multi-dimension
     for (var z = 0; z < depth; z++) {
-        // Create a new cave at each level, themed by depth
-    	this._tiles[z] = this._generateLevel(Game.Tile.floorTile, Game.Tile.wallTile);
+        // Create a new cave at each level
+    	this._tiles[z] = this._generateLevel(z);
 		
         // Setup the regions array for each depth
         this._regions[z] = new Array(width);
@@ -28,9 +28,10 @@ Game.Builder = function(width, height, depth) {
 
     // place our stairs
     this._connectAllRegions();
+    
 };
 
-Game.Builder.prototype._generateLevel = function(floorType, wallType) {
+Game.Builder.prototype._generateLevel = function(z) {
     // Create the empty map
     var map = new Array(this._width);
     for (var w = 0; w < this._width; w++) {
@@ -44,14 +45,38 @@ Game.Builder.prototype._generateLevel = function(floorType, wallType) {
     for (var i = 0; i < totalIterations - 1; i++) {
         generator.create();
     }
+    
+    if(z == 0){ 
+		// the forest
+		wallTypes = [Game.Tile.forestWall, Game.Tile.forestWallLight, Game.Tile.forestWallDark];
+		floorTypes = [Game.Tile.grassFloor, Game.Tile.grassFloorLight, Game.Tile.grassFloorDark];
+	} else if(z<3){
+		// mud caves
+		wallTypes = [Game.Tile.dirtWall, Game.Tile.dirtWallLight, Game.Tile.dirtWallDark];
+		floorTypes = [Game.Tile.dirtFloor, Game.Tile.dirtFloorLight, Game.Tile.dirtFloorDark];
+	} else if(z<5){
+		// stone caves
+		wallTypes = [Game.Tile.stoneWall];
+		floorTypes = [Game.Tile.stoneFloor];
+	} else if(z<6){
+		// evil caves
+		wallTypes = [Game.Tile.evilWall];
+		floorTypes = [Game.Tile.evilFloor];
+	} else {
+		// defaults
+		wallTypes = [Game.Tile.wallTile];
+		floorTypes = [Game.Tile.floorTile];
+	}
+	
     // Smoothen it one last time and then update our map
     generator.create(function(x,y,v) {
         if (v === 1) {
-            map[x][y] = Game.Tile.floorTile;
+            map[x][y] = floorTypes.random();
         } else {
-            map[x][y] = Game.Tile.wallTile;
+            map[x][y] = wallTypes.random();
         }
     });
+    
     return map;
 };
 
@@ -100,37 +125,37 @@ Game.Builder.prototype._fillRegion = function(region, x, y, z) {
 //This removes all tiles at a given depth level with a region number.
 //It fills the tiles with a wall tile.
 Game.Builder.prototype._removeRegion = function(region, z) {
- for (var x = 0; x < this._width; x++) {
-     for (var y = 0; y < this._height; y++) {
-         if (this._regions[z][x][y] == region) {
-             // Clear the region and set the tile to a wall tile
-             this._regions[z][x][y] = 0;
-             this._tiles[z][x][y] = Game.Tile.wallTile;
-         }
-     }
- }
+	 for (var x = 0; x < this._width; x++) {
+	     for (var y = 0; y < this._height; y++) {
+	         if (this._regions[z][x][y] == region) {
+	             // Clear the region and set the tile to a wall tile
+	             this._regions[z][x][y] = 0;
+	             this._tiles[z][x][y] = Game.Tile.wallTile;
+	         }
+	     }
+	 }
 }
 
 //This sets up the regions for a given depth level.
 Game.Builder.prototype._setupRegions = function(z) {
- var region = 1;
- var tilesFilled;
- // Iterate through all tiles searching for a tile that
- // can be used as the starting point for a flood fill
- for (var x = 0; x < this._width; x++) {
-     for (var y = 0; y < this._height; y++) {
-         if (this._canFillRegion(x, y, z)) {
-             // Try to fill
-             tilesFilled = this._fillRegion(region, x, y, z);
-             // If it was too small, simply remove it
-             if (tilesFilled <= 20) {
-                 this._removeRegion(region, z);
-             } else {
-                 region++;
-             }
-         }
-     }
- }
+	 var region = 1;
+	 var tilesFilled;
+	 // Iterate through all tiles searching for a tile that
+	 // can be used as the starting point for a flood fill
+	 for (var x = 0; x < this._width; x++) {
+	     for (var y = 0; y < this._height; y++) {
+	         if (this._canFillRegion(x, y, z)) {
+	             // Try to fill
+	             tilesFilled = this._fillRegion(region, x, y, z);
+	             // If it was too small, simply remove it
+	             if (tilesFilled <= 20) {
+	                 this._removeRegion(region, z);
+	             } else {
+	                 region++;
+	             }
+	         }
+	     }
+	 }
 }
 
 //This fetches a list of points that overlap between one
@@ -143,8 +168,8 @@ Game.Builder.prototype._findRegionOverlaps = function(z, r1, r2) {
 	 // put two stairs on the same tile.
 	 for (var x = 0; x < this._width; x++) {
 	     for (var y = 0; y < this._height; y++) {
-	         if (this._tiles[z][x][y]  == Game.Tile.floorTile &&
-	             this._tiles[z+1][x][y] == Game.Tile.floorTile &&
+	         if (this._tiles[z][x][y].isFloor() == true &&
+	             this._tiles[z+1][x][y].isFloor() == true &&
 	             this._regions[z][x][y] == r1 &&
 	             this._regions[z+1][x][y] == r2) {
 	             matches.push({x: x, y: y});
@@ -184,8 +209,8 @@ Game.Builder.prototype._connectAllRegions = function() {
 	         for (var y = 0; y < this._height; y++) {
 	             key = this._regions[z][x][y] + ',' +
 	                   this._regions[z+1][x][y];
-	             if (this._tiles[z][x][y] == Game.Tile.floorTile &&
-	                 this._tiles[z+1][x][y] == Game.Tile.floorTile &&
+	             if (this._tiles[z][x][y].isFloor() == true &&
+	                 this._tiles[z+1][x][y].isFloor() == true &&
 	                 !connected[key]) {
 	                 // Since both tiles are floors and we haven't 
 	                 // already connected the two regions, try now.
