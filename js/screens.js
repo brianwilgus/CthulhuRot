@@ -10,9 +10,9 @@ Game.Screen.startScreen = {
 	},
 	render: function(display) {
 		// Render our prompt to the screen
-		display.drawText(1,1,"%c{lightgreen}Welcome to Cthulhu Rot");
-		display.drawText(1,2,"%c{yellow}A Javascript Roguelike");
-		display.drawText(1,3,"%c{aqua}Using SEED: "+ROT.RNG.getSeed());
+		display.drawText(1,1,"%c{lightgreen}Welcome to Cthulhu Rot...");
+		display.drawText(1,2,"%c{yellow}a fantasy roguelike!");
+		display.drawText(1,3,"%c{aqua}using SEED:'"+ROT.RNG.getSeed()+"'");
 		display.drawText(1,4, "Press [ENTER] to start!");
 	},
 	handleInput: function(inputType, inputData) {
