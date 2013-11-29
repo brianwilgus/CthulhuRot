@@ -277,9 +277,9 @@ Game.Screen.winScreen = {
         // Render our prompt to the screen
         for (var i = 0; i < 22; i++) {
             // Generate random background colors
-            var r = Math.round(Math.random() * 255);
-            var g = Math.round(Math.random() * 255);
-            var b = Math.round(Math.random() * 255);
+            var r = Math.round(ROT.RNG.getUniform() * 255);
+            var g = Math.round(ROT.RNG.getUniform() * 255);
+            var b = Math.round(ROT.RNG.getUniform() * 255);
             var background = ROT.Color.toRGB([r, g, b]);
             display.drawText(2, i + 1, "%b{" + background + "}You win!");
         }
@@ -307,9 +307,9 @@ Game.Screen.loseScreen = {
       // Render our prompt to the screen
       for (var i = 0; i < 22; i++) {
           // Generate random background colors
-          var r = Math.round(Math.random() * 255);
-          var g = Math.round(Math.random() * 255);
-          var b = Math.round(Math.random() * 255);
+          var r = Math.round(ROT.RNG.getUniform() * 255);
+          var g = Math.round(ROT.RNG.getUniform() * 255);
+          var b = Math.round(ROT.RNG.getUniform() * 255);
           var background = ROT.Color.toRGB([r, g, b]);
           display.drawText(2, i + 1, "%b{red}You lose! :(");
       }

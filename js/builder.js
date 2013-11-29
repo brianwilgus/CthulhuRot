@@ -130,7 +130,24 @@ Game.Builder.prototype._removeRegion = function(region, z) {
 	         if (this._regions[z][x][y] == region) {
 	             // Clear the region and set the tile to a wall tile
 	             this._regions[z][x][y] = 0;
-	             this._tiles[z][x][y] = Game.Tile.wallTile;
+
+	             if(z == 0){ 
+	         		// the forest
+	         		wallTypes = [Game.Tile.forestWall, Game.Tile.forestWallLight, Game.Tile.forestWallDark];
+	         	} else if(z<3){
+	         		// mud caves
+	         		wallTypes = [Game.Tile.dirtWall, Game.Tile.dirtWallLight, Game.Tile.dirtWallDark];
+	         	} else if(z<5){
+	         		// stone caves
+	         		wallTypes = [Game.Tile.stoneWall, Game.Tile.stoneWallDark, Game.Tile.stoneWallLight];
+	         	} else if(z<7){
+	         		// evil caves
+	         		wallTypes = [Game.Tile.evilWall, Game.Tile.evilWallDark, Game.Tile.evilWallLight];
+	         	} else {
+	         		// defaults
+	         		wallTypes = [Game.Tile.wallTile];
+	         	}
+	             this._tiles[z][x][y] = wallTypes.random();
 	         }
 	     }
 	 }
@@ -156,6 +173,7 @@ Game.Builder.prototype._setupRegions = function(z) {
 	         }
 	     }
 	 }
+	 console.log("created "+region+" regions for depth "+z+".");
 }
 
 //This fetches a list of points that overlap between one

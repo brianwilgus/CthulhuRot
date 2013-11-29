@@ -139,6 +139,27 @@ Game.Tile.evilFloorDark = new Game.Tile({
     blocksLight: false,
     floor: true
 });
+Game.Tile.wetFloor = new Game.Tile({
+    character: '.',
+    foreground: '#0F3D3D',
+    walkable: true,
+    blocksLight: false,
+    floor: true
+});
+Game.Tile.wetFloorDarkLight = new Game.Tile({
+    character: '.',
+    foreground: '#006BB2',
+    walkable: true,
+    blocksLight: false,
+    floor: true
+});
+Game.Tile.wetFloorDark = new Game.Tile({
+    character: '.',
+    foreground: '#004C80',
+    walkable: true,
+    blocksLight: false,
+    floor: true
+});
 Game.Tile.forestWall = new Game.Tile({
     character: '#',
     foreground: 'olivedrab',
@@ -212,6 +233,26 @@ Game.Tile.evilWallDark = new Game.Tile({
     wall: true
 });
 
+Game.Tile.wetWall = new Game.Tile({
+    character: '#',
+    foreground: '#0099FF',
+    diggable: false,
+    wall: true
+});
+
+Game.Tile.wetWallDark = new Game.Tile({
+    character: '#',
+    foreground: '#007ACC',
+    diggable: false,
+    wall: true
+});
+
+Game.Tile.wetWallLight = new Game.Tile({
+    character: '#',
+    foreground: '#19A3FF',
+    diggable: false,
+    wall: true
+});
 
 Game.Tile.stairsUpTile = new Game.Tile({
     character: '<',

@@ -37,17 +37,21 @@ Game.Map.BossCavern.prototype._fillCircle = function(tiles, centerX, centerY, ra
 };
 
 Game.Map.BossCavern.prototype._generateTiles = function(width, height) {
+	floorTypes = [Game.Tile.wetFloor, Game.Tile.wetFloorLight, Game.Tile.wetFloorDark, Game.Tile.dirtFloor];
+	wallTypes = [Game.Tile.wetWall, Game.Tile.wetWallLight, Game.Tile.wetWallDark];
+	waterTypes = [Game.Tile.waterTile, Game.Tile.waterTileLight, Game.Tile.waterTileDark];
+	
     // First we create an array, filling it with empty tiles.
     var tiles = new Array(width);
     for (var x = 0; x < width; x++) {
         tiles[x] = new Array(height);
         for (var y = 0; y < height; y++) {
-            tiles[x][y] = Game.Tile.wallTile;
+            tiles[x][y] = wallTypes.random();
         }
     }
     // Now we determine the radius of the cave to carve out.
     var radius = (Math.min(width, height) - 2) / 2;
-    this._fillCircle(tiles, width / 2, height / 2, radius, Game.Tile.floorTile);
+    this._fillCircle(tiles, width / 2, height / 2, radius, Game.Tile.wetFloor);
 
     // Now we randomly position lakes (3 - 6 lakes)
     var lakes = Math.round(ROT.RNG.getUniform() * 3) + 3;
