@@ -9,7 +9,7 @@ var Game = {
     	//var seed = ROT.RNG.getSeed();
     	ROT.RNG.setSeed(12345);
     	
-        // Any necessary initialization will go here.
+    	// Any necessary initialization will go here.
         this._display = new ROT.Display({
         	width: this._screenWidth, 
         	height: this._screenHeight +1, // adding one extra line for the player status bar
@@ -51,8 +51,14 @@ var Game = {
     getScreenWidth: function() {
         return this._screenWidth;
     },
+    setScreenWidth: function(value) {
+    	this._screenWidth = value;
+    },
     getScreenHeight: function() {
         return this._screenHeight;
+    },
+    setScreenHeight: function(value) {
+    	this._screenHeight = value;
     },
     
     switchScreen: function(screen) {
@@ -81,11 +87,37 @@ window.onload = function() {
 	} else {
         // Initialize the game
         Game.init();
-        
         // Add the container to our HTML page
-        document.body.appendChild(Game.getDisplay().getContainer());
-        
+        document.getElementById('RotDisplay').appendChild(Game.getDisplay().getContainer());   
         // Load the start screen
         Game.switchScreen(Game.Screen.startScreen);
+        // re-size accordingly now that we have a Display, startScreen and init
+    	resizeRotDisplay();
 	}
+}
+
+// resize the rotDisplay to fill the available browser space dynamically
+window.onresize = function(event){
+	resizeRotDisplay(event);
+};
+
+resizeRotDisplay = function(e){
+	rotDisplay = Game.getDisplay();
+	rotDisplayDiv = document.getElementById('RotDisplay');
+	
+	// determine our available size, in character blocks
+	sizingResults = rotDisplay.computeSize(rotDisplayDiv.offsetWidth, rotDisplayDiv.offsetHeight);
+	
+	// resize the rotDisplay
+	rotDisplay.setOptions({
+		width:sizingResults[0],
+		height:sizingResults[1],
+		fontSize: 18,
+		fontFamily: "droid sans mono, monospace",
+		fg: '#dedede',
+		bg: '#000'
+	});
+	Game.setScreenWidth(sizingResults[0]);
+	Game.setScreenHeight(sizingResults[1]);
+	Game.refresh();// clear and re-render the new display port
 }

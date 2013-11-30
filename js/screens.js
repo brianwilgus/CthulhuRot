@@ -59,12 +59,16 @@ Game.Screen.playScreen = {
         var topLeftX = Math.max(0, this._player.getX() - (screenWidth / 2));
         // Make sure we still have enough space to fit an entire game screen
         topLeftX = Math.min(topLeftX, this._player.getMap().getWidth() - screenWidth);
+        topLeftX = Math.ceil(topLeftX);// fix fractional numbers
         // Make sure the y-axis doesn't above the top bound
         var topLeftY = Math.max(0, this._player.getY() - (screenHeight / 2));
         // Make sure we still have enough space to fit an entire game screen
         topLeftY = Math.min(topLeftY, this._player.getMap().getHeight() - screenHeight);
+        topLeftY = Math.ceil(topLeftY);// fix fractional numbers
         // This object will keep track of all visible map cells
         var visibleCells = {};
+        
+        console.log("render: topLeftX "+topLeftX+" topLeftY "+topLeftY);
 
         // Store this._player.getMap() and player's z to prevent losing it in callbacks
         var map = this._player.getMap();

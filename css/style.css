@@ -1,0 +1,25 @@
+html,
+body,
+div {
+	margin: 0px;
+	padding: 0px;
+	background-color: #111;
+}
+
+#story {
+	width: 300px;
+	height: auto;
+	background-color: #333;	
+	float: left;
+	position: relative;
+	display: inline-block;
+}
+
+#RotDisplay {
+	width: 100%;
+	height: auto;
+	background-color: #222;
+	float: left;
+	position: relative;
+	display: inline-block;
+}
