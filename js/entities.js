@@ -22,9 +22,9 @@ Game.PlayerTemplate = {
 Game.EntityRepository = new Game.Repository('entities', Game.Entity);
 
 Game.EntityRepository.define('fungus', {
-    name: 'fungus',
+    name: 'Yuggoth Fungi',
     character: 'F',
-    foreground: 'green',
+    foreground: 'palegreen',
     maxHp: 10,
     speed: 250,
     mixins: [Game.EntityMixins.FungusActor, 
@@ -35,12 +35,12 @@ Game.EntityRepository.define('fungus', {
 
 Game.EntityRepository.define('bat', {
     name: 'bat',
-    character: 'B',
-    foreground: 'white',
+    character: 'b',
+    foreground: 'LightSlateGray',
     maxHp: 5,
     attackValue: 4,
     speed: 2000,
-    corpseDropRate: 90,
+    corpseDropRate: 60,
     mixins: [Game.EntityMixins.TaskActor,
              Game.EntityMixins.CorpseDropper,
              Game.EntityMixins.Attacker, 
@@ -49,14 +49,18 @@ Game.EntityRepository.define('bat', {
              Game.EntityMixins.RandomStatGainer]
 });
 
-Game.EntityRepository.define('newt', {
-    name: 'newt',
-    character: ':',
-    foreground: 'yellow',
-    maxHp: 3,
-    attackValue: 2,
+Game.EntityRepository.define('byakhee', {
+    name: 'Byakhee',
+    character: 'B',
+    foreground: 'purple',
+    maxHp: 25,
+    attackValue: 8,
+	sightRadius: 8,
+	tasks: ['hunt', 'wander'],
+    speed: 1500,
     corpseDropRate: 80,
     mixins: [Game.EntityMixins.TaskActor,
+	         Game.EntityMixins.Sight,
              Game.EntityMixins.CorpseDropper,
              Game.EntityMixins.Attacker, 
              Game.EntityMixins.Destructible,
@@ -64,13 +68,31 @@ Game.EntityRepository.define('newt', {
              Game.EntityMixins.RandomStatGainer]
 });
 
-Game.EntityRepository.define('kobold', {
-	name: 'kobold',
-	character: 'k',
-	foreground:'brown',
-	maxHp: 6,
-	attackValue: 4,
-	sightRadius: 5,
+Game.EntityRepository.define('frog', {
+    name: 'Frog',
+    character: 'x',
+    foreground: 'greenyellow',
+    maxHp: 3,
+    attackValue: 2,
+    corpseDropRate: 40,
+    speed: 250,
+    mixins: [Game.EntityMixins.TaskActor,
+             Game.EntityMixins.CorpseDropper,
+             Game.EntityMixins.Attacker, 
+             Game.EntityMixins.Destructible,
+             Game.EntityMixins.ExperienceGainer, 
+             Game.EntityMixins.RandomStatGainer]
+});
+
+Game.EntityRepository.define('shoggoth', {
+	name: 'Shoggoth',
+	character: 'S',
+	foreground:'pink',
+	maxHp: 65,
+	attackValue: 10,
+	sightRadius: 10,
+    corpseDropRate: 90,
+    speed: 750,
 	tasks: ['hunt', 'wander'],
 	mixins: [Game.EntityMixins.TaskActor,
 	         Game.EntityMixins.Sight,
@@ -81,15 +103,92 @@ Game.EntityRepository.define('kobold', {
              Game.EntityMixins.RandomStatGainer]
 });
 
-Game.EntityRepository.define('giant zombie', {
-    name: 'giant zombie', 
-    character: 'Z',
-    foreground: 'teal',
-    maxHp: 30,
-    attackValue: 8,
-    defenseValue: 5,
-    level: 5,
-    sightRadius: 16,
+Game.EntityRepository.define('ghoul', {
+	name: 'Ghoul',
+	character: 'g',
+	foreground:'darkseagreen',
+	maxHp: 30,
+	attackValue: 6,
+	sightRadius: 5,
+	tasks: ['hunt', 'wander'],
+    corpseDropRate: 85,
+    speed: 1000,
+	mixins: [Game.EntityMixins.TaskActor,
+	         Game.EntityMixins.Sight,
+             Game.EntityMixins.CorpseDropper,
+             Game.EntityMixins.Attacker, 
+             Game.EntityMixins.Destructible,
+             Game.EntityMixins.ExperienceGainer, 
+             Game.EntityMixins.RandomStatGainer]
+});
+
+Game.EntityRepository.define('deepone', {
+	name: 'Deep One',
+	character: 'D',
+	foreground:'blue',
+	maxHp: 120,
+	attackValue: 15,
+	sightRadius: 4,
+    corpseDropRate: 100,
+    speed: 800,
+	tasks: ['hunt', 'wander'],
+	mixins: [Game.EntityMixins.TaskActor,
+	         Game.EntityMixins.Sight,
+             Game.EntityMixins.CorpseDropper,
+             Game.EntityMixins.Attacker, 
+             Game.EntityMixins.Destructible,
+             Game.EntityMixins.ExperienceGainer, 
+             Game.EntityMixins.RandomStatGainer]
+});
+
+Game.EntityRepository.define('huntinghorror', {
+	name: 'Hunting Horror',
+	character: 'H',
+	foreground:'slategrey',
+	maxHp: 45,
+	attackValue: 6,
+	sightRadius: 6,
+    corpseDropRate: 50,
+    speed: 1600,
+	tasks: ['hunt', 'wander'],
+	mixins: [Game.EntityMixins.TaskActor,
+	         Game.EntityMixins.Sight,
+             Game.EntityMixins.CorpseDropper,
+             Game.EntityMixins.Attacker, 
+             Game.EntityMixins.Destructible,
+             Game.EntityMixins.ExperienceGainer, 
+             Game.EntityMixins.RandomStatGainer]
+});
+
+Game.EntityRepository.define('cultist', {
+	name: 'Cultist',
+	character: 'C',
+	foreground:'firebrick',
+	maxHp: 30,
+	attackValue: 8,
+	sightRadius: 6,
+    corpseDropRate: 100,
+    speed: 1000,
+	tasks: ['hunt', 'wander'],
+	mixins: [Game.EntityMixins.TaskActor,
+	         Game.EntityMixins.Sight,
+             Game.EntityMixins.CorpseDropper,
+             Game.EntityMixins.Attacker, 
+             Game.EntityMixins.Destructible,
+             Game.EntityMixins.ExperienceGainer, 
+             Game.EntityMixins.RandomStatGainer]
+});
+
+Game.EntityRepository.define('shubniggurath', {
+    name: 'Dark Young of Shub-Niggurath', 
+    character: 'Y',
+    foreground: 'midnightblue',
+    maxHp: 200,
+    attackValue: 25,
+    defenseValue: 12,
+    level: 7,
+    sightRadius: 24,
+    speed: 900,
     mixins: [Game.EntityMixins.GiantZombieActor, Game.EntityMixins.Sight,
              Game.EntityMixins.Attacker, Game.EntityMixins.Destructible,
              Game.EntityMixins.CorpseDropper,
@@ -99,7 +198,7 @@ Game.EntityRepository.define('giant zombie', {
 });
 
 Game.EntityRepository.define('slime', {
-    name: 'slime',
+    name: 'Formless Spawn',
     character: 's',
     foreground: 'lightGreen',
     maxHp: 10,

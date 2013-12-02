@@ -1,7 +1,12 @@
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans+Mono);
+@import url(http://fonts.googleapis.com/css?family=UnifrakturCook:700);
+@import url(http://fonts.googleapis.com/css?family=IM+Fell+English:400,400italic);
+
 html,
 body {
 	min-height: 100%;
 	height: 100%;
+	-webkit-text-stroke: 0.25px /* fix ugly chrome fonts */
 }
 
 html,
@@ -14,21 +19,65 @@ div {
 
 .top-interface {
 	width: 100%;
-	height: 30%;
+	height: 40%;
 	background-color: #333;	
 	float: left;
 	position: relative;
 	display: inline-block;
+	overflow-y: auto;
 }
 
-#story {
+#logo {
+	padding:10px 20px;
+	color: #999;
+	background-color: #111;	
+	font-weight: 700;
+	font-family: 'UnifrakturCook', cursive;
+	font-size: 32px;
+	border-bottom: 2px #666 solid;
+}
+
+#poem {
 	color: #DEDEDE;
-	background-color: #222;	
+	background-color: #444;	
+	padding: 20px;
+	font-family: 'IM Fell English', serif;
+	font-size: 16px;
+}
+
+#poem ul {
+	display: inline-block;
+	margin: 0px 20px 20px 0px;
+	border: 1px #333 dotted;
+	min-width: 250px;
+	padding:10px;
+}
+
+#poem ul li {
+	margin-left: 0px;
+	list-style-type: none;
+	line-height: 32px;
+}
+
+#poem ul li:nth-child(2) {
+	margin-left: 10px;
+}
+#poem ul li:nth-child(3) {
+	margin-left: 20px;
+}
+#poem ul li:nth-child(4) {
+	font-size: 20px;
+	margin-left: 80px;
+	line-height: 40px;
+}
+#poem #bib {
+	font-size: 14px;
+	margin: 10px;
 }
 
 #RotDisplay {
 	width: 100%;
-	height: 70%;
+	height: 60%;
 	background-color: #000;
 	float: left;
 	position: relative;
