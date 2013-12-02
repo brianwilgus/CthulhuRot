@@ -26,7 +26,7 @@ Game.Map.Cave = function(tiles, player) {
     }
     // Add weapons and armor to the map in random positions and floors
     var templates = ['dagger', 'sword', 'staff', 
-        'tunic', 'chainmail', 'platemail'];
+        'robes', 'scalemail', 'leatherarmor', 'platemail'];
     for (var i = 0; i < templates.length; i++) {
         this.addItemAtRandomPosition(Game.ItemRepository.create(templates[i]),
             Math.floor(this._depth * ROT.RNG.getUniform()));

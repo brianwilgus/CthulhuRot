@@ -111,6 +111,11 @@ Game.Entity.prototype.tryMove = function(x, y, z, map) {
                 Game.sendMessage(this, "There are several objects here.");
             }
         }
+        // describe our location by tile
+        var desc = tile.getDescription();
+        if(desc){
+        	Game.sendMessage(this, desc);
+        }
         return true;
     // Check if the tile is diggable
     } else if (tile.isDiggable()) {

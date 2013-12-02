@@ -38,10 +38,10 @@ Game.ItemRepository.define('corpse', {
 // Weapons
 // ======================================
 Game.ItemRepository.define('dagger', {
-    name: 'dagger',
-    character: ')',
+    name: 'Cultist Dagger',
+    character: '+',
     foreground: 'gray',
-    attackValue: 5,
+    attackValue: 6,
     wieldable: true,
     mixins: [Game.ItemMixins.Equippable]
 }, {
@@ -49,10 +49,10 @@ Game.ItemRepository.define('dagger', {
 });
 
 Game.ItemRepository.define('sword', {
-    name: 'sword',
-    character: ')',
-    foreground: 'white',
-    attackValue: 10,
+    name: 'Eldritch Blade',
+    character: 't',
+    foreground: 'dimgrey',
+    attackValue: 15,
     wieldable: true,
     mixins: [Game.ItemMixins.Equippable]
 }, {
@@ -60,8 +60,8 @@ Game.ItemRepository.define('sword', {
 });
 
 Game.ItemRepository.define('staff', {
-    name: 'staff',
-    character: ')',
+    name: 'Withered Staff',
+    character: 'f',
     foreground: 'yellow',
     attackValue: 5,
     defenseValue: 3,
@@ -74,10 +74,10 @@ Game.ItemRepository.define('staff', {
 
 // Wearables
 //======================================
-Game.ItemRepository.define('tunic', {
-    name: 'tunic',
-    character: '[',
-    foreground: 'green',
+Game.ItemRepository.define('robes', {
+    name: 'tattered robes',
+    character: '{',
+    foreground: 'white',
     defenseValue: 2,
     wearable: true,
     mixins: [Game.ItemMixins.Equippable]
@@ -85,11 +85,11 @@ Game.ItemRepository.define('tunic', {
     disableRandomCreation: true
 });
 
-Game.ItemRepository.define('chainmail', {
-    name: 'chainmail',
-    character: '[',
-    foreground: 'white',
-    defenseValue: 4,
+Game.ItemRepository.define('scalemail', {
+    name: 'scale armor',
+    character: 'M',
+    foreground: 'bluegrey',
+    defenseValue: 10,
     wearable: true,
     mixins: [Game.ItemMixins.Equippable]
 }, {
@@ -97,9 +97,20 @@ Game.ItemRepository.define('chainmail', {
 });
 
 Game.ItemRepository.define('platemail', {
-    name: 'platemail',
-    character: '[',
+    name: 'plate armor',
+    character: 'A',
     foreground: 'aliceblue',
+    defenseValue: 14,
+    wearable: true,
+    mixins: [Game.ItemMixins.Equippable]
+}, {
+    disableRandomCreation: true
+});
+
+Game.ItemRepository.define('leatherarmor', {
+    name: 'leather armor',
+    character: 'L',
+    foreground: 'tan',
     defenseValue: 6,
     wearable: true,
     mixins: [Game.ItemMixins.Equippable]
@@ -113,8 +124,8 @@ Game.ItemRepository.define('platemail', {
 
 //try to wear, wield and eat the pumpkin!
 Game.ItemRepository.define('pumpkin', {
- name: 'pumpkin',
- character: '%',
+ name: 'rotten pumpkin',
+ character: 'P',
  foreground: 'orange',
  foodValue: 50,
  attackValue: 2,

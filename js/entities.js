@@ -70,7 +70,7 @@ Game.EntityRepository.define('byakhee', {
 
 Game.EntityRepository.define('frog', {
     name: 'Frog',
-    character: 'x',
+    character: 'f',
     foreground: 'greenyellow',
     maxHp: 3,
     attackValue: 2,
@@ -145,7 +145,7 @@ Game.EntityRepository.define('huntinghorror', {
 	name: 'Hunting Horror',
 	character: 'H',
 	foreground:'slategrey',
-	maxHp: 45,
+	maxHp: 35,
 	attackValue: 6,
 	sightRadius: 6,
     corpseDropRate: 50,
