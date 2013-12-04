@@ -54,7 +54,7 @@ Game.Screen.playScreen = {
             return;
         }
         var screenWidth = Game.getScreenWidth();
-        var screenHeight = Game.getScreenHeight();
+        var screenHeight = Game.getScreenHeight()-1;
         // Make sure the x-axis doesn't go to the left of the left bound
         var topLeftX = Math.max(0, this._player.getX() - (screenWidth / 2));
         // Make sure we still have enough space to fit an entire game screen
