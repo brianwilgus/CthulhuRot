@@ -81,7 +81,7 @@ var Game = {
     }
 }
 
-window.onload = function() {
+onloadInit = function() {
 	if(!ROT.isSupported()) {
 		alert("The rot.js library isn't supported by your browser. Please use a modern browser that supports the HTML5 canvas element such as Chrome or Firefox.");
 	} else {
@@ -95,6 +95,8 @@ window.onload = function() {
     	resizeRotDisplay();
 	}
 }
+
+document.addEventListener('DOMContentLoaded',onloadInit);
 
 // resize the rotDisplay to fill the available browser space dynamically
 window.onresize = function(event){
