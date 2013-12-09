@@ -10,10 +10,10 @@ Game.Screen.startScreen = {
 	},
 	render: function(display) {
 		// Render our prompt to the screen
-		display.drawText(1,1,"%c{lightgreen}Welcome to Cthulhu Rot...");
-		display.drawText(1,2,"%c{yellow}a fantasy roguelike!");
-		display.drawText(1,3,"%c{aqua}using SEED:'"+ROT.RNG.getSeed()+"'");
-		display.drawText(1,4, "Press [ENTER] to start!");
+		display.drawText(2,2,"%c{lightgreen}Welcome to Cthulhu Rot...");
+		display.drawText(2,3,"%c{yellow}a fantasy roguelike!");
+		display.drawText(2,4,"%c{aqua}using SEED:'"+ROT.RNG.getSeed()+"'");
+		display.drawText(2,5,"%c{red}Press [ENTER] to start!");
 	},
 	handleInput: function(inputType, inputData) {
 		if(inputType == 'keyup') {
@@ -68,7 +68,7 @@ Game.Screen.playScreen = {
         // This object will keep track of all visible map cells
         var visibleCells = {};
         
-        console.log("render: topLeftX "+topLeftX+" topLeftY "+topLeftY);
+        //console.log("render: topLeftX "+topLeftX+" topLeftY "+topLeftY);
 
         // Store this._player.getMap() and player's z to prevent losing it in callbacks
         var map = this._player.getMap();

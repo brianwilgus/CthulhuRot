@@ -6,7 +6,7 @@ html,
 body {
 	min-height: 100%;
 	height: 100%;
-	-webkit-text-stroke: 0.25px /* hack to fix ugly chrome fonts */
+	/* -webkit-text-stroke: 0.25px hack to fix ugly chrome fonts */
 }
 
 html,
@@ -14,7 +14,6 @@ body,
 div {
 	margin: 0px;
 	padding: 0px;
-	background-color: #111;
 }
 
 .interface {
@@ -37,6 +36,18 @@ div {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#333', endColorstr='#000',GradientType=1 );
 }
 
+#story, 
+#task, 
+#stats,
+#key,
+#status {
+	text-align: left;
+	color: #DEDEDE;
+	font-family: 'Droid Sans Mono', sans-serif;
+	font-size: 14px;
+	padding: 10px 20px;
+}
+
 
 #logo {
 	padding:10px 20px;
@@ -50,7 +61,10 @@ div {
 
 #RotDisplay {
 	margin-left:300px;
-	width: 100%;
+	width: -moz-calc(100% - 300px);
+	width: -webkit-calc(100% - 300px);
+	width: -o-calc(100% - 300px);
+	width: calc(100% - 300px);
 	height: 100%;
 	background-color: #000;
 	position: fixed;
@@ -121,6 +135,10 @@ div {
 	
 	#RotDisplay {
 		margin-left:0px;
+		width: -moz-calc(100% - 0px);
+		width: -webkit-calc(100% - 0px);
+		width: -o-calc(100% - 0px);
+		width: calc(100% - 0px);
 		height: 60%;
 		position: relative;
 		display: inline-block;

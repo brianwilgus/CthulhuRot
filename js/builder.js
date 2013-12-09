@@ -4,6 +4,11 @@ Game.Builder = function(width, height, depth) {
     this._depth = depth;
     this._tiles = new Array(depth);
     this._regions = new Array(depth);
+    this._bufferWidth = 2;
+    this._bufferHeight = 6;
+    
+    this._workWidth = this._width - this._bufferWidth;
+    this._workHeight = this._height - this._bufferHeight;
     
     // Instantiate the arrays to be multi-dimension
     for (var z = 0; z < depth; z++) {
@@ -11,11 +16,11 @@ Game.Builder = function(width, height, depth) {
     	this._tiles[z] = this._generateLevel(z);
 		
         // Setup the regions array for each depth
-        this._regions[z] = new Array(width);
-        for (var x = 0; x < width; x++) {
-            this._regions[z][x] = new Array(height);
+        this._regions[z] = new Array(this._width);
+        for (var x = 0; x < this._width; x++) {
+            this._regions[z][x] = new Array(this._height);
             // Fill with zeroes
-            for (var y = 0; y < height; y++) {
+            for (var y = 0; y < this._height; y++) {
                 this._regions[z][x][y] = 0;
             }
         }
@@ -38,7 +43,7 @@ Game.Builder.prototype._generateLevel = function(z) {
         map[w] = new Array(this._height);
     }
     // Setup the cave generator
-    var generator = new ROT.Map.Cellular(this._width, this._height);
+    var generator = new ROT.Map.Cellular(this._workWidth, this._workHeight);
     generator.randomize(0.53-(z*0.01));// caves get more narrow as they go deeper
     var totalIterations = 4;
     // Iteratively smoothen the map
@@ -50,15 +55,15 @@ Game.Builder.prototype._generateLevel = function(z) {
 		// the forest
 		wallTypes = [Game.Tile.forestWall, Game.Tile.forestWallLight, Game.Tile.forestWallDark];
 		floorTypes = [Game.Tile.grassFloor, Game.Tile.grassFloorLight, Game.Tile.grassFloorDark];
-	} else if(z<3){
+	} else if(z < 3){
 		// mud caves
 		wallTypes = [Game.Tile.dirtWall, Game.Tile.dirtWallLight, Game.Tile.dirtWallDark];
 		floorTypes = [Game.Tile.dirtFloor, Game.Tile.dirtFloorLight, Game.Tile.dirtFloorDark];
-	} else if(z<5){
+	} else if(z < 5){
 		// stone caves
 		wallTypes = [Game.Tile.stoneWall, Game.Tile.stoneWallDark, Game.Tile.stoneWallLight];
 		floorTypes = [Game.Tile.stoneFloor, Game.Tile.stoneFloorDark, Game.Tile.stoneFloorLight];
-	} else if(z<7){
+	} else if(z < 7){
 		// evil caves
 		wallTypes = [Game.Tile.evilWall, Game.Tile.evilWallDark, Game.Tile.evilWallLight];
 		floorTypes = [Game.Tile.evilFloor, Game.Tile.evilFloorDark, Game.Tile.evilFloorLight];
@@ -67,13 +72,26 @@ Game.Builder.prototype._generateLevel = function(z) {
 		wallTypes = [Game.Tile.wallTile];
 		floorTypes = [Game.Tile.floorTile];
 	}
-	
+
+    // fill our offset areas with standard tiles
+    for(var x1 = 0; x1 < this._width; x1++){
+    	for(var y1 = 0; y1 < this._height; y1++){
+    		if(z==0){
+       		 	map[x1][y1] = Game.Tile.forestWallBlock;
+    		} else {
+       		 	map[x1][y1] = Game.Tile.solidWall;
+    		}
+    	}
+    }
+    
     // Smoothen it one last time and then update our map
     generator.create(function(x,y,v) {
+    	var x2 = x + 1; // buffer using our x offsets
+    	var y2 = y + 3; // buffer using our y offsets
         if (v === 1) {
-            map[x][y] = floorTypes.random();
+        	map[x2][y2] = floorTypes.random();
         } else {
-            map[x][y] = wallTypes.random();
+        	map[x2][y2] = wallTypes.random();
         }
     });
     
@@ -130,7 +148,6 @@ Game.Builder.prototype._removeRegion = function(region, z) {
 	         if (this._regions[z][x][y] == region) {
 	             // Clear the region and set the tile to a wall tile
 	             this._regions[z][x][y] = 0;
-
 	             if(z == 0){ 
 	         		// the forest
 	         		wallTypes = [Game.Tile.forestWall, Game.Tile.forestWallLight, Game.Tile.forestWallDark];

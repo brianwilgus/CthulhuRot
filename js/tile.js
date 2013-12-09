@@ -58,7 +58,8 @@ Game.Tile.solidWall = new Game.Tile({
     character: '#',
     foreground: 'grey',
     diggable: false,
-    wall: true
+    wall: true,
+    description: "You cannot pass through this way."
 });
 Game.Tile.grassFloor = new Game.Tile({
     character: '.',
@@ -200,6 +201,13 @@ Game.Tile.forestWallDark = new Game.Tile({
     diggable: true,
     wall: true,
     description: "Thick trees and brush block the way."
+});
+Game.Tile.forestWallBlock = new Game.Tile({
+    character: '#',
+    foreground: 'darkolivegreen',
+    diggable: false,
+    wall: true,
+    description: "You cannot pass through this way."
 });
 Game.Tile.stoneWall = new Game.Tile({
     character: '#',
