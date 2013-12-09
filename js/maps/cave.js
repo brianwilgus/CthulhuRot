@@ -52,10 +52,9 @@ Game.Map.Cave = function(tiles, player) {
             Math.floor(this._depth * ROT.RNG.getUniform()));
     }
     // Add a couple holes to the final cavern on the last level.
-    for(i = 0; i < 2; i++){
-    var holePosition = this.getRandomFloorPosition(this._depth - 1);
-    this._tiles[this._depth - 1][holePosition.x][holePosition.y] = 
-        Game.Tile.holeToCavernTile;
+    for(i = 0; i < 3; i++){
+	    var holePosition = this.getRandomFloorPosition(this._depth - 1);
+	    this._tiles[this._depth - 1][holePosition.x][holePosition.y] = Game.Tile.holeToCavernTile;
     }
 };
 Game.Map.Cave.extend(Game.Map);

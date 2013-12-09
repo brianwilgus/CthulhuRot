@@ -12,6 +12,8 @@ Game.Entity = function(properties) {
     this._speed = properties['speed'] || 1000;
     this._name = properties['name'] || false;
     this._type = properties['type'] || false;
+    this._attackValue = properties['attackValue'] || 0;
+    this._defenseValue = properties['defenseValue'] || 0;
 };
 
 // Make entities inherit all the functionality from glyphs
@@ -28,6 +30,12 @@ Game.Entity.prototype.setZ = function(z) {
 };
 Game.Entity.prototype.setMap = function(map) {
     this._map = map;
+};
+Game.Entity.prototype.setAttack = function(value) {
+    this._attackValue = value;
+};
+Game.Entity.prototype.setDefense = function(value) {
+    this._defenseValue = value;
 };
 Game.Entity.prototype.setPosition = function(x, y, z) {
     var oldX = this._x;
@@ -66,6 +74,12 @@ Game.Entity.prototype.getName = function() {
 }
 Game.Entity.prototype.getType = function() {
 	return this._type;
+}
+Game.Entity.prototype.getAttack = function() {
+	return this._attackValue;
+}
+Game.Entity.prototype.getDefense = function() {
+	return this._defenseValue;
 }
 
 Game.Entity.prototype.tryMove = function(x, y, z, map) {

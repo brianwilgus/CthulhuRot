@@ -45,10 +45,8 @@ Game.Repository.prototype.createRandom = function() {
 Game.Repository.prototype.createRandomFromTypes = function(typeAr) {
 	var tryName = Object.keys(this._randomTemplates).random();
 	if(this.hasTypeByName(tryName, typeAr)){
-		console.log('found a '+tryName+' with random type '+typeAr+".");
 		return this.create(tryName);
 	} else {
-		console.log("no type for "+tryName+" with random type "+typeAr+".");
 		return this.createRandomFromTypes(typeAr);
 	}
 }
