@@ -10,6 +10,7 @@ Game.Tile = function(properties) {
     this._blocksLight = (properties['blocksLight'] !== undefined) ?
             properties['blocksLight'] : true;
     this._description = properties['description'] || false;
+    this._digName = properties['digName'] || "wall";
 };
 
 // Make tiles inherit all the functionality from glyphs
@@ -40,6 +41,10 @@ Game.Tile.prototype.getDescription = function() {
     return this._description;
 };
 
+Game.Tile.prototype.getDigName = function() {
+    return this._digName;
+};
+
 Game.Tile.nullTile = new Game.Tile();
 
 Game.Tile.floorTile = new Game.Tile({
@@ -55,6 +60,7 @@ Game.Tile.wallTile = new Game.Tile({
     wall: true
 });
 Game.Tile.solidWall = new Game.Tile({
+	digName: "rock wall",
     character: '#',
     foreground: 'grey',
     diggable: false,
@@ -182,6 +188,7 @@ Game.Tile.wetFloorDark = new Game.Tile({
     description: "The floor is made of dark wet stone."
 });
 Game.Tile.forestWall = new Game.Tile({
+	digName: "forest",
     character: '#',
     foreground: 'olivedrab',
     diggable: true,
@@ -189,6 +196,7 @@ Game.Tile.forestWall = new Game.Tile({
     description: "Trees and brush block the way."
 });
 Game.Tile.forestWallLight = new Game.Tile({
+	digName: "forest",
     character: '#',
     foreground: 'forestgreen',
     diggable: true,
@@ -196,6 +204,7 @@ Game.Tile.forestWallLight = new Game.Tile({
     description: "Light trees and brush block the way."
 });
 Game.Tile.forestWallDark = new Game.Tile({
+	digName: "forest",
     character: '#',
     foreground: 'darkolivegreen',
     diggable: true,
@@ -203,6 +212,7 @@ Game.Tile.forestWallDark = new Game.Tile({
     description: "Thick trees and brush block the way."
 });
 Game.Tile.forestWallBlock = new Game.Tile({
+	digName: "forest",
     character: '#',
     foreground: 'darkolivegreen',
     diggable: false,
@@ -210,6 +220,7 @@ Game.Tile.forestWallBlock = new Game.Tile({
     description: "You cannot pass through this way."
 });
 Game.Tile.stoneWall = new Game.Tile({
+	digName: "stone wall",
     character: '#',
     foreground: '#B8B894',
     diggable: false,
@@ -217,6 +228,7 @@ Game.Tile.stoneWall = new Game.Tile({
     description: "Stone wall blocks the way."
 });
 Game.Tile.stoneWallLight = new Game.Tile({
+	digName: "stone wall",
     character: '#',
     foreground: '#C2C2A3',
     diggable: false,
@@ -224,6 +236,7 @@ Game.Tile.stoneWallLight = new Game.Tile({
     description: "Stone wall blocks the way."
 });
 Game.Tile.stoneWallDark = new Game.Tile({
+	digName: "stone wall",
     character: '#',
     foreground: '#ADAD85',
     diggable: false,
@@ -231,6 +244,7 @@ Game.Tile.stoneWallDark = new Game.Tile({
     description: "Stone wall blocks the way."
 });
 Game.Tile.dirtWall = new Game.Tile({
+	digName: "dirt wall",
     character: '#',
     foreground: '#CC6600',
     diggable: true,
@@ -238,6 +252,7 @@ Game.Tile.dirtWall = new Game.Tile({
     description: "Mud and dirt block the way."
 });
 Game.Tile.dirtWallLight = new Game.Tile({
+	digName: "dirt wall",
     character: '#',
     foreground: '#D17519',
     diggable: true,
@@ -245,6 +260,7 @@ Game.Tile.dirtWallLight = new Game.Tile({
     description: "Mud and dirt block the way."
 });
 Game.Tile.dirtWallDark = new Game.Tile({
+	digName: "rocky dirt wall",
     character: '#',
     foreground: '#B85C00',
     diggable: true,
@@ -252,6 +268,7 @@ Game.Tile.dirtWallDark = new Game.Tile({
     description: "Mud and dirt block the way."
 });
 Game.Tile.evilWall = new Game.Tile({
+	digName: "glowing brick wall",
     character: '#',
     foreground: '#751975',
     diggable: false,
@@ -259,6 +276,7 @@ Game.Tile.evilWall = new Game.Tile({
     description: "Dark stones inscribed with runes block the way."
 });
 Game.Tile.evilWallLight = new Game.Tile({
+	digName: "creepy brick wall",
     character: '#',
     foreground: '#853385',
     diggable: false,
@@ -266,6 +284,7 @@ Game.Tile.evilWallLight = new Game.Tile({
     description: "Strange bricks block the way."
 });
 Game.Tile.evilWallDark = new Game.Tile({
+	digName: "hideous brick wall",
     character: '#',
     foreground: '#660066',
     diggable: false,
@@ -274,6 +293,7 @@ Game.Tile.evilWallDark = new Game.Tile({
 });
 
 Game.Tile.wetWall = new Game.Tile({
+	digName: "wet stone wall",
     character: '#',
     foreground: '#0099FF',
     diggable: false,
@@ -282,6 +302,7 @@ Game.Tile.wetWall = new Game.Tile({
 });
 
 Game.Tile.wetWallDark = new Game.Tile({
+	digName: "wet stone wall",
     character: '#',
     foreground: '#007ACC',
     diggable: false,
@@ -290,6 +311,7 @@ Game.Tile.wetWallDark = new Game.Tile({
 });
 
 Game.Tile.wetWallLight = new Game.Tile({
+	digName: "wet stone wall",
     character: '#',
     foreground: '#19A3FF',
     diggable: false,

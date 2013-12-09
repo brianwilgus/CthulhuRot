@@ -132,27 +132,23 @@ Game.Screen.playScreen = {
         for (var i = 0; i < messages.length; i++) {
             // Draw each message, adding the number of lines
             messageY += display.drawText(
-                0,
+                1,
                 messageY,
                 '%c{white}%b{black}' + messages[i]
             );
         }
-        
-        // Render player HP
-        var stats = '%c{white}%b{black}';
-        stats += vsprintf('HP: %d/%d ', [this._player.getHp(), this._player.getMaxHp()]);
-        display.drawText(0, screenHeight, stats);
 
         // Render player stats
         var stats = '%c{white}%b{black}';
-        stats += vsprintf('HP: %d/%d L: %d XP: %d', 
+        stats += vsprintf('HP:%d(%d) L:%d XP:%d(%d)', 
             [this._player.getHp(), this._player.getMaxHp(),
-             this._player.getLevel(), this._player.getExperience()]);
-        display.drawText(0, screenHeight, stats);
+             this._player.getLevel(), this._player.getExperience(),
+             this._player.getNextLevelExperience()]);
+        display.drawText(1, screenHeight-1, stats);
         
         // Render hunger state
         var hungerState = this._player.getHungerState();
-        display.drawText(screenWidth - hungerState.length, screenHeight, hungerState);
+        display.drawText(screenWidth - hungerState.length -1, screenHeight-1, hungerState);
     },
     handleInput: function(inputType, inputData) {
         // If the game is over, enter will bring the user to the losing screen.

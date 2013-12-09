@@ -38,6 +38,28 @@ Game.Repository.prototype.create = function(name, extraProperties) {
 
 //Create an object based on a random template
 Game.Repository.prototype.createRandom = function() {
-    // Pick a random key and create an object based off of it.
-    return this.create(Object.keys(this._randomTemplates).random());
+	// Pick a random key and create an object based off of it.
+	return this.create(Object.keys(this._randomTemplates).random());
 };
+
+Game.Repository.prototype.createRandomFromTypes = function(typeAr) {
+	var tryName = Object.keys(this._randomTemplates).random();
+	if(this.hasTypeByName(tryName, typeAr)){
+		console.log('found a '+tryName+' with random type '+typeAr+".");
+		return this.create(tryName);
+	} else {
+		console.log("no type for "+tryName+" with random type "+typeAr+".");
+		return this.createRandomFromTypes(typeAr);
+	}
+}
+
+Game.Repository.prototype.hasTypeByName = function(entName, entType) {
+	var newEnt = this.create(entName);
+	for(attr in newEnt.getType()){
+    	//console.log(newEnt.getName()+" "+attr+":"+newEnt.getType()[attr]);
+    	if(newEnt.getType()[attr] == entType){
+    		return true;
+    	}
+    }
+    return false;
+}

@@ -10,6 +10,8 @@ Game.Entity = function(properties) {
     this._alive = true;
     // Acting speed
     this._speed = properties['speed'] || 1000;
+    this._name = properties['name'] || false;
+    this._type = properties['type'] || false;
 };
 
 // Make entities inherit all the functionality from glyphs
@@ -59,6 +61,12 @@ Game.Entity.prototype.getMap = function() {
 Game.Entity.prototype.getSpeed = function() {
     return this._speed;
 };
+Game.Entity.prototype.getName = function() {
+	return this._name;
+}
+Game.Entity.prototype.getType = function() {
+	return this._type;
+}
 
 Game.Entity.prototype.tryMove = function(x, y, z, map) {
     var map = this.getMap();
@@ -118,11 +126,36 @@ Game.Entity.prototype.tryMove = function(x, y, z, map) {
         }
         return true;
     // Check if the tile is diggable
-    } else if (tile.isDiggable()) {
-        // Only dig if the the entity is the player
-        if (this.hasMixin(Game.EntityMixins.PlayerActor)) {
+    } else if (this.hasMixin(Game.EntityMixins.Digger)) {
+        // Only dig if the the entity is capable
+        if (tile.isDiggable()) {
+        	if(this.hasMixin(Game.EntityMixins.PlayerActor)){
+        		if(tile.getDigName()==="forest"){
+            		Game.sendMessage(this, "You chop through the "+tile.getDigName()+".");
+        		} else {
+            		Game.sendMessage(this, "You dig through the "+tile.getDigName()+".");
+        		}
+        	} else {
+        		if(tile.getDigName()==="forest"){
+        			Game.sendMessageNearby(this.getMap(),
+    	            		this.getX(), this.getY(), this.getZ(),
+    	                    "The "+this.getName()+" chopped through the "+tile.getDigName()+"!");
+        		} else {
+        			Game.sendMessageNearby(this.getMap(),
+    	            		this.getX(), this.getY(), this.getZ(),
+    	                    "The "+this.getName()+" dug through the "+tile.getDigName()+"!");
+        		}
+        	}
             map.dig(x, y, z);
             return true;
+        } else {
+        	if(this.hasMixin(Game.EntityMixins.PlayerActor)){
+        		if(tile.getDigName()==="forest"){
+        			Game.sendMessage(this, "The "+tile.getDigName()+" is too thick here, you cannot chop through.");
+        		} else {
+        			Game.sendMessage(this, "The "+tile.getDigName()+" is solid, you cannot dig through it.");
+        		}
+        	}
         }
         // If not nothing we can do, but we can't
         // move to the tile

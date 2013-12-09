@@ -32,12 +32,12 @@ Game.EntityMixins.FungusActor = {
     name: 'FungusActor',
     groupName: 'Actor',
     init: function() {
-        this._growthsRemaining = 5;
+        this._growthsRemaining = 3;
     },
     act: function() {
         // Check if we are going to try growing this turn
         if (this._growthsRemaining > 0) {
-            if (ROT.RNG.getUniform() <= 0.02) {
+            if (ROT.RNG.getUniform() <= 0.01) {
                 // Generate the coordinates of a random adjacent square by
                 // generating an offset between [-1, 0, 1] for both the x and
                 // y directions. To do this, we generate a number from 0-2 and then
@@ -139,7 +139,7 @@ Game.EntityMixins.TaskActor = {
     }
 };
 
-Game.EntityMixins.GiantZombieActor = Game.extend(Game.EntityMixins.TaskActor, {
+Game.EntityMixins.GiantBossActor = Game.extend(Game.EntityMixins.TaskActor, {
     init: function(template) {
         // Call the task actor init with the right tasks.
         Game.EntityMixins.TaskActor.init.call(this, Game.extend(template, {
@@ -163,10 +163,10 @@ Game.EntityMixins.GiantZombieActor = Game.extend(Game.EntityMixins.TaskActor, {
     growArm: function() {
         this._hasGrownArm = true;
         this.increaseAttackValue(5);
-        // Send a message saying the zombie grew an arm.
+        // Send a message saying the monster grew an arm.
         Game.sendMessageNearby(this.getMap(),
             this.getX(), this.getY(), this.getZ(),
-            'An extra arm appears on the giant zombie!');
+            'An extra tentacle erupts on the monster!');
     },
     spawnSlime: function() {
         // Generate a random position nearby.
@@ -185,6 +185,11 @@ Game.EntityMixins.GiantZombieActor = Game.extend(Game.EntityMixins.TaskActor, {
         slime.setY(this.getY() + yOffset)
         slime.setZ(this.getZ());
         this.getMap().addEntity(slime);
+        
+        // Send a message saying the Spawn appeared.
+        Game.sendMessageNearby(this.getMap(),
+            this.getX(), this.getY(), this.getZ(),
+            'A Formless Spawn crawls from a hole nearby to fight!');
     },
     listeners: {
         onDeath: function(attacker) {
@@ -690,4 +695,10 @@ Game.EntityMixins.PlayerStatGainer = {
             Game.Screen.playScreen.setSubScreen(Game.Screen.gainStatScreen);
         }
     }
+};
+
+
+Game.EntityMixins.Digger = {
+    name: 'Digger',
+    listeners: {}
 };

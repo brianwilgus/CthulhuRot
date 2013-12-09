@@ -9,6 +9,16 @@ body {
 	/* -webkit-text-stroke: 0.25px hack to fix ugly chrome fonts */
 }
 
+/* apply a natural box layout model to all elements */
+*, 
+*:before, 
+*:after {
+	-moz-box-sizing: border-box; 
+	-webkit-box-sizing: border-box; 
+	box-sizing: border-box;
+}
+
+
 html,
 body,
 div {
@@ -25,6 +35,10 @@ div {
 	display: inline-block;
 	overflow-y: auto;
 	overflow-x: hidden;
+	
+	border-right: 2px #aaa solid;
+	border-bottom: 0px;
+	margin-right:2px;
 	
 	background: #333;
 	background: -moz-linear-gradient(left, #333 0%, #000 100%);
@@ -69,6 +83,7 @@ div {
 	background-color: #000;
 	position: fixed;
 	display: block;
+	padding:5px;
 }
 
 #logo {
@@ -122,6 +137,9 @@ div {
 	.interface {
 		width: 100%;
 		height: 40%;
+		border-right: 0px;
+		border-bottom: 2px #aaa solid;
+		margin-right: 0px;
 		
 		background: #333333;
 		background: -moz-linear-gradient(top,  #333333 0%, #000000 100%);

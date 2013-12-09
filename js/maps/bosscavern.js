@@ -1,7 +1,7 @@
 Game.Map.BossCavern = function() {
     // Call the Map constructor
-    Game.Map.call(this, this._generateTiles(80, 24));
-    // Create the giant zombie
+    Game.Map.call(this, this._generateTiles(100, 80));
+    // Create the boss and minions
     this.addEntityAtRandomPosition(Game.EntityRepository.create('shubniggurath'), 0);
     this.addEntityAtRandomPosition(Game.EntityRepository.create('cultist'), 0);
     this.addEntityAtRandomPosition(Game.EntityRepository.create('cultist'), 0);
