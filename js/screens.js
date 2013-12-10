@@ -156,15 +156,17 @@ Game.Screen.playScreen = {
 
         // Render player stats
         var stats = '%c{white}%b{black}';
-        stats += vsprintf('Health:%d/%d  Level:%d(%d%%)  Attack:%d  Defense:%d  Sight:%d  Condition: %s', 
+        stats += vsprintf('Health:%d/%d  Level:%d(%d%%)  Attack:%d  Defense:%d  Sight:%d  Nutrition:%d/%d Condition: %s', 
             [
              	this._player.getHp(), 
              	this._player.getMaxHp(),
-             	this._player.getLevel(), 
+             	this._player.getLevel(),
              	Math.ceil((this._player.getExperience()/this._player.getNextLevelExperience())*100),
              	this._player.getAttack(),
              	this._player.getDefense(),
              	this._player.getSightRadius(),
+             	this._player.getFullness(),
+             	this._player.getMaxFullness(),
              	this._player.getHungerState()
     		 ]);
         display.drawText(1, screenHeight-1, stats);

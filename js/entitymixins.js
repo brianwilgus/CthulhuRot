@@ -534,7 +534,14 @@ Game.EntityMixins.FoodConsumer = {
         } else {
             return 'Not Hungry';
         }
+    },
+    getFullness: function() {
+    	return this._fullness;
+    },
+    getMaxFullness: function() {
+    	return this._maxFullness;
     }
+    
 };
 
 Game.EntityMixins.CorpseDropper = {
