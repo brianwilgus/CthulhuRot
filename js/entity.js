@@ -92,20 +92,25 @@ Game.Entity.prototype.tryMove = function(x, y, z, map) {
         if (tile != Game.Tile.stairsUpTile) {
             Game.sendMessage(this, "You can't go up here!");
         } else {
-            Game.sendMessage(this, "You ascend to level %d!", [z + 1]);
+        	locationName = Game.Interface.getStatus().getItem('locationNames')[z];
+            Game.sendMessage(this, "You climb up into the %s!", [locationName]);
             this.setPosition(x, y, z);
-            Game.Interface.Status.updateItems({depth:z + 1});
+            Game.Interface.getStatus().updateItems({depth:z+1});
         }
     } else if (z > this.getZ()) {
         if (tile === Game.Tile.holeToCavernTile &&
             this.hasMixin(Game.EntityMixins.PlayerActor)) {
             // Switch the entity to a boss cavern!
             this.switchMap(new Game.Map.BossCavern());
+            Game.sendMessage(this, "You enter the lair of Shub-Niggurath...");
+            Game.Interface.getStatus().updateItems({depth:0,locations:"Lair of Shub-Niggurath"});
         } else if (tile != Game.Tile.stairsDownTile) {
             Game.sendMessage(this, "You can't go down here!");
         } else {
             this.setPosition(x, y, z);
-            Game.sendMessage(this, "You descend to level %d!", [z + 1]);
+            locationName = Game.Interface.getStatus().getItem('locationNames')[z];
+            Game.sendMessage(this, "You descend into the %s!", [locationName]);
+            Game.Interface.getStatus().updateItems({depth:z+1});
         }
     // If an entity was present at the tile
     } else if (target) {

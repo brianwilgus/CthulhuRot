@@ -338,7 +338,7 @@ Game.Tile.holeToCavernTile = new Game.Tile({
     foreground: 'peru',
     walkable: true,
     blocksLight: false,
-    description: "Human and animal bones litter the entrance to a foul smelling den."
+    description: "Human and animal bones litter the entrance to a foul smelling den.  Eldritch Runes read 'Shub-Niggurath'."
 });
 Game.Tile.waterTile = new Game.Tile({
     character: '~',

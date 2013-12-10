@@ -12,6 +12,10 @@ Game.Interface = {
 	
 	getStatus: function(){
 		return this._status;
+	},
+	
+	clearAll: function(){
+		this._status.clear();
 	}
 };
 
@@ -34,12 +38,30 @@ Game.Interface.Category.prototype.update = function() {
 	}
 }
 
+Game.Interface.Category.prototype.clear = function() {
+	if(this._target) {
+		this._output = "";
+		this._target.innerHTML = this._output;
+	}
+}
+
+Game.Interface.Category.prototype.updateItems = function(arItems) {
+	for(key in arItems){
+		this._items[key] = arItems[key];
+	}
+	this.update();
+}
+
+Game.Interface.Category.prototype.getItem = function(key) {
+	return this._items[key] || false;
+}
+
 Game.Interface.Status = function() {
 	properties = {
 			divId: 'status',
 			items: {
-				'location': 'Forest',
-				'depth': 1
+				locationNames:[],
+				depth: 1
 			}
 	};
 	Game.Interface.Category.call(this, properties);
@@ -53,15 +75,8 @@ Game.Interface.Status.prototype.writeOutput = function() {
 	var output = "== Status ==";
 	output += vsprintf("<br/>Location: %s<br/>Depth: %d", 
         [
-     		this._items['location'],
-     		this._items['depth']
+     		this._items['locationNames'][this._items['depth']-1],
+			this._items['depth']
 		]);
 	return output;
-}
-
-Game.Interface.Status.prototype.updateItems = function(arItems) {
-	for(key in arItems){
-		this._items[key] = arItems[key];
-	}
-	this.update();
 }

@@ -519,17 +519,17 @@ Game.EntityMixins.FoodConsumer = {
         // Fullness points per percent of max fullness
         var perPercent = this._maxFullness / 100;
         // 5% of max fullness or less = starving
-        if (this._fullness <= perPercent * 5) {
+        if (this._fullness <= perPercent * 10) {
             return 'Starving';
         // 25% of max fullness or less = hungry
-        } else if (this._fullness <= perPercent * 25) {
+        } else if (this._fullness <= perPercent * 35) {
             return 'Hungry';
         // 95% of max fullness or more = oversatiated
-        } else if (this._fullness >= perPercent * 95) {
+        } else if (this._fullness >= perPercent * 90) {
             return 'Oversatiated';
         // 75% of max fullness or more = full
-        } else if (this._fullness >= perPercent * 75) {
-            return 'Full';
+        } else if (this._fullness >= perPercent * 70) {
+            return 'Well Fed';
         // Anything else = not hungry
         } else {
             return 'Not Hungry';

@@ -45,6 +45,19 @@ Game.Screen.playScreen = {
         map.getEngine().start();
         
         // Start the interface
+        Game.Interface.getStatus().updateItems(
+        		{
+        			depth:1,
+        			locationNames:[
+        				           'Dark Forest', 
+        			               'Beast Dens', 
+        			               'Deep Undergrowth', 
+        			               'Stone Quarry', 
+        			               'Monster Lairs', 
+        			               'Eldritch Caverns', 
+        			               'Infernal Passages'
+        			              ]
+        		});
     	Game.Interface.update();
 	},
 	exit: function() {
@@ -143,7 +156,7 @@ Game.Screen.playScreen = {
 
         // Render player stats
         var stats = '%c{white}%b{black}';
-        stats += vsprintf('Health:%d/%d  Level:%d(%d%%)  Attack:%d  Defense:%d  Condition: %s', 
+        stats += vsprintf('Health:%d/%d  Level:%d(%d%%)  Attack:%d  Defense:%d  Sight:%d  Condition: %s', 
             [
              	this._player.getHp(), 
              	this._player.getMaxHp(),
@@ -151,15 +164,13 @@ Game.Screen.playScreen = {
              	Math.ceil((this._player.getExperience()/this._player.getNextLevelExperience())*100),
              	this._player.getAttack(),
              	this._player.getDefense(),
+             	this._player.getSightRadius(),
              	this._player.getHungerState()
     		 ]);
         display.drawText(1, screenHeight-1, stats);
         
-        /**
-        // Render hunger state
-        var hungerState = this._player.getHungerState();
-        display.drawText(screenWidth - hungerState.length -1, screenHeight-1, hungerState);
-        **/
+        // return a key for all entities that are within our line of sight
+        var key = [];
     },
     handleInput: function(inputType, inputData) {
         // If the game is over, enter will bring the user to the losing screen.
@@ -231,6 +242,12 @@ Game.Screen.playScreen = {
             	console.log("warp to end boss");
                 Game.sendMessage(this._player, "warp to end boss");
                 this._player.switchMap(new Game.Map.BossCavern());
+                Game.sendMessage(this._player, "You enter the lair of Shub-Niggurath...");
+                Game.Interface.getStatus().updateItems(
+                		{
+                			depth:1,
+                			locationNames:["Lair of Shub-Niggurath"]
+                		});
             } else {
                 // Not a valid key
                 return;
@@ -310,6 +327,9 @@ Game.Screen.winScreen = {
 Game.Screen.loseScreen = {
 	enter: function() { 
 		console.log("Entered lose screen"); 
+
+        
+        Game.Interface.clearAll();
 	},
 	exit: function() {
 		console.log("Exited lose screen"); 
