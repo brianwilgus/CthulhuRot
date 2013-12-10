@@ -46,10 +46,10 @@ Game.Map.Cave = function(tiles, player) {
     }
     // Add weapons and armor to the map in random positions and floors
     var templates = ['dagger', 'sword', 'staff', 
-        'robes', 'scalemail', 'leatherarmor', 'platemail'];
+        'robes', 'chainmail', 'leatherarmor', 'platemail','spikedarmor'];
     for (var i = 0; i < templates.length; i++) {
         this.addItemAtRandomPosition(Game.ItemRepository.create(templates[i]),
-            Math.floor(this._depth * ROT.RNG.getUniform()));
+            /*Math.floor(this._depth * ROT.RNG.getUniform())*/0);
     }
     // Add a couple holes to the final cavern on the last level.
     for(i = 0; i < 3; i++){

@@ -50,7 +50,7 @@ Game.ItemRepository.define('dagger', {
 
 Game.ItemRepository.define('sword', {
     name: 'Eldritch Blade',
-    character: 't',
+    character: '!',
     foreground: 'dimgrey',
     attackValue: 15,
     wieldable: true,
@@ -61,7 +61,7 @@ Game.ItemRepository.define('sword', {
 
 Game.ItemRepository.define('staff', {
     name: 'Withered Staff',
-    character: 'f',
+    character: '/',
     foreground: 'yellow',
     attackValue: 5,
     defenseValue: 3,
@@ -75,19 +75,19 @@ Game.ItemRepository.define('staff', {
 // Wearables
 //======================================
 Game.ItemRepository.define('robes', {
-    name: 'tattered robes',
+    name: 'suit of padded cloth armor',
     character: '{',
     foreground: 'white',
-    defenseValue: 2,
+    defenseValue: 4,
     wearable: true,
     mixins: [Game.ItemMixins.Equippable]
 }, {
     disableRandomCreation: true
 });
 
-Game.ItemRepository.define('scalemail', {
-    name: 'scale armor',
-    character: 'M',
+Game.ItemRepository.define('chainmail', {
+    name: 'suit of chainmail armor',
+    character: '{',
     foreground: 'bluegrey',
     defenseValue: 10,
     wearable: true,
@@ -97,8 +97,8 @@ Game.ItemRepository.define('scalemail', {
 });
 
 Game.ItemRepository.define('platemail', {
-    name: 'plate armor',
-    character: 'A',
+    name: 'suit of heavy plate armor',
+    character: '{',
     foreground: 'aliceblue',
     defenseValue: 14,
     wearable: true,
@@ -107,9 +107,21 @@ Game.ItemRepository.define('platemail', {
     disableRandomCreation: true
 });
 
+Game.ItemRepository.define('spikedarmor', {
+    name: 'suit of spiked armor',
+    character: '{',
+    foreground: 'aliceblue',
+    defenseValue: 10,
+    attackValue: 3,
+    wearable: true,
+    mixins: [Game.ItemMixins.Equippable]
+}, {
+    disableRandomCreation: true
+});
+
 Game.ItemRepository.define('leatherarmor', {
-    name: 'leather armor',
-    character: 'L',
+    name: 'suit of banded leather armor',
+    character: '{',
     foreground: 'tan',
     defenseValue: 6,
     wearable: true,

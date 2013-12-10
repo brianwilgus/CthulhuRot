@@ -36,6 +36,9 @@ var Game = {
         bindEventToScreen('keydown');
         bindEventToScreen('keyup');
         bindEventToScreen('keypress');
+        
+        // start the interface for the sidebar
+        var htmlInterface = Game.Interface.init();
     },
 
     refresh: function() {

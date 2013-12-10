@@ -43,6 +43,9 @@ Game.Screen.playScreen = {
         var map = new Game.Map.Cave(tiles, this._player);
         // Start the map's engine
         map.getEngine().start();
+        
+        // Start the interface
+    	Game.Interface.update();
 	},
 	exit: function() {
 		console.log("Exited play screen"); 
@@ -140,20 +143,23 @@ Game.Screen.playScreen = {
 
         // Render player stats
         var stats = '%c{white}%b{black}';
-        stats += vsprintf('Health:%d/%d  Level:%d(%d%%)  Attack:%s  Defense:%s', 
+        stats += vsprintf('Health:%d/%d  Level:%d(%d%%)  Attack:%d  Defense:%d  Condition: %s', 
             [
              	this._player.getHp(), 
              	this._player.getMaxHp(),
              	this._player.getLevel(), 
              	Math.ceil((this._player.getExperience()/this._player.getNextLevelExperience())*100),
              	this._player.getAttack(),
-             	this._player.getDefense()
+             	this._player.getDefense(),
+             	this._player.getHungerState()
     		 ]);
         display.drawText(1, screenHeight-1, stats);
         
+        /**
         // Render hunger state
         var hungerState = this._player.getHungerState();
         display.drawText(screenWidth - hungerState.length -1, screenHeight-1, hungerState);
+        **/
     },
     handleInput: function(inputType, inputData) {
         // If the game is over, enter will bring the user to the losing screen.

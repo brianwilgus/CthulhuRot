@@ -235,6 +235,15 @@ Game.EntityMixins.Attacker = {
             var defense = target.getDefenseValue();
             var max = Math.max(0, attack - defense);
             var damage = 1 + Math.floor(ROT.RNG.getUniform() * max);
+            console.log(vsprintf("%s vs %s : AV[%d] DV[%d] MAX[%d] DMG[%d]",
+            		[
+        		 		this.getName(),
+        		 		target.getName(),
+        		 		attack,
+        		 		defense,
+        		 		max,
+        		 		damage
+            		]));
 
             Game.sendMessage(this, 'You strike the %s for %d damage!',
                 [target.getName(), damage]);

@@ -70,16 +70,16 @@ Game.Entity.prototype.getSpeed = function() {
     return this._speed;
 };
 Game.Entity.prototype.getName = function() {
-	return this._name;
+	return this._name || 'PLAYER';
 }
 Game.Entity.prototype.getType = function() {
 	return this._type;
 }
 Game.Entity.prototype.getAttack = function() {
-	return this._attackValue;
+	return this.getAttackValue();
 }
 Game.Entity.prototype.getDefense = function() {
-	return this._defenseValue;
+	return this.getDefenseValue();
 }
 
 Game.Entity.prototype.tryMove = function(x, y, z, map) {
@@ -94,6 +94,7 @@ Game.Entity.prototype.tryMove = function(x, y, z, map) {
         } else {
             Game.sendMessage(this, "You ascend to level %d!", [z + 1]);
             this.setPosition(x, y, z);
+            Game.Interface.Status.updateItems({depth:z + 1});
         }
     } else if (z > this.getZ()) {
         if (tile === Game.Tile.holeToCavernTile &&
