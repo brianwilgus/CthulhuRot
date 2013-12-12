@@ -75,6 +75,14 @@ Game.Entity.prototype.getName = function() {
 Game.Entity.prototype.getType = function() {
 	return this._type;
 }
+Game.Entity.prototype.hasType = function(value) {
+	for(item in this._type){
+		if(this._type[item] == value){
+			return true;
+		}
+	}
+	return false;
+}
 Game.Entity.prototype.getAttack = function() {
 	return this.getAttackValue();
 }

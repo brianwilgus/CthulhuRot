@@ -11,7 +11,7 @@ lovecraftQuotes = [
       "I felt myself on the edge of the world; peering over the rim into a fathomless chaos of eternal night.",
       "That is not dead which can eternal lie, yet with stranger eons, even death may die.",
       "And where Nyarlathotep went, rest vanished, for the small hours were rent with the screams of nightmare.",
-      "Something was creeping and creeping and waiting to be seen and felt and heard."
+      "Something was creeping and waiting to be seen and felt and heard."
 ];
 
 endingType = "";

@@ -316,7 +316,13 @@ Game.EntityMixins.Destructible = {
             attacker.raiseEvent('onKill', this);
             
             if(this.hasMixin(Game.EntityMixins.PlayerActor)) {
-                this.kill('combat', "You have died!");
+            	if(attacker.hasType("infernal")){
+                    this.kill('infernal', "You have died!");
+            	} else if(attacker.hasType("animal")){
+            		 this.kill('animal', "You have died!");
+            	} else {
+                    this.kill('combat', "You have died!");
+            	}
             } else {
         		this.kill();
             }

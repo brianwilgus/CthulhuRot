@@ -38,7 +38,7 @@ Game.EntityRepository.define('fungus', {
 
 Game.EntityRepository.define('rat', {
     name: 'rat',
-    type: ['cave', 'forest', 'dirt'],
+    type: ['cave', 'forest', 'dirt', 'animal'],
     character: 'r',
     foreground: 'LightSlateGray',
     maxHp: 5,
@@ -57,7 +57,7 @@ Game.EntityRepository.define('rat', {
 
 Game.EntityRepository.define('centipede', {
     name: 'giant centipede',
-    type: ['cave', 'dirt'],
+    type: ['cave', 'dirt', 'animal'],
     character: 'c',
     foreground: 'lawngreen',
     maxHp: 5,
@@ -77,7 +77,7 @@ Game.EntityRepository.define('centipede', {
 
 Game.EntityRepository.define('beaver', {
     name: 'beaver',
-    type: ['forest'],
+    type: ['forest', 'animal'],
     character: 'b',
     foreground: 'brown',
     maxHp: 5,
@@ -117,7 +117,7 @@ Game.EntityRepository.define('byakhee', {
 
 Game.EntityRepository.define('frog', {
     name: 'Poisonous Frog',
-    type: ['cave', 'forest', 'dirt'],
+    type: ['cave', 'forest', 'dirt', 'animal'],
     character: 'f',
     foreground: 'mediumvioletred',
     maxHp: 3,
@@ -175,7 +175,7 @@ Game.EntityRepository.define('ghoul', {
 
 Game.EntityRepository.define('wolf', {
 	name: 'wolf',
-    type: ['cave', 'forest', 'dirt'],
+    type: ['cave', 'forest', 'dirt', 'animal'],
 	character: 'w',
 	foreground:'lightgrey',
 	maxHp: 35,
@@ -236,7 +236,7 @@ Game.EntityRepository.define('huntinghorror', {
 
 Game.EntityRepository.define('cultist', {
 	name: 'Cultist',
-    type: ['infernal', 'cave', 'forest', 'dirt', 'magical'],
+    type: ['cave', 'forest', 'dirt', 'magical'],
 	character: 'C',
 	foreground:'firebrick',
 	maxHp: 30,
