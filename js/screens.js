@@ -48,22 +48,6 @@ Game.Screen.startScreen = {
 			 		"Shall dry and die in...",
 			 		"Lost Carcosa."
 		 		];
-		/*
-		this._quotes[4] = [
-		 		 	"I go back home in my song,",
-		 		 	"I miss you, but you are gone,",
-			 		"Afraid and alone...",
-			 		"Dark Carcosa.",
-			 		"- taken from Cassilda's Song (expanded edition) in The King in Yellow Act 1, Scene 2"
-		 		];
-		
-		this._quotes[5] = [
-		 		 	"Feverish from poisonous death,",
-		 		 	"Creatures writhing their last breaths,",
-			 		"I stalk the shadows...",
-			 		"My Carcosa.",
-			 		"- taken from Cassilda's Song (expanded edition) in The King in Yellow Act 1, Scene 2"
-			    ];*/
 	},
 	enter: function() { 
 		console.log("Entered start screen"); 
@@ -89,16 +73,6 @@ Game.Screen.startScreen = {
 		display.drawText(2, ycount++, "%c{white}- Cassilda's Song in 'The King in Yellow' Act 1, Scene 2");
 		ycount += 2;
 		display.drawText(2, ycount++, "%c{lightgreen}Press [ENTER] to begin.");
-
-
-		// draw scary monsters
-		var canvas = document.getElementsByTagName("canvas")[0];
-		var context = canvas.getContext("2d");
-		console.log(context);
-		
-		/*var img = new Image();
-		img.src = "img/lwlm_demons_151_tiny2.jpg";
-		context.drawImage(img,0,0);*/
 	},
 	handleInput: function(inputType, inputData) {
 		if(inputType == 'keyup') {
@@ -244,6 +218,8 @@ Game.Screen.playScreen = {
             );
         }
 
+        /** MOVED INTO INTERFACE
+         * left comments here in case we want to put it back...
         // Render player stats
         var stats = '%c{white}%b{black}';
         stats += vsprintf('Health:%d/%d  Level:%d(%d%%)  Attack:%d  Defense:%d  Sight:%d  Nutrition:%d/%d Condition: %s', 
@@ -259,7 +235,7 @@ Game.Screen.playScreen = {
              	this._player.getMaxFullness(),
              	this._player.getHungerState()
     		 ]);
-        display.drawText(1, screenHeight-1, stats);
+        display.drawText(1, screenHeight-1, stats);**/
         
         // return a key for all entities that are within our line of sight
         Game.Interface.getKey().updateItems(this.keys);
@@ -329,7 +305,8 @@ Game.Screen.playScreen = {
                     this.showItemsSubScreen(Game.Screen.pickupScreen, items,
                         'There is nothing here to pick up.');
                 } 
-            /** dev command to test end boss  **/
+                
+            /** dev command to test end boss 
             } else if (inputData.keyCode === ROT.VK_F1) {
             	console.log("warp to end boss");
                 Game.sendMessage(this._player, "warp to end boss");
@@ -339,13 +316,15 @@ Game.Screen.playScreen = {
                 		{
                 			depth:1,
                 			locationNames:["Lair of Shub-Niggurath"]
-                		});
-            /** dev command to test win screen  **/
+                		}); **/
+                
+            /** dev command to test win screen 
     		} else if(inputData.keyCode === ROT.VK_F2) {
-                Game.switchScreen(Game.Screen.winScreen);
+                Game.switchScreen(Game.Screen.winScreen);**/
+                
             } else {
                 // Not a valid key
-                return;
+                return; 
             }
             // Unlock the engine
             this._player.getMap().getEngine().unlock();
@@ -385,6 +364,9 @@ Game.Screen.playScreen = {
             Game.sendMessage(this._player, emptyMessage);
             Game.refresh();
         }
+    },
+    getPlayer: function(){
+    	return this._player;
     }
 }
 

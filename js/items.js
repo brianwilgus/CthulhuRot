@@ -2,25 +2,46 @@ Game.ItemRepository = new Game.Repository('items', Game.Item);
 
 Game.ItemRepository.define('apple', {
     name: 'Apple',
-    character: '%',
+    character: 'a',
     foreground: 'red',
-    foodValue: 50,
+    foodValue: 45,
     mixins: [Game.ItemMixins.Edible]
 });
 
 Game.ItemRepository.define('melon', {
     name: 'Melon',
-    character: '%',
+    character: 'o',
     foreground: 'lightGreen',
-    foodValue: 35,
-    consumptions: 4,
+    foodValue: 80,
+    consumptions: 2,
+    mixins: [Game.ItemMixins.Edible]
+});
+
+Game.ItemRepository.define('mushrooms', {
+    name: 'Fresh Mushrooms',
+    character: ':',
+    foreground: 'tan',
+    foodValue: 50,
+    consumptions: 2,
     mixins: [Game.ItemMixins.Edible]
 });
 
 Game.ItemRepository.define('rock', {
     name: 'Rock',
     character: '*',
+    foreground: 'grey'
+});
+
+Game.ItemRepository.define('bone', {
+    name: 'Freshly Gnawed Bone',
+    character: '/',
     foreground: 'white'
+});
+
+Game.ItemRepository.define('rotten', {
+    name: 'Rotten Corpse',
+    character: '%',
+    foreground: 'DarkOliveGreen'
 });
 
 Game.ItemRepository.define('corpse', {
@@ -145,4 +166,31 @@ Game.ItemRepository.define('pumpkin', {
  wearable: true,
  wieldable: true,
  mixins: [Game.ItemMixins.Edible, Game.ItemMixins.Equippable]
+});
+
+
+Game.ItemRepository.define('tiara', {
+name: 'Tiara of the Deep Ones',
+character: 'T',
+foreground: 'PaleGoldenRod',
+attackValue: 8,
+defenseValue: 16,
+wearable: true,
+wieldable: false,
+mixins: [Game.ItemMixins.Equippable]
+}, {
+    disableRandomCreation: true
+});
+
+Game.ItemRepository.define('blade', {
+name: 'Writhing Blade of the High Priest',
+character: '?',
+foreground: 'PaleGoldenRod',
+attackValue: 20,
+defenseValue: -5,
+wearable: false,
+wieldable: true,
+mixins: [Game.ItemMixins.Equippable]
+}, {
+    disableRandomCreation: true
 });

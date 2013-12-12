@@ -2,10 +2,10 @@
 Game.PlayerTemplate = {
     character: '@',
     foreground: 'yellow',
-    maxHp: 40,
+    maxHp: 50,
     attackValue: 10,
     defenseValue: 0,
-    sightRadius: 8,
+    sightRadius: 10,
     inventorySlots: 22,
     mixins: [Game.EntityMixins.PlayerActor,
              Game.EntityMixins.Attacker, 
@@ -56,13 +56,13 @@ Game.EntityRepository.define('rat', {
 });
 
 Game.EntityRepository.define('centipede', {
-    name: 'Giant Centipede',
+    name: 'Giant Worm',
     type: ['cave', 'dirt', 'animal'],
-    character: 'c',
+    character: 'w',
     foreground: 'lawngreen',
-    maxHp: 5,
-    attackValue: 4,
-	sightRadius: 3,
+    maxHp: 10,
+    attackValue: 6,
+	sightRadius: 5,
 	tasks: ['hunt', 'wander'],
     speed: 1000,
     corpseDropRate: 60,
@@ -82,7 +82,7 @@ Game.EntityRepository.define('beaver', {
     foreground: 'sienna',
     maxHp: 5,
     attackValue: 4,
-	sightRadius: 2,
+	sightRadius: 4,
 	tasks: ['hunt', 'wander'],
     speed: 750,
     corpseDropRate: 80,
@@ -124,6 +124,7 @@ Game.EntityRepository.define('frog', {
     attackValue: 2,
     corpseDropRate: 40,
     speed: 250,
+    foodValue: -250,
     mixins: [Game.EntityMixins.TaskActor,
              Game.EntityMixins.CorpseDropper,
              Game.EntityMixins.Attacker, 
@@ -238,7 +239,7 @@ Game.EntityRepository.define('cultist', {
 	name: 'Cultist',
     type: ['cave', 'forest', 'dirt', 'magical'],
 	character: 'C',
-	foreground:'firebrick',
+	foreground:'red',
 	maxHp: 30,
 	attackValue: 8,
 	sightRadius: 6,
@@ -252,6 +253,50 @@ Game.EntityRepository.define('cultist', {
              Game.EntityMixins.Destructible,
              Game.EntityMixins.ExperienceGainer, 
              Game.EntityMixins.RandomStatGainer]
+});
+
+Game.EntityRepository.define('elder', {
+	name: 'Elder Cultist',
+    type: ['unique'],
+	character: 'E',
+	foreground:'tomato',
+	maxHp: 90,
+	attackValue: 16,
+	sightRadius: 8,
+    corpseDropRate: 100,
+    speed: 800,
+	tasks: ['hunt', 'wander'],
+	mixins: [Game.EntityMixins.TaskActor,
+	         Game.EntityMixins.Sight,
+             Game.EntityMixins.CorpseDropper,
+             Game.EntityMixins.Attacker, 
+             Game.EntityMixins.Destructible,
+             Game.EntityMixins.ExperienceGainer, 
+             Game.EntityMixins.RandomStatGainer]
+}, {
+    disableRandomCreation: true
+});
+
+Game.EntityRepository.define('highpriest', {
+	name: 'The High Priest',
+    type: ['unique'],
+	character: 'H',
+	foreground:'gold',
+	maxHp: 150,
+	attackValue: 22,
+	sightRadius: 10,
+    corpseDropRate: 100,
+    speed: 1000,
+	tasks: ['hunt', 'wander'],
+	mixins: [Game.EntityMixins.TaskActor,
+	         Game.EntityMixins.Sight,
+             Game.EntityMixins.CorpseDropper,
+             Game.EntityMixins.Attacker, 
+             Game.EntityMixins.Destructible,
+             Game.EntityMixins.ExperienceGainer, 
+             Game.EntityMixins.RandomStatGainer]
+}, {
+    disableRandomCreation: true
 });
 
 Game.EntityRepository.define('shubniggurath', {
@@ -278,9 +323,9 @@ Game.EntityRepository.define('slime', {
     type: ['infernal'],
     character: 's',
     foreground: 'lightGreen',
-    maxHp: 10,
-    attackValue: 5,
-    sightRadius: 3,
+    maxHp: 40,
+    attackValue: 10,
+    sightRadius: 5,
     tasks: ['hunt', 'wander'],
     mixins: [Game.EntityMixins.TaskActor, Game.EntityMixins.Sight,
              Game.EntityMixins.Attacker, Game.EntityMixins.Destructible,

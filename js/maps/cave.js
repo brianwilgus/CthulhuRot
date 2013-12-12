@@ -10,7 +10,6 @@ Game.Map.Cave = function(tiles, player) {
             // Add a random entity
             this.addItemAtRandomPosition(Game.ItemRepository.createRandom(), z);
         }
-        
 
     	/** lets get more specific with monsters per level**/
     	var getTypes = [];
@@ -30,8 +29,8 @@ Game.Map.Cave = function(tiles, player) {
 	    	//getTypes.push("infernal");
         }
         
-        // 15 entities per floor
-        for (var i = 0; i < 15; i++) {
+        // 20 entities per floor
+        for (var i = 0; i < 20; i++) {
             var entity = Game.EntityRepository.createRandomFromTypes(getTypes);
             // Add a random entity
             this.addEntityAtRandomPosition(entity, z);
@@ -43,16 +42,24 @@ Game.Map.Cave = function(tiles, player) {
                 }
             }
         }
+
+        // mid-boss
+        this.addEntityAtRandomPosition(Game.EntityRepository.create('highpriest'), 6);
     }
     // Add weapons and armor to the map in random positions and floors
-    var templates = ['dagger', 'sword', 'staff', 
-        'robes', 'chainmail', 'leatherarmor', 'platemail','spikedarmor'];
-    for (var i = 0; i < templates.length; i++) {
-        this.addItemAtRandomPosition(Game.ItemRepository.create(templates[i]),
-            /*Math.floor(this._depth * ROT.RNG.getUniform())*/0);// for testing all items on level 0
+    var lowtemplates = ['dagger', 'dagger', 'staff', 'staff', 'robes', 'robes', 'chainmail', 'leatherarmor', 'leatherarmor'];
+    for (var i = 0; i < lowtemplates.length; i++) {
+        this.addItemAtRandomPosition(Game.ItemRepository.create(lowtemplates[i]),
+            Math.floor(4 * ROT.RNG.getUniform()));
     }
+    var hightemplates = [ 'chainmail', 'chainmail', 'sword', 'sword', 'platemail', 'platemail', 'spikedarmor', 'spikedarmor' ];
+    for (var i = 0; i < hightemplates.length; i++) {
+        this.addItemAtRandomPosition(Game.ItemRepository.create(hightemplates[i]),
+            Math.floor(4 * ROT.RNG.getUniform())+2);
+    }
+    
     // Add a couple holes to the final cavern on the last level.
-    for(i = 0; i < 3; i++){
+    for(i = 0; i < 2; i++){
 	    var holePosition = this.getRandomFloorPosition(this._depth - 1);
 	    this._tiles[this._depth - 1][holePosition.x][holePosition.y] = Game.Tile.holeToCavernTile;
     }

@@ -1,13 +1,22 @@
 Game.Map.BossCavern = function() {
     // Call the Map constructor
-    Game.Map.call(this, this._generateTiles(100, 80));
+    Game.Map.call(this, this._generateTiles(60, 60));
     // Create the boss and minions
     this.addEntityAtRandomPosition(Game.EntityRepository.create('shubniggurath'), 0);
+    this.addEntityAtRandomPosition(Game.EntityRepository.create('elder'), 0);
+    this.addEntityAtRandomPosition(Game.EntityRepository.create('elder'), 0);
+    this.addEntityAtRandomPosition(Game.EntityRepository.create('elder'), 0);
     this.addEntityAtRandomPosition(Game.EntityRepository.create('cultist'), 0);
     this.addEntityAtRandomPosition(Game.EntityRepository.create('cultist'), 0);
     this.addEntityAtRandomPosition(Game.EntityRepository.create('cultist'), 0);
     this.addEntityAtRandomPosition(Game.EntityRepository.create('deepone'), 0);
     this.addEntityAtRandomPosition(Game.EntityRepository.create('deepone'), 0);
+    this.addEntityAtRandomPosition(Game.EntityRepository.create('deepone'), 0);
+
+    var artifacts = [ 'blade', 'tiara', 'bone', 'bone', 'bone', 'bone', 'bone', 'bone', 'bone', 'bone' ];
+    for (var i = 0; i < artifacts.length; i++) {
+        this.addItemAtRandomPosition(Game.ItemRepository.create(artifacts[i]),0);
+    }
 };
 Game.Map.BossCavern.extend(Game.Map);
 

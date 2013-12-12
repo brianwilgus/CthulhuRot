@@ -519,6 +519,9 @@ Game.EntityMixins.FoodConsumer = {
         this.modifyFullnessBy(-this._fullnessDepletionRate);
     },
     modifyFullnessBy: function(points) {
+    	if(points < -100){
+			Game.sendMessage(this, "You are poisoned and lose %d nourishment!", [points]);
+    	}
         this._fullness = this._fullness + points;
         if (this._fullness <= 0) {
             this.kill("starvation", "You have died of starvation!");
@@ -560,6 +563,7 @@ Game.EntityMixins.CorpseDropper = {
     init: function(template) {
         // Chance of dropping a corpse (out of 100).
         this._corpseDropRate = template['corpseDropRate'] || 100;
+        this._foodValue = template['foodValue'] || 50;
     },
     listeners: {
         onDeath: function(attacker) {
@@ -569,7 +573,8 @@ Game.EntityMixins.CorpseDropper = {
                 this._map.addItem(this.getX(), this.getY(), this.getZ(),
                     Game.ItemRepository.create('corpse', {
                         name: this._name + ' corpse',
-                        foreground: this._foreground
+                        foreground: this._foreground,
+                        foodValue: this._foodValue
                     }));
             }    
         }

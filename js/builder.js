@@ -190,7 +190,7 @@ Game.Builder.prototype._setupRegions = function(z) {
 	         }
 	     }
 	 }
-	 console.log("created "+region+" regions for depth "+z+".");
+	 //console.log("created "+region+" regions for depth "+z+".");
 }
 
 //This fetches a list of points that overlap between one
