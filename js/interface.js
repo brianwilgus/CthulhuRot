@@ -106,6 +106,7 @@ Game.Interface.Key.prototype.writeOutput = function() {
 	for(entity in this._items['entities']){
 		if(!isNaN(entity)){
 			if(this._items['entities'][entity].hasMixin(Game.EntityMixins.PlayerActor)){
+				// skip player?
 				output += vsprintf("<br/><span style='color:%s'>%s</span>: %s", 
 				        [
 				     		this._items['entities'][entity].getForeground(),

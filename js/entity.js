@@ -70,7 +70,7 @@ Game.Entity.prototype.getSpeed = function() {
     return this._speed;
 };
 Game.Entity.prototype.getName = function() {
-	return this._name || 'PLAYER';
+	return this._name || 'Player';
 }
 Game.Entity.prototype.getType = function() {
 	return this._type;

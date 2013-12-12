@@ -73,9 +73,10 @@ Game.Screen.startScreen = {
 		console.log("Exited start screen"); 
 	},
 	render: function(display) {
+		var ycount = 2;		
+		
 		// Render our prompt to the screen
-		var ycount = 2;
-		//var quoteGroup = this._quotes.random();
+		
 		for(var i = 0; i < this._quotes.length; i++){
 			for(line in this._quotes[i]){
 				if(!isNaN(line)){
@@ -88,6 +89,16 @@ Game.Screen.startScreen = {
 		display.drawText(2, ycount++, "%c{white}- Cassilda's Song in 'The King in Yellow' Act 1, Scene 2");
 		ycount += 2;
 		display.drawText(2, ycount++, "%c{lightgreen}Press [ENTER] to begin.");
+
+
+		// draw scary monsters
+		var canvas = document.getElementsByTagName("canvas")[0];
+		var context = canvas.getContext("2d");
+		console.log(context);
+		
+		/*var img = new Image();
+		img.src = "img/lwlm_demons_151_tiny2.jpg";
+		context.drawImage(img,0,0);*/
 	},
 	handleInput: function(inputType, inputData) {
 		if(inputType == 'keyup') {
@@ -319,7 +330,7 @@ Game.Screen.playScreen = {
                         'There is nothing here to pick up.');
                 } 
             /** dev command to test end boss  **/
-            } else if (inputData.keyCode === ROT.VK_P) {
+            } else if (inputData.keyCode === ROT.VK_F1) {
             	console.log("warp to end boss");
                 Game.sendMessage(this._player, "warp to end boss");
                 this._player.switchMap(new Game.Map.BossCavern());
@@ -329,6 +340,9 @@ Game.Screen.playScreen = {
                 			depth:1,
                 			locationNames:["Lair of Shub-Niggurath"]
                 		});
+            /** dev command to test win screen  **/
+    		} else if(inputData.keyCode === ROT.VK_F2) {
+                Game.switchScreen(Game.Screen.winScreen);
             } else {
                 // Not a valid key
                 return;
@@ -384,15 +398,16 @@ Game.Screen.winScreen = {
 	},
 	render: function(display) {
         // Render our prompt to the screen
-        for (var i = 0; i < 22; i++) {
-            // Generate random background colors
-            var r = Math.round(ROT.RNG.getUniform() * 255);
-            var g = Math.round(ROT.RNG.getUniform() * 255);
-            var b = Math.round(ROT.RNG.getUniform() * 255);
-            var background = ROT.Color.toRGB([r, g, b]);
-            display.drawText(2, i + 1, "%b{" + background + "}You win!");
-        }
-        display.drawText(2, 23, "%c{red}%b{white}Press [Enter] to start over.");
+        display.drawText(2, 1, "%c{white}You have defeated the minions of Shub-Niggurath!");
+        display.drawText(2, 2, "%c{white}Into the darkness you run madly for your life.");
+        display.drawText(2, 3, "%c{white}You are alive, for now...");
+        display.drawText(2, 5, "%c{lightgreen}Press [Enter] to start over.");
+
+		// draw the moon ascii art
+		var ycount = 7;
+		for(var i = 0; i < moonAscii.length; i++){
+			display.drawText(0, ycount++, "%c{darkmagenta}"+moonAscii[i]);
+		}
 	},
 	handleInput: function(inputType, inputData) {
 		if(inputType == 'keyup') {
@@ -414,6 +429,7 @@ Game.Screen.loseScreen = {
 		console.log("Exited lose screen"); 
 	},
 	render: function(display) {
+		
 		// Render our prompt to the screen
 	      if(endingType == "combat"){
 		      display.drawText(2, 2, "%c{red}Mortally wounded and drawing last breaths you hear dark voices chanting over you:");

@@ -112,6 +112,7 @@ resizeRotDisplay = function(e){
 	
 	// determine our available size, in character blocks
 	sizingResults = rotDisplay.computeSize(rotDisplayDiv.offsetWidth, rotDisplayDiv.offsetHeight);
+	console.log("new output size: width = "+sizingResults[0]+" height = "+sizingResults[1]);
 	
 	// resize the rotDisplay
 	rotDisplay.setOptions({

@@ -79,7 +79,7 @@ Game.EntityRepository.define('beaver', {
     name: 'Beaver',
     type: ['forest', 'animal'],
     character: 'b',
-    foreground: 'brown',
+    foreground: 'sienna',
     maxHp: 5,
     attackValue: 4,
 	sightRadius: 2,
