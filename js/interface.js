@@ -1,8 +1,10 @@
 Game.Interface = {
 	_status: null,
+	_key: null,
 	
 	init: function(){
 		this._status = new Game.Interface.Status();
+		this._key = new Game.Interface.Key();
 	},
 	
 	update: function() {
@@ -12,6 +14,10 @@ Game.Interface = {
 	
 	getStatus: function(){
 		return this._status;
+	},
+	
+	getKey: function(){
+		return this._key;
 	},
 	
 	clearAll: function(){
@@ -78,5 +84,43 @@ Game.Interface.Status.prototype.writeOutput = function() {
      		this._items['locationNames'][this._items['depth']-1],
 			this._items['depth']
 		]);
+	return output;
+}
+
+Game.Interface.Key = function() {
+	properties = {
+			divId: 'key',
+			items: {
+				entities:[]
+			}
+	};
+	Game.Interface.Category.call(this, properties);
+	console.log('init Game.Interface.Key');
+}
+
+// inherit all the functionality from Category
+Game.Interface.Key.extend(Game.Interface.Category);
+
+Game.Interface.Key.prototype.writeOutput = function() {
+	var output = "== Key ==";
+	for(entity in this._items['entities']){
+		if(!isNaN(entity)){
+			if(this._items['entities'][entity].hasMixin(Game.EntityMixins.PlayerActor)){
+				output += vsprintf("<br/><span style='color:%s'>%s</span>: %s", 
+				        [
+				     		this._items['entities'][entity].getForeground(),
+				     		this._items['entities'][entity].getChar(),
+				     		this._items['entities'][entity].getName()
+						]);
+			} else {
+				output += vsprintf("<br/><span style='color:%s'>%s</span>: %s", 
+				        [
+				     		this._items['entities'][entity].getForeground(),
+				     		this._items['entities'][entity].getChar(),
+				     		this._items['entities'][entity].getName()
+						]);
+			}
+		}
+	}
 	return output;
 }

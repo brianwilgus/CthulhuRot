@@ -83,7 +83,6 @@ Game.Screen.startScreen = {
 				}
 			}
 			ycount++;
-			
 		}
 		ycount++;
 		display.drawText(2, ycount++, "%c{white}- Cassilda's Song in 'The King in Yellow' Act 1, Scene 2");
@@ -158,6 +157,9 @@ Game.Screen.playScreen = {
         topLeftY = Math.ceil(topLeftY);// fix fractional numbers
         // This object will keep track of all visible map cells
         var visibleCells = {};
+        this.keys = {};
+        this.keys['entities']= [];
+        
         
         //console.log("render: topLeftX "+topLeftX+" topLeftY "+topLeftY);
 
@@ -192,10 +194,12 @@ Game.Screen.playScreen = {
                         // If we have items, we want to render the top most item
                         if (items) {
                             glyph = items[items.length - 1];
+                            this.keys['entities'].push(glyph);
                         }
                         // Check if we have an entity at the position
                         if (map.getEntityAt(x, y, currentDepth)) {
                             glyph = map.getEntityAt(x, y, currentDepth);
+                            this.keys['entities'].push(glyph);
                         }
                         // Update the foreground color in case our glyph changed
                         foreground = glyph.getForeground();
@@ -247,7 +251,7 @@ Game.Screen.playScreen = {
         display.drawText(1, screenHeight-1, stats);
         
         // return a key for all entities that are within our line of sight
-        var key = [];
+        Game.Interface.getKey().updateItems(this.keys);
     },
     handleInput: function(inputType, inputData) {
         // If the game is over, enter will bring the user to the losing screen.

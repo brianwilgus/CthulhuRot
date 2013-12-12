@@ -1,7 +1,7 @@
 Game.ItemRepository = new Game.Repository('items', Game.Item);
 
 Game.ItemRepository.define('apple', {
-    name: 'apple',
+    name: 'Apple',
     character: '%',
     foreground: 'red',
     foodValue: 50,
@@ -9,7 +9,7 @@ Game.ItemRepository.define('apple', {
 });
 
 Game.ItemRepository.define('melon', {
-    name: 'melon',
+    name: 'Melon',
     character: '%',
     foreground: 'lightGreen',
     foodValue: 35,
@@ -18,13 +18,13 @@ Game.ItemRepository.define('melon', {
 });
 
 Game.ItemRepository.define('rock', {
-    name: 'rock',
+    name: 'Rock',
     character: '*',
     foreground: 'white'
 });
 
 Game.ItemRepository.define('corpse', {
-	    name: 'corpse',
+	    name: 'Corpse',
 	    character: '%',
 	    foodValue: 75,
 	    consumptions: 1,
@@ -75,7 +75,7 @@ Game.ItemRepository.define('staff', {
 // Wearables
 //======================================
 Game.ItemRepository.define('robes', {
-    name: 'suit of padded cloth armor',
+    name: 'Padded Cloth Armor',
     character: '{',
     foreground: 'white',
     defenseValue: 4,
@@ -86,7 +86,7 @@ Game.ItemRepository.define('robes', {
 });
 
 Game.ItemRepository.define('chainmail', {
-    name: 'suit of chainmail armor',
+    name: 'Chainmail Armor',
     character: '{',
     foreground: 'bluegrey',
     defenseValue: 10,
@@ -97,7 +97,7 @@ Game.ItemRepository.define('chainmail', {
 });
 
 Game.ItemRepository.define('platemail', {
-    name: 'suit of heavy plate armor',
+    name: 'Heavy Plate Mail',
     character: '{',
     foreground: 'aliceblue',
     defenseValue: 14,
@@ -108,9 +108,9 @@ Game.ItemRepository.define('platemail', {
 });
 
 Game.ItemRepository.define('spikedarmor', {
-    name: 'suit of spiked armor',
+    name: 'Spiked Armor',
     character: '{',
-    foreground: 'aliceblue',
+    foreground: 'slategrey',
     defenseValue: 10,
     attackValue: 3,
     wearable: true,
@@ -120,7 +120,7 @@ Game.ItemRepository.define('spikedarmor', {
 });
 
 Game.ItemRepository.define('leatherarmor', {
-    name: 'suit of banded leather armor',
+    name: 'Banded Leather Armor',
     character: '{',
     foreground: 'tan',
     defenseValue: 6,
@@ -136,8 +136,8 @@ Game.ItemRepository.define('leatherarmor', {
 
 //try to wear, wield and eat the pumpkin!
 Game.ItemRepository.define('pumpkin', {
- name: 'rotten pumpkin',
- character: 'P',
+ name: 'Rotten Pumpkin',
+ character: 'p',
  foreground: 'orange',
  foodValue: 50,
  attackValue: 2,

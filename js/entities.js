@@ -37,7 +37,7 @@ Game.EntityRepository.define('fungus', {
 });
 
 Game.EntityRepository.define('rat', {
-    name: 'rat',
+    name: 'Rat',
     type: ['cave', 'forest', 'dirt', 'animal'],
     character: 'r',
     foreground: 'LightSlateGray',
@@ -56,7 +56,7 @@ Game.EntityRepository.define('rat', {
 });
 
 Game.EntityRepository.define('centipede', {
-    name: 'giant centipede',
+    name: 'Giant Centipede',
     type: ['cave', 'dirt', 'animal'],
     character: 'c',
     foreground: 'lawngreen',
@@ -76,7 +76,7 @@ Game.EntityRepository.define('centipede', {
 });
 
 Game.EntityRepository.define('beaver', {
-    name: 'beaver',
+    name: 'Beaver',
     type: ['forest', 'animal'],
     character: 'b',
     foreground: 'brown',
@@ -174,7 +174,7 @@ Game.EntityRepository.define('ghoul', {
 });
 
 Game.EntityRepository.define('wolf', {
-	name: 'wolf',
+	name: 'Wolf',
     type: ['cave', 'forest', 'dirt', 'animal'],
 	character: 'w',
 	foreground:'lightgrey',
