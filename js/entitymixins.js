@@ -235,6 +235,7 @@ Game.EntityMixins.Attacker = {
             var defense = target.getDefenseValue();
             var max = Math.max(0, attack - defense);
             var damage = 1 + Math.floor(ROT.RNG.getUniform() * max);
+            /** FOR DEBUGGING
             console.log(vsprintf("%s vs %s : AV[%d] DV[%d] MAX[%d] DMG[%d]",
             		[
         		 		this.getName(),
@@ -243,7 +244,7 @@ Game.EntityMixins.Attacker = {
         		 		defense,
         		 		max,
         		 		damage
-            		]));
+            		]));**/
 
             Game.sendMessage(this, 'You strike the %s for %d damage!',
                 [target.getName(), damage]);
@@ -314,7 +315,11 @@ Game.EntityMixins.Destructible = {
             this.raiseEvent('onDeath', attacker);
             attacker.raiseEvent('onKill', this);
             
-            this.kill();
+            if(this.hasMixin(Game.EntityMixins.PlayerActor)) {
+                this.kill('combat', "You have died!");
+            } else {
+        		this.kill();
+            }
         }
     },
     listeners: {
@@ -510,9 +515,9 @@ Game.EntityMixins.FoodConsumer = {
     modifyFullnessBy: function(points) {
         this._fullness = this._fullness + points;
         if (this._fullness <= 0) {
-            this.kill("You have died of starvation!");
+            this.kill("starvation", "You have died of starvation!");
         } else if (this._fullness > this._maxFullness) {
-            this.kill("You choke and die!");
+            this.kill("gluttony", "You choke and die!");
         }
     },
     getHungerState: function() {

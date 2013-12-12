@@ -187,7 +187,7 @@ Game.Entity.prototype.tryMove = function(x, y, z, map) {
 Game.Entity.prototype.isAlive = function() {
     return this._alive;
 };
-Game.Entity.prototype.kill = function(message) {
+Game.Entity.prototype.kill = function(type, message) {
     // Only kill once!
     if (!this._alive) {
         return;
@@ -195,12 +195,11 @@ Game.Entity.prototype.kill = function(message) {
     this._alive = false;
     if (message) {
         Game.sendMessage(this, message);
-    } else {
-        Game.sendMessage(this, "You have died!");
     }
 
     // Check if the player died, and if so call their act method to prompt the user.
     if (this.hasMixin(Game.EntityMixins.PlayerActor)) {
+        endingType = type;
         this.act();
     } else {
         this.getMap().removeEntity(this);

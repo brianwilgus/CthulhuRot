@@ -86,20 +86,20 @@ div {
 	padding:5px;
 }
 
-#logo {
+/* #logo {
 	display: none;
 }
 
 #poem {
 	display: none;
-}
+} */
 
 #poem {
 	color: #DEDEDE;
 	background-color: #444;	
 	padding: 20px;
-	font-family: 'IM Fell English', serif;
-	font-size: 16px;
+	/* font-family: 'IM Fell English', serif; */
+	font-size: 20px;
 }
 
 #poem ul {

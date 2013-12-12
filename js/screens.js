@@ -1,19 +1,94 @@
 Game.Screen = {};
 
+
+lovecraftQuotes = [
+      "Ultimate horror often paralyses memory in a merciful way.",
+      "Searchers after horror haunt strange, far places.",
+      "In his house at R'lyeh, dead Cthulu waits dreaming.",
+      "If I am mad, it is mercy! May the gods pity the man who in his callousness can remain sane to the hideous end!",
+      "The world is indeed comic, but the joke is on mankind.",
+      "That is not dead which can eternal lie, yet with stranger eons, even death may die.",
+      "I felt myself on the edge of the world; peering over the rim into a fathomless chaos of eternal night.",
+      "That is not dead which can eternal lie, yet with stranger eons, even death may die.",
+      "And where Nyarlathotep went, rest vanished, for the small hours were rent with the screams of nightmare.",
+      "Something was creeping and creeping and waiting to be seen and felt and heard."
+];
+
+endingType = "";
+
 // Define our initial start screen
 Game.Screen.startScreen = {
+	fillQuotes: function() {
+		this._quotes = [];
+		
+		this._quotes[0] = [
+		   		 	"Along the shore the cloud waves break,",
+		 		 	"The twin suns sink behind the lake,",
+			 		"The shadows lengthen...",
+			 		"In Carcosa."
+		 		];
+		
+		this._quotes[1] = [
+		 		 	"Strange is the night where black stars rise,",
+		 		 	"And strange moons circle through the skies,",
+			 		"But stranger still is...",
+			 		"Lost Carcosa."
+		 		];
+		
+		this._quotes[2] = [
+		 		 	"Songs that the Hyades shall sing,",
+		 		 	"Where flap the tatters of the King,",
+			 		"Must die unheard in...",
+			 		"Dim Carcosa."
+		 		];
+		
+		this._quotes[3] = [
+		 		 	"Song of my soul, my voice is dead,",
+		 		 	"Die thou, unsung, as tears unshed",
+			 		"Shall dry and die in...",
+			 		"Lost Carcosa."
+		 		];
+		/*
+		this._quotes[4] = [
+		 		 	"I go back home in my song,",
+		 		 	"I miss you, but you are gone,",
+			 		"Afraid and alone...",
+			 		"Dark Carcosa.",
+			 		"- taken from Cassilda's Song (expanded edition) in The King in Yellow Act 1, Scene 2"
+		 		];
+		
+		this._quotes[5] = [
+		 		 	"Feverish from poisonous death,",
+		 		 	"Creatures writhing their last breaths,",
+			 		"I stalk the shadows...",
+			 		"My Carcosa.",
+			 		"- taken from Cassilda's Song (expanded edition) in The King in Yellow Act 1, Scene 2"
+			    ];*/
+	},
 	enter: function() { 
 		console.log("Entered start screen"); 
+		this.fillQuotes();
 	},
 	exit: function() {
 		console.log("Exited start screen"); 
 	},
 	render: function(display) {
 		// Render our prompt to the screen
-		display.drawText(2,2,"%c{lightgreen}Welcome to Cthulhu Rot...");
-		display.drawText(2,3,"%c{yellow}a fantasy roguelike!");
-		display.drawText(2,4,"%c{aqua}using SEED:'"+ROT.RNG.getSeed()+"'");
-		display.drawText(2,5,"%c{red}Press [ENTER] to start!");
+		var ycount = 2;
+		//var quoteGroup = this._quotes.random();
+		for(var i = 0; i < this._quotes.length; i++){
+			for(line in this._quotes[i]){
+				if(!isNaN(line)){
+					display.drawText(2, ycount++, this._quotes[i][line]);
+				}
+			}
+			ycount++;
+			
+		}
+		ycount++;
+		display.drawText(2, ycount++, "%c{white}- Cassilda's Song in 'The King in Yellow' Act 1, Scene 2");
+		ycount += 2;
+		display.drawText(2, ycount++, "%c{lightgreen}Press [ENTER] to begin.");
 	},
 	handleInput: function(inputType, inputData) {
 		if(inputType == 'keyup') {
@@ -329,30 +404,38 @@ Game.Screen.winScreen = {
 Game.Screen.loseScreen = {
 	enter: function() { 
 		console.log("Entered lose screen"); 
-
-        
-        Game.Interface.clearAll();
+		Game.Interface.clearAll();
 	},
 	exit: function() {
 		console.log("Exited lose screen"); 
 	},
 	render: function(display) {
-      // Render our prompt to the screen
-      for (var i = 0; i < 22; i++) {
-          // Generate random background colors
-          var r = Math.round(ROT.RNG.getUniform() * 255);
-          var g = Math.round(ROT.RNG.getUniform() * 255);
-          var b = Math.round(ROT.RNG.getUniform() * 255);
-          var background = ROT.Color.toRGB([r, g, b]);
-          display.drawText(2, i + 1, "%b{red}You lose! :(");
-      }
-      display.drawText(2, 23, "%c{red}%b{white}Press [Enter] to start over.");
+		// Render our prompt to the screen
+	      if(endingType == "combat"){
+		      display.drawText(2, 2, "%c{red}Mortally wounded and drawing last breaths you hear dark voices chanting over you:");
+		      display.drawText(2, 5, "%c{white}Ia! Ia! Shub-Niggurath!");
+		      display.drawText(2, 6, "%c{white}The Black Goat of the Woods with a Thousand Young!");
+	      } else if(endingType == "infernal") {
+		      display.drawText(2, 2, "%c{red}As you lay dying you hear a buzzing imitation of human speech:");
+		      display.drawText(2, 5, "%c{white}Ia! Ia! Shub-Niggurath!");
+		      display.drawText(2, 6, "%c{white}The All-Mother and wife of the Not-to-Be-Named-One!");
+	      } else if(endingType == "starvation") {
+		      display.drawText(2, 2, "%c{red}You have starved to death!");
+		      display.drawText(2, 5, lovecraftQuotes.random());
+	      } else if(endingType == "gluttony") {
+		      display.drawText(2, 2, "%c{red}You choked to a gluttonous death!");
+		      display.drawText(2, 5, "%c{white}From even the greatest of horrors irony is seldom absent.");
+	      } else {
+		      display.drawText(2, 2, "%c{red}You have died!");
+		      display.drawText(2, 5, lovecraftQuotes.random());
+	      }
+	      display.drawText(2, 9, "%c{lightgreen}Press [Esc] to try again");
 	},
 	handleInput: function(inputType, inputData) {
 		if(inputType == 'keyup') {
 			// If enter is pressed, start over
-	        if (inputData.keyCode === ROT.VK_RETURN) {
-	            Game.switchScreen(Game.Screen.startScreen);
+	        if (inputData.keyCode === ROT.VK_ESCAPE) {
+	            Game.switchScreen(Game.Screen.playScreen);
 	        }
 		}
 	}
