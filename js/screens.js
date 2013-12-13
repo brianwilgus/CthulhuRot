@@ -239,6 +239,7 @@ Game.Screen.playScreen = {
         
         // return a key for all entities that are within our line of sight
         Game.Interface.getKey().updateItems(this.keys);
+        Game.Interface.update();
     },
     handleInput: function(inputType, inputData) {
         // If the game is over, enter will bring the user to the losing screen.

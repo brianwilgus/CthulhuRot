@@ -28,7 +28,9 @@ Game.Interface = {
 	},
 	
 	clearAll: function(){
+		this._playerStats.clear();
 		this._status.clear();
+		this._key.clear();
 	}
 };
 
@@ -46,6 +48,7 @@ Game.Interface.Category.prototype.writeOutput = function() {
 
 Game.Interface.Category.prototype.update = function() {
 	if(this._target) {
+		this._target.style.display = "block";
 		this._output = this.writeOutput();
 		this._target.innerHTML = this._output;
 	}
@@ -53,6 +56,7 @@ Game.Interface.Category.prototype.update = function() {
 
 Game.Interface.Category.prototype.clear = function() {
 	if(this._target) {
+		this._target.style.display = "none";
 		this._output = "";
 		this._target.innerHTML = this._output;
 	}
@@ -84,11 +88,11 @@ Game.Interface.PlayerStats = function() {
 Game.Interface.PlayerStats.extend(Game.Interface.Category);
 
 Game.Interface.PlayerStats.prototype.writeOutput = function() {
-	var output = "== Player Stats ==";
+	var output = "<span style='color:yellow'>@</span><span style='color:white'>: Your Player</span>";
 	var player = Game.Screen.playScreen.getPlayer();
 	output += "<br/>";
 	var hp = player.getHp();
-	var mhp = player.getHp();
+	var mhp = player.getMaxHp();
 	var hcolor = "white";
 	if(hp < mhp*.25) { 
 		hcolor = "red"; 
@@ -117,7 +121,7 @@ Game.Interface.PlayerStats.prototype.writeOutput = function() {
 		ncolor = "red"; 
 	} else if(fn < mfn*.5) { 
 		ncolor = "yellow";
-	} else if(fn == mfn) {
+	} else if(fn == mfn*.75) {
 		ncolor = "lightgreen";
 	} else { 
 		ncolor = "white"; 
@@ -153,7 +157,7 @@ Game.Interface.Status = function() {
 Game.Interface.Status.extend(Game.Interface.Category);
 
 Game.Interface.Status.prototype.writeOutput = function() {
-	var output = "== Status ==";
+	var output = "<span style='color:orange'>Status</span>";
 	output += vsprintf("<br/>Location: %s<br/>Depth: %d", 
         [
      		this._items['locationNames'][this._items['depth']-1],
@@ -177,7 +181,7 @@ Game.Interface.Key = function() {
 Game.Interface.Key.extend(Game.Interface.Category);
 
 Game.Interface.Key.prototype.writeOutput = function() {
-	var output = "== Key ==";
+	var output = "<span style='color:orange'>Key</span>";
 	for(entity in this._items['entities']){
 		if(!isNaN(entity)){
 			if(this._items['entities'][entity].hasMixin(Game.EntityMixins.PlayerActor)){
@@ -200,20 +204,32 @@ Game.Interface.Key.prototype.writeOutput = function() {
 				     		this._items['entities'][entity].getName()
 						]);
 
-				// available attributes
-				if(this._items['entities'][entity].hasMixin(Game.EntityMixins.FungusActor)){
-					output += " <span style='color:yellow'>grows</span>";
-				}
-				if(this._items['entities'][entity].hasMixin(Game.EntityMixins.TaskActor)){
-					if(this._items['entities'][entity].canDoTask("hunt")){
-						output += " <span style='color:red'>hunting</span>";
-					} else {
-						output += " <span style='color:yellow'>wandering</span>";
+				if(this._items['entities'][entity].hasMixin(Game.EntityMixins.FungusActor) ||
+				   this._items['entities'][entity].hasMixin(Game.EntityMixins.TaskActor) ||
+				   this._items['entities'][entity].hasMixin(Game.EntityMixins.Digger) ||
+				   this._items['entities'][entity].hasType("infernal")){
+					
+					output += "<div class='condition'>";
+					// available attributes
+					if(this._items['entities'][entity].hasMixin(Game.EntityMixins.FungusActor)){
+						output += " <span style='color:lightgreen'>grows</span>";
 					}
+					if(this._items['entities'][entity].hasMixin(Game.EntityMixins.TaskActor)){
+						if(this._items['entities'][entity].canDoTask("hunt")){
+							output += " <span style='color:red'>hunting</span>";
+						} else {
+							output += " <span style='color:yellow'>wandering</span>";
+						}
+					}
+					if(this._items['entities'][entity].hasMixin(Game.EntityMixins.Digger)){
+						output += " <span style='color:tan'>digger</span>";
+					}
+					if(this._items['entities'][entity].hasType("infernal")){
+						output += " <span style='color:tomato'>infernal</span>";
+					}
+					output += "</div>";
 				}
-				if(this._items['entities'][entity].hasMixin(Game.EntityMixins.Digger)){
-					output += " <span style='color:yellow'>digger</span>";
-				}
+				
 			} else {
 				// items
 				// console.log("writeOutput item "+this._items['entities'][entity].getChar());
@@ -225,7 +241,7 @@ Game.Interface.Key.prototype.writeOutput = function() {
 						]);
 				if(this._items['entities'][entity].hasMixin(Game.ItemMixins.Edible) ||
 				   this._items['entities'][entity].hasMixin(Game.ItemMixins.Equippable )){
-					
+					output += "<div class='condition'>";
 					// available attributes
 					if(this._items['entities'][entity].hasMixin(Game.ItemMixins.Edible)){
 						output += " <span style='color:lightgreen'>edible</span>";
@@ -233,12 +249,13 @@ Game.Interface.Key.prototype.writeOutput = function() {
 					
 					if(this._items['entities'][entity].hasMixin(Game.ItemMixins.Equippable)){
 				    	if(this._items['entities'][entity].isWieldable()){
-							output += " <span style='color:lightgreen'>wieldable</span>";
+							output += " <span class='condition' style='color:lightgreen'>wieldable</span>";
 				    	}
 				    	if(this._items['entities'][entity].isWearable()){
-							output += " <span style='color:lightgreen'>wearable</span>";
+							output += " <span class='condition' style='color:lightgreen'>wearable</span>";
 				    	}
 				    }
+					output += "</div>";
 				}
 			}
 		}

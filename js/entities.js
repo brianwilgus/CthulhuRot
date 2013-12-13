@@ -17,7 +17,8 @@ Game.PlayerTemplate = {
              Game.EntityMixins.Equipper,
              Game.EntityMixins.ExperienceGainer, 
              Game.EntityMixins.PlayerStatGainer,
-             Game.EntityMixins.Digger]
+             Game.EntityMixins.Digger,
+             Game.EntityMixins.Poisonable]
 };
 
 // Create our central entity repository
@@ -55,7 +56,7 @@ Game.EntityRepository.define('rat', {
              Game.EntityMixins.RandomStatGainer]
 });
 
-Game.EntityRepository.define('centipede', {
+Game.EntityRepository.define('worm', {
     name: 'Giant Worm',
     type: ['cave', 'dirt', 'animal'],
     character: 'w',
@@ -120,6 +121,9 @@ Game.EntityRepository.define('frog', {
     type: ['cave', 'forest', 'dirt', 'animal'],
     character: 'f',
     foreground: 'mediumvioletred',
+    poisonous: true,
+    poisonRate: 2,
+    poisonDuration: 3,
     maxHp: 3,
     attackValue: 2,
     corpseDropRate: 40,
@@ -241,6 +245,9 @@ Game.EntityRepository.define('cultist', {
 	character: 'C',
 	foreground:'red',
 	maxHp: 30,
+    poisonous: true,
+    poisonRate: 5,
+    poisonDuration: 5,
 	attackValue: 8,
 	sightRadius: 6,
     corpseDropRate: 100,

@@ -11,6 +11,7 @@ Game.EntityMixins.PlayerActor = {
         }
         this._acting = true;
         this.addTurnHunger();
+        this.actPoisonTurn();
         // Detect if the game is over
         if (!this.isAlive()) {
             Game.Screen.playScreen.setGameEnded(true);
@@ -205,6 +206,9 @@ Game.EntityMixins.Attacker = {
     groupName: 'Attacker',
     init: function(template) {
         this._attackValue = template['attackValue'] || 1;
+        this._poisonous = template['poisonous'] || false;
+        this._poisonRate = template['poisonRate'] || 0;
+        this._poisonDuration = template['poisonDuration'] || 0;
     },
     getAttackValue: function() {
         var modifier = 0;
@@ -253,8 +257,42 @@ Game.EntityMixins.Attacker = {
 
             target.takeDamage(this, damage);
         }
+        
+        // poisonous attack
+        if(this._poisonous && target.hasMixin('Poisonable') && target.hasMixin('Destructible')){
+        	target.applyPoison(this,this._poisonDuration, this._poisonRate);
+        }
     }
 };
+
+Game.EntityMixins.Poisonable = {
+	name: 'Poisonable',
+	init: function(template) {
+        this._poisonDmgRate = template['poisonDmgRate'] || 5;
+        this._poisonedTurns = 0;
+	},
+	applyPoison: function(attacker, turns, dmg) {
+		this._poisonedTurns = turns;
+		this._poisonDmgRate = dmg;
+		this._attacker = attacker;
+	},
+    actPoisonTurn: function() {
+        if(this._poisonedTurns > 0 ){
+        	this._poisonedTurns--;
+        	if(this.hasMixin(Game.EntityMixins.Destructible)){
+        		Game.sendMessage(this, 'You take '+this._poisonDmgRate+' poison damage.');
+        		this.takeDamage(this._attacker, this._poisonDmgRate);
+        	}
+        }
+    },
+    getPoisonState: function() {
+    	if(this._poisonedTurns > 0 ){
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+}
 
 //This mixin signifies an entity can take damage and be destroyed
 Game.EntityMixins.Destructible = {
@@ -533,16 +571,16 @@ Game.EntityMixins.FoodConsumer = {
         // Fullness points per percent of max fullness
         var perPercent = this._maxFullness / 100;
         // 5% of max fullness or less = starving
-        if (this._fullness <= perPercent * 10) {
+        if (this._fullness <= perPercent * 25) {
             return 'Starving';
         // 25% of max fullness or less = hungry
-        } else if (this._fullness <= perPercent * 35) {
+        } else if (this._fullness <= perPercent * 50) {
             return 'Hungry';
         // 95% of max fullness or more = oversatiated
-        } else if (this._fullness >= perPercent * 90) {
-            return 'Oversatiated';
+        } else if (this._fullness >= perPercent * 95) {
+            return 'Oversatiated!';
         // 75% of max fullness or more = full
-        } else if (this._fullness >= perPercent * 70) {
+        } else if (this._fullness >= perPercent * 75) {
             return 'Well Fed';
         // Anything else = not hungry
         } else {
