@@ -241,7 +241,7 @@ Game.EntityRepository.define('huntinghorror', {
 
 Game.EntityRepository.define('cultist', {
 	name: 'Cultist',
-    type: ['cave', 'forest', 'dirt', 'magical'],
+    type: ['cave', 'dirt', 'magical'],
 	character: 'C',
 	foreground:'red',
 	maxHp: 30,

@@ -227,6 +227,9 @@ Game.Interface.Key.prototype.writeOutput = function() {
 					if(this._items['entities'][entity].hasType("infernal")){
 						output += " <span style='color:tomato'>infernal</span>";
 					}
+					if(this._items['entities'][entity].isPoisonous()){
+						output += " <span style='color:yellowgreen'>poisoning</span>";
+					}
 					output += "</div>";
 				}
 				

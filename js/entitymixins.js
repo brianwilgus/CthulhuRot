@@ -224,6 +224,9 @@ Game.EntityMixins.Attacker = {
         }
         return this._attackValue + modifier;
     },
+    isPoisonous: function() {
+    	return this._poisonous;
+    },    
     increaseAttackValue: function(value) {
     	// If no value was passed, default to 2.
         value = value || 2;
@@ -557,10 +560,7 @@ Game.EntityMixins.FoodConsumer = {
         this.modifyFullnessBy(-this._fullnessDepletionRate);
     },
     modifyFullnessBy: function(points) {
-    	if(points < -100){
-			Game.sendMessage(this, "You are poisoned and lose %d nourishment!", [points]);
-    	}
-        this._fullness = this._fullness + points;
+    	this._fullness = this._fullness + points;
         if (this._fullness <= 0) {
             this.kill("starvation", "You have died of starvation!");
         } else if (this._fullness > this._maxFullness) {
