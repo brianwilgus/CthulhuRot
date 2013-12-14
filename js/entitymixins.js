@@ -5,13 +5,18 @@ Game.EntityMixins = {};
 Game.EntityMixins.PlayerActor = {
     name: 'PlayerActor',
     groupName: 'Actor',
-    act: function() {
+    act: function() {        
         if (this._acting) {
             return;
         }
+        
         this._acting = true;
         this.addTurnHunger();
         this.actPoisonTurn();
+        
+        // process story actions by turn
+        Game.Narrator.processNarrationTurn(this);
+        
         // Detect if the game is over
         if (!this.isAlive()) {
             Game.Screen.playScreen.setGameEnded(true);
@@ -23,6 +28,7 @@ Game.EntityMixins.PlayerActor = {
         // Lock the engine and wait asynchronously
         // for the player to press a key.
         this.getMap().getEngine().lock();
+        
         // Clear the message queue
         this.clearMessages();
         this._acting = false;
@@ -232,7 +238,9 @@ Game.EntityMixins.Attacker = {
         value = value || 2;
         // Add to the attack value.
         this._attackValue += 2;
-        Game.sendMessage(this, "You look stronger!");
+        if(this.hasMixin(Game.EntityMixins.Player)){
+    		Game.sendMessage(this, "You look stronger!");
+        }
     },
     attack: function(target) {
         // If the target is destructible, calculate the damage
@@ -251,8 +259,8 @@ Game.EntityMixins.Attacker = {
         		 		defense,
         		 		max,
         		 		damage
-            		]));**/
-
+            		]));
+			**/
             Game.sendMessage(this, 'You strike the %s for %d damage!',
                 [target.getName(), damage]);
             Game.sendMessage(target, 'The %s strikes you for %d damage!',
@@ -330,7 +338,9 @@ Game.EntityMixins.Destructible = {
         value = value || 2;
         // Add to the defense value.
         this._defenseValue += 2;
-        Game.sendMessage(this, "You look tougher!");
+        if(this.hasMixin(Game.EntityMixins.Player)){
+    		Game.sendMessage(this, "You look tougher!");
+        }
     },
     increaseMaxHp: function(value) {
         // If no value was passed, default to 10.
@@ -338,7 +348,9 @@ Game.EntityMixins.Destructible = {
         // Add to both max HP and HP.
         this._maxHp += 10;
         this._hp += 10;
-        Game.sendMessage(this, "You look healthier!");
+        if(this.hasMixin(Game.EntityMixins.Player)){
+    		Game.sendMessage(this, "You look healthier!");
+        }
     },
     getHp: function() {
         return this._hp;
@@ -405,7 +417,9 @@ Game.EntityMixins.Sight = {
         value = value || 1;
         // Add to sight radius.
         this._sightRadius += 1;
-        Game.sendMessage(this, "You are more aware of your surroundings!");
+        if(this.hasMixin(Game.EntityMixins.Player)){
+    		Game.sendMessage(this, "You are more aware of your surroundings!");
+        }
     },
     getSightRadius: function() {
         return this._sightRadius;
@@ -443,6 +457,8 @@ Game.EntityMixins.Sight = {
 
 // Message sending functions
 Game.sendMessage = function(recipient, message, args) {
+	/*We're spamming messages to all entities not just the player!*/
+	console.log("Game.sendMessage "+recipient._name+" "+message+" "+args);
     // Make sure the recipient can receive the message
     // before doing any work.
     if (recipient.hasMixin(Game.EntityMixins.MessageRecipient)) {
@@ -489,7 +505,38 @@ Game.EntityMixins.InventoryHolder = {
         // Try to find a slot, returning true only if we could add the item.
         for (var i = 0; i < this._items.length; i++) {
             if (!this._items[i]) {
-                this._items[i] = item;
+                this._items[i] = item;    
+
+                console.log(item);
+                //console.log("Game.Narrator.getHelpItem(edible) "+Game.Narrator.getHelpItem("edible"));
+                if(Game.Narrator.getHelpItem("edible")){
+                	if(item.hasMixin){
+                    	if(item.hasMixin("Edible")){
+                    		Game.Narrator.helpText("edible", {glyph:item});
+                		}
+                	}
+                } 
+            	
+                if(Game.Narrator.getHelpItem("wearable")){
+                	if(item.hasMixin){
+                    	if(item.hasMixin("Equippable")){
+                    		if(item.isWearable()){
+                        		Game.Narrator.helpText("wearable", {glyph:item});
+                    		}
+                		}
+                	}
+                } 
+                
+            	if(Game.Narrator.getHelpItem("wieldable")){
+                	if(item.hasMixin){
+                    	if(item.hasMixin("Equippable")){
+                    		if(item.isWieldable()){
+                        		Game.Narrator.helpText("wieldable", {glyph:item});
+                    		}
+                		}
+                	}
+                } 
+                
                 return true;
             }
         }
@@ -527,6 +574,9 @@ Game.EntityMixins.InventoryHolder = {
                 added++;
             } else {
                 // Inventory is full
+                if(Game.Narrator.getHelpItem("drop")){
+                	Game.Narrator.helpText("drop");
+                }
                 break;
             }
         }
@@ -716,7 +766,9 @@ Game.EntityMixins.ExperienceGainer = {
         }
         // Check if we gained at least one level.
         if (levelsGained > 0) {
-            Game.sendMessage(this, "You advance to level %d.", [this._level]);
+        	if(this.hasMixin(Game.EntityMixins.Player)){
+        		Game.sendMessage(this, "You advance to level %d.", [this._level]);
+        	}
             this.raiseEvent('onGainLevel');
         }
     },

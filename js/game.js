@@ -6,8 +6,9 @@ var Game = {
     
     init: function() {
     	// our seed for future random number generation
-    	//var seed = ROT.RNG.getSeed();
-    	ROT.RNG.setSeed(12345);
+    	var seed = ROT.RNG.getSeed();
+    	//ROT.RNG.setSeed(12345);
+    	console.log("using seed '"+seed+"'");
     	
     	// Any necessary initialization will go here.
         this._display = new ROT.Display({

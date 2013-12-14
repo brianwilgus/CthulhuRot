@@ -11,31 +11,19 @@ Game.ItemRepository.define('apple', {
 Game.ItemRepository.define('melon', {
     name: 'Melon',
     character: 'o',
-    foreground: 'lightGreen',
+    foreground: 'Chartreuse',
     foodValue: 80,
     consumptions: 2,
     mixins: [Game.ItemMixins.Edible]
 });
 
 Game.ItemRepository.define('mushrooms', {
-    name: 'Fresh Mushrooms',
-    character: ':',
+    name: 'Fresh Mushroom',
+    character: 'm',
     foreground: 'tan',
     foodValue: 50,
     consumptions: 2,
     mixins: [Game.ItemMixins.Edible]
-});
-
-Game.ItemRepository.define('rock', {
-    name: 'Rock',
-    character: '*',
-    foreground: 'grey'
-});
-
-Game.ItemRepository.define('bone', {
-    name: 'Freshly Gnawed Bone',
-    character: '/',
-    foreground: 'white'
 });
 
 Game.ItemRepository.define('rotten', {
@@ -58,11 +46,30 @@ Game.ItemRepository.define('corpse', {
 
 // Weapons
 // ======================================
+
+Game.ItemRepository.define('rock', {
+    name: 'Rock',
+    character: '*',
+    foreground: 'grey',
+    attackValue: 2,
+    wieldable: true,
+    mixins: [Game.ItemMixins.Equippable]
+});
+
+Game.ItemRepository.define('bone', {
+    name: 'Freshly Gnawed Bone',
+    character: '/',
+    foreground: 'white',
+    attackValue: 4,
+    wieldable: true,
+    mixins: [Game.ItemMixins.Equippable]
+});
+
 Game.ItemRepository.define('dagger', {
     name: 'Cultist Dagger',
     character: '+',
     foreground: 'gray',
-    attackValue: 6,
+    attackValue: 8,
     wieldable: true,
     mixins: [Game.ItemMixins.Equippable]
 }, {
@@ -84,7 +91,7 @@ Game.ItemRepository.define('staff', {
     name: 'Withered Staff',
     character: '/',
     foreground: 'yellow',
-    attackValue: 5,
+    attackValue: 6,
     defenseValue: 3,
     wieldable: true,
     mixins: [Game.ItemMixins.Equippable]
@@ -97,7 +104,7 @@ Game.ItemRepository.define('staff', {
 //======================================
 Game.ItemRepository.define('robes', {
     name: 'Padded Cloth Armor',
-    character: '{',
+    character: 'R',
     foreground: 'white',
     defenseValue: 4,
     wearable: true,
@@ -108,7 +115,7 @@ Game.ItemRepository.define('robes', {
 
 Game.ItemRepository.define('chainmail', {
     name: 'Chainmail Armor',
-    character: '{',
+    character: 'C',
     foreground: 'bluegrey',
     defenseValue: 10,
     wearable: true,
@@ -119,7 +126,7 @@ Game.ItemRepository.define('chainmail', {
 
 Game.ItemRepository.define('platemail', {
     name: 'Heavy Plate Mail',
-    character: '{',
+    character: 'P',
     foreground: 'aliceblue',
     defenseValue: 14,
     wearable: true,
@@ -130,7 +137,7 @@ Game.ItemRepository.define('platemail', {
 
 Game.ItemRepository.define('spikedarmor', {
     name: 'Spiked Armor',
-    character: '{',
+    character: 'S',
     foreground: 'slategrey',
     defenseValue: 10,
     attackValue: 3,
@@ -142,7 +149,7 @@ Game.ItemRepository.define('spikedarmor', {
 
 Game.ItemRepository.define('leatherarmor', {
     name: 'Banded Leather Armor',
-    character: '{',
+    character: 'L',
     foreground: 'tan',
     defenseValue: 6,
     wearable: true,
@@ -155,6 +162,7 @@ Game.ItemRepository.define('leatherarmor', {
 // Combo Items
 //======================================
 
+/** Example of a good combo item with multiple Mixins
 //try to wear, wield and eat the pumpkin!
 Game.ItemRepository.define('pumpkin', {
  name: 'Rotten Pumpkin',
@@ -167,7 +175,7 @@ Game.ItemRepository.define('pumpkin', {
  wieldable: true,
  mixins: [Game.ItemMixins.Edible, Game.ItemMixins.Equippable]
 });
-
+**/
 
 Game.ItemRepository.define('tiara', {
 name: 'Tiara of the Deep Ones',

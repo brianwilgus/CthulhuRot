@@ -128,6 +128,7 @@ Game.Screen.playScreen = {
             this._subScreen.render(display);
             return;
         }
+                        
         var screenWidth = Game.getScreenWidth();
         var screenHeight = Game.getScreenHeight()-1;
         // Make sure the x-axis doesn't go to the left of the left bound
@@ -177,9 +178,44 @@ Game.Screen.playScreen = {
                         // over items.
                         var items = map.getItemsAt(x, y, currentDepth);
                         // If we have items, we want to render the top most item
-                        if (items) {
+                        if(items) {
                             glyph = items[items.length - 1];
                             this.keys['entities'].push(glyph);
+                            if(Game.Narrator.getHelpItem("foodPickup")){
+                            	for(obj in items){
+                            		if(items[obj].hasMixin){
+                                		if(items[obj].hasMixin("Edible")){
+                                			Game.Narrator.helpText("foodPickup", {glyph:glyph});
+                                			break;
+                                    	}
+                            		}
+                            	}
+                            } 
+                        	if(Game.Narrator.getHelpItem("weaponPickup")){
+                            	for(obj in items){
+                            		if(items[obj].hasMixin){
+                                		if(items[obj].hasMixin("Equippable")){
+                                    		if(items[obj].isWieldable()){
+                                    			Game.Narrator.helpText("weaponPickup", {glyph:glyph});
+                                    			break;
+                                        	}
+                                		}
+                            		}
+                            	}
+                            } 
+                        	if(Game.Narrator.getHelpItem("armorPickup")){
+                            	for(obj in items){
+                            		if(items[obj].hasMixin){
+                                		if(items[obj].hasMixin("Equippable")){
+    	                            		if(items[obj].isWearable()){
+    	                            			Game.Narrator.helpText("armorPickup", {glyph:glyph});
+    	                            			break;
+    	                                	}
+                                		}
+                            			
+                            		}
+                            	}
+                            }
                         }
                         // Check if we have an entity at the position
                         if (map.getEntityAt(x, y, currentDepth)) {
@@ -217,25 +253,6 @@ Game.Screen.playScreen = {
                 '%c{white}%b{black}' + messages[i]
             );
         }
-
-        /** MOVED INTO INTERFACE
-         * left comments here in case we want to put it back...
-        // Render player stats
-        var stats = '%c{white}%b{black}';
-        stats += vsprintf('Health:%d/%d  Level:%d(%d%%)  Attack:%d  Defense:%d  Sight:%d  Nutrition:%d/%d Condition: %s', 
-            [
-             	this._player.getHp(), 
-             	this._player.getMaxHp(),
-             	this._player.getLevel(),
-             	Math.ceil((this._player.getExperience()/this._player.getNextLevelExperience())*100),
-             	this._player.getAttack(),
-             	this._player.getDefense(),
-             	this._player.getSightRadius(),
-             	this._player.getFullness(),
-             	this._player.getMaxFullness(),
-             	this._player.getHungerState()
-    		 ]);
-        display.drawText(1, screenHeight-1, stats);**/
         
         // return a key for all entities that are within our line of sight
         Game.Interface.getKey().updateItems(this.keys);
@@ -339,6 +356,7 @@ Game.Screen.playScreen = {
                 // Not a valid key
                 return;
             }
+            
             // Unlock the engine
             this._player.getMap().getEngine().unlock();
         }

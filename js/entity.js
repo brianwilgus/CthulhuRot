@@ -96,7 +96,7 @@ Game.Entity.prototype.tryMove = function(x, y, z, map) {
     var tile = map.getTile(x, y, this.getZ());
     var target = map.getEntityAt(x, y, this.getZ());
     // If our z level changed, check if we are on stair
-    if (z < this.getZ()) {
+    if (z < this.getZ()) { // only players go up stairs
         if (tile != Game.Tile.stairsUpTile) {
             Game.sendMessage(this, "You can't go up here!");
         } else {
@@ -105,9 +105,8 @@ Game.Entity.prototype.tryMove = function(x, y, z, map) {
             this.setPosition(x, y, z);
             Game.Interface.getStatus().updateItems({depth:z+1});
         }
-    } else if (z > this.getZ()) {
-        if (tile === Game.Tile.holeToCavernTile &&
-            this.hasMixin(Game.EntityMixins.PlayerActor)) {
+    } else if (z > this.getZ()) { // only players go down stairs
+        if (tile === Game.Tile.holeToCavernTile) {
             // Switch the entity to a boss cavern!
             this.switchMap(new Game.Map.BossCavern());
             Game.sendMessage(this, "You enter the lair of Shub-Niggurath...");
@@ -140,7 +139,7 @@ Game.Entity.prototype.tryMove = function(x, y, z, map) {
         this.setPosition(x, y, z);
         // Notify the entity that there are items at this position
         var items = this.getMap().getItemsAt(x, y, z);
-        if (items) {
+        if (items && this.hasMixin(Game.EntityMixins.PlayerActor)) {
             if (items.length === 1) {
                 Game.sendMessage(this, "You see %s.", [items[0].describeA()]);
             } else {
@@ -149,7 +148,7 @@ Game.Entity.prototype.tryMove = function(x, y, z, map) {
         }
         // describe our location by tile
         var desc = tile.getDescription();
-        if(desc){
+        if(desc && !Game.Narrator.isSuppressing() && this.hasMixin(Game.EntityMixins.PlayerActor)){
         	Game.sendMessage(this, desc);
         }
         return true;
