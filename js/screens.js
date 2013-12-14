@@ -118,6 +118,8 @@ Game.Screen.playScreen = {
         			              ]
         		});
     	Game.Interface.update();
+
+		Game.Narrator.helpText("start");
 	},
 	exit: function() {
 		console.log("Exited play screen"); 

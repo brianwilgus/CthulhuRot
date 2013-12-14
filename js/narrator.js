@@ -4,6 +4,7 @@ Game.Narrator = {
 	_isSuppressing: true,
 	_helpOnce: {
 		// these are the flags that control the help system
+		start:true,
         drop:true,
         foodPickup:true,
         armorPickup:true,
@@ -44,27 +45,18 @@ Game.Narrator = {
 		//
 		console.log("processNarrationTurn["+this._turn+"]");
 		
-		if(this._turn == 0){
-			// the beginning...
-	        Game.sendMessage(this._player, "You awaken in a dark forest0.");
-	        Game.sendMessage(this._player, "%c{lightgreen}%b{black}You are the %c{yellow}@ %c{lightgreen}symbol. " +
-	        		"Use the arrow keys to move.");
-		} else if(this._turn == 1){
-	        Game.sendMessage(this._player, "You awaken in a dark forest1.");
-	        Game.sendMessage(this._player, "%c{lightgreen}%b{black}You are the %c{yellow}@ %c{lightgreen}symbol. " +
-	        		"Use the arrow keys to move.");
-		} else if(this._turn == 2){
+		if(this._turn == 1){
+			this._player.clearMessages();// clean up the start message which doesn't clear in the game process flow
 			Game.sendMessage(this._player, "Strange creatures run through the undergrowth as you step forward.");
 	        Game.sendMessage(this._player, "%c{lightgreen}%b{black}To attack a creature walk into it.");
 		} else if(this._turn == 3){
 	        this.setSuppress(false);
-		} else if(this._turn == 4){
 		}
 	},
 	
 	helpText: function(type, args) {
 		console.log("called helptext "+type+" this._isSuppressing "+this._isSuppressing );
-		if(!this._isSuppressing){
+		if(!this._isSuppressing || type === "start"){
 			for(helpItem in this._helpOnce){
 				/*
 				console.log("helpText type = "+type);
@@ -72,7 +64,13 @@ Game.Narrator = {
 				*/
 				if(helpItem == type && this._helpOnce[helpItem] == true){
 					this._helpOnce[helpItem] = false;
+					console.log('set '+helpItem+' to false.');
 					switch(type){
+						case "start":
+							Game.sendMessage(this._player, "You awaken in a dark forest.");
+					        Game.sendMessage(this._player, "%c{lightgreen}%b{black}You are the %c{yellow}@ %c{lightgreen}symbol. " +
+					        		"Use the arrow keys to move.");
+					        break;
 						case "drop":
 							Game.sendMessage(this._player, "%c{lightgreen}%b{black}Drop items by pressing the [%c{yellow}D%c{lightgreen}] key.");
 							break;
@@ -92,7 +90,6 @@ Game.Narrator = {
 									"%c{"+args['glyph'].getForeground()+"}"+args['glyph'].getChar()+"%c{lightgreen}%c{white}: "+args['glyph']._name+"%c{lightgreen} by standing on top of them and pressing the [%c{yellow},%c{lightgreen}] key.");
 					        break;
 						case "edible":
-							console.log("write edible");
 							Game.sendMessage(this._player, "%c{lightgreen}%b{black}You have picked up your first Edible item! " +
 									"Press [%c{yellow}E%c{lightgreen}] and choose the %c{white}"+args['glyph']._name+"%c{lightgreen} in your inventory to eat.");
 					        break;
