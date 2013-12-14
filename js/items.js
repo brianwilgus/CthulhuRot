@@ -87,6 +87,17 @@ Game.ItemRepository.define('sword', {
     disableRandomCreation: true
 });
 
+Game.ItemRepository.define('axe', {
+    name: 'Battle Axe',
+    character: 'A',
+    foreground: 'grey',
+    attackValue: 10,
+    wieldable: true,
+    mixins: [Game.ItemMixins.Equippable]
+}, {
+    disableRandomCreation: true
+});
+
 Game.ItemRepository.define('staff', {
     name: 'Withered Staff',
     character: '/',
@@ -104,7 +115,7 @@ Game.ItemRepository.define('staff', {
 //======================================
 Game.ItemRepository.define('robes', {
     name: 'Padded Cloth Armor',
-    character: 'R',
+    character: 'P',
     foreground: 'white',
     defenseValue: 4,
     wearable: true,
@@ -126,7 +137,7 @@ Game.ItemRepository.define('chainmail', {
 
 Game.ItemRepository.define('platemail', {
     name: 'Heavy Plate Mail',
-    character: 'P',
+    character: 'H',
     foreground: 'aliceblue',
     defenseValue: 14,
     wearable: true,

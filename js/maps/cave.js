@@ -47,12 +47,12 @@ Game.Map.Cave = function(tiles, player) {
         this.addEntityAtRandomPosition(Game.EntityRepository.create('highpriest'), 6);
     }
     // Add weapons and armor to the map in random positions and floors
-    var lowtemplates = ['dagger', 'dagger', 'staff', 'staff', 'robes', 'robes', 'chainmail', 'leatherarmor', 'leatherarmor'];
+    var lowtemplates = ['dagger', 'dagger', 'staff', 'staff', 'robes', 'robes', 'chainmail', 'leatherarmor', 'leatherarmor', 'axe'];
     for (var i = 0; i < lowtemplates.length; i++) {
         this.addItemAtRandomPosition(Game.ItemRepository.create(lowtemplates[i]),
             Math.floor(4 * ROT.RNG.getUniform()));
     }
-    var hightemplates = [ 'chainmail', 'chainmail', 'sword', 'sword', 'platemail', 'platemail', 'spikedarmor', 'spikedarmor' ];
+    var hightemplates = [ 'chainmail', 'chainmail', 'sword', 'axe', 'platemail', 'platemail', 'spikedarmor', 'spikedarmor' ];
     for (var i = 0; i < hightemplates.length; i++) {
         this.addItemAtRandomPosition(Game.ItemRepository.create(hightemplates[i]),
             Math.floor(4 * ROT.RNG.getUniform())+2);

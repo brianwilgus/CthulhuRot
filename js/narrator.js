@@ -82,12 +82,12 @@ Game.Narrator = {
 						case "weaponPickup":
 							Game.sendMessage(this._player, "%c{white}%b{black}A weapon! Exactly what you need to fight these beasts.");
 							Game.sendMessage(this._player, "%c{lightgreen}%b{black}Pick up the " +
-									"%c{"+args['glyph'].getForeground()+"}"+args['glyph'].getChar()+"%c{lightgreen}%c{white}: "+args['glyph']._name+"%c{lightgreen} by standing on top of them and pressing the [%c{yellow},%c{lightgreen}] key.");
+									"%c{"+args['glyph'].getForeground()+"}"+args['glyph'].getChar()+"%c{lightgreen}%c{white}: "+args['glyph']._name+"%c{lightgreen} by standing on top of it and pressing the [%c{yellow},%c{lightgreen}] key.");
 					        break;
 						case "armorPickup":
 							Game.sendMessage(this._player, "%c{white}%b{black}Your eye catches some armor nearby.");
 							Game.sendMessage(this._player, "%c{lightgreen}%b{black}Pick up the " +
-									"%c{"+args['glyph'].getForeground()+"}"+args['glyph'].getChar()+"%c{lightgreen}%c{white}: "+args['glyph']._name+"%c{lightgreen} by standing on top of them and pressing the [%c{yellow},%c{lightgreen}] key.");
+									"%c{"+args['glyph'].getForeground()+"}"+args['glyph'].getChar()+"%c{lightgreen}%c{white}: "+args['glyph']._name+"%c{lightgreen} by standing on top of it and pressing the [%c{yellow},%c{lightgreen}] key.");
 					        break;
 						case "edible":
 							Game.sendMessage(this._player, "%c{lightgreen}%b{black}You have picked up your first Edible item! " +
