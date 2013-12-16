@@ -69,8 +69,14 @@ div {
 }
 
 .condition {
-	margin-left: 1.8em;
+	margin-left: 2em;
+	font-size: 13px;
 } 
+
+.monsterStats{
+	margin-left: 2em;
+	font-size: 13px;
+}
 
 .interface #key,
 .interface #status {

@@ -25,9 +25,6 @@ Game.Map.Cave = function(tiles, player) {
     	if(z < 7 && z > 4){
     		getTypes.push("infernal");
     	}
-        if(z > 2){
-	    	//getTypes.push("infernal");
-        }
         
         // 20 entities per floor
         for (var i = 0; i < 20; i++) {
@@ -35,8 +32,9 @@ Game.Map.Cave = function(tiles, player) {
             // Add a random entity
             this.addEntityAtRandomPosition(entity, z);
             // Level up the entity based on the floor
+            var boost = z + Math.floor(3 * ROT.RNG.getUniform());
             if (entity.hasMixin('ExperienceGainer')) {
-                for (var level = 0; level < z; level++) {
+                for (var level = 0; level < boost; level++) {
                     entity.giveExperience(entity.getNextLevelExperience() -
                         entity.getExperience());
                 }
@@ -47,12 +45,12 @@ Game.Map.Cave = function(tiles, player) {
         this.addEntityAtRandomPosition(Game.EntityRepository.create('highpriest'), 6);
     }
     // Add weapons and armor to the map in random positions and floors
-    var lowtemplates = ['dagger', 'dagger', 'staff', 'staff', 'robes', 'robes', 'chainmail', 'leatherarmor', 'leatherarmor', 'axe'];
+    var lowtemplates = ['staff', 'dagger', 'chainmail', 'leatherarmor', 'mace', 'axe'];
     for (var i = 0; i < lowtemplates.length; i++) {
         this.addItemAtRandomPosition(Game.ItemRepository.create(lowtemplates[i]),
             Math.floor(4 * ROT.RNG.getUniform()));
     }
-    var hightemplates = [ 'chainmail', 'chainmail', 'sword', 'axe', 'platemail', 'platemail', 'spikedarmor', 'spikedarmor' ];
+    var hightemplates = [ 'chainmail', 'mace', 'sword', 'axe', 'platemail', 'platemail', 'spikedarmor', 'spikedarmor' ];
     for (var i = 0; i < hightemplates.length; i++) {
         this.addItemAtRandomPosition(Game.ItemRepository.create(hightemplates[i]),
             Math.floor(4 * ROT.RNG.getUniform())+2);

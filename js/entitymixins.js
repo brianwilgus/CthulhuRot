@@ -173,7 +173,7 @@ Game.EntityMixins.GiantBossActor = Game.extend(Game.EntityMixins.TaskActor, {
         // Send a message saying the monster grew an arm.
         Game.sendMessageNearby(this.getMap(),
             this.getX(), this.getY(), this.getZ(),
-            'An extra tentacle erupts on the monster!');
+            '%c{red}An extra tentacle erupts on the monster!');
     },
     spawnSlime: function() {
         // Generate a random position nearby.
@@ -196,7 +196,7 @@ Game.EntityMixins.GiantBossActor = Game.extend(Game.EntityMixins.TaskActor, {
         // Send a message saying the Spawn appeared.
         Game.sendMessageNearby(this.getMap(),
             this.getX(), this.getY(), this.getZ(),
-            'A Formless Spawn crawls from a hole nearby to fight!');
+            '%c{red}A Formless Spawn crawls from a hole nearby to fight!');
     },
     listeners: {
         onDeath: function(attacker) {
@@ -238,8 +238,8 @@ Game.EntityMixins.Attacker = {
         value = value || 2;
         // Add to the attack value.
         this._attackValue += 2;
-        if(this.hasMixin(Game.EntityMixins.Player)){
-    		Game.sendMessage(this, "You look stronger!");
+        if(this.hasMixin(Game.EntityMixins.PlayerActor)){
+    		Game.sendMessage(this, "%c{greenyellow}You look stronger!");
         }
     },
     attack: function(target) {
@@ -261,10 +261,8 @@ Game.EntityMixins.Attacker = {
         		 		damage
             		]));
 			**/
-            Game.sendMessage(this, 'You strike the %s for %d damage!',
-                [target.getName(), damage]);
-            Game.sendMessage(target, 'The %s strikes you for %d damage!',
-                [this.getName(), damage]);
+            Game.sendMessage(this, '%c{greenyellow}You strike the '+target.getName()+' for '+damage+' damage!');
+            Game.sendMessage(target, '%c{red}The '+this.getName()+' strikes you for '+damage+' damage!');
 
             target.takeDamage(this, damage);
         }
@@ -291,7 +289,7 @@ Game.EntityMixins.Poisonable = {
         if(this._poisonedTurns > 0 ){
         	this._poisonedTurns--;
         	if(this.hasMixin(Game.EntityMixins.Destructible)){
-        		Game.sendMessage(this, 'You take '+this._poisonDmgRate+' poison damage.');
+        		Game.sendMessage(this, '%c{red}You take '+this._poisonDmgRate+' poison damage.');
         		this.takeDamage(this._attacker, this._poisonDmgRate);
         	}
         }
@@ -338,8 +336,8 @@ Game.EntityMixins.Destructible = {
         value = value || 2;
         // Add to the defense value.
         this._defenseValue += 2;
-        if(this.hasMixin(Game.EntityMixins.Player)){
-    		Game.sendMessage(this, "You look tougher!");
+        if(this.hasMixin(Game.EntityMixins.PlayerActor)){
+    		Game.sendMessage(this, "%c{greenyellow}You look tougher!");
         }
     },
     increaseMaxHp: function(value) {
@@ -348,8 +346,8 @@ Game.EntityMixins.Destructible = {
         // Add to both max HP and HP.
         this._maxHp += 10;
         this._hp += 10;
-        if(this.hasMixin(Game.EntityMixins.Player)){
-    		Game.sendMessage(this, "You look healthier!");
+        if(this.hasMixin(Game.EntityMixins.PlayerActor)){
+    		Game.sendMessage(this, "%c{greenyellow}You look healthier!");
         }
     },
     getHp: function() {
@@ -362,7 +360,7 @@ Game.EntityMixins.Destructible = {
         this._hp -= damage;
         // If have 0 or less HP, then remove ourselves from the map
         if (this._hp <= 0) {
-            Game.sendMessage(attacker, 'You kill the %s!', [this.getName()]);
+            Game.sendMessage(attacker, '%c{greenyellow}You kill the '+this.getName()+'!');
             
             // Raise events
             this.raiseEvent('onDeath', attacker);
@@ -405,7 +403,7 @@ Game.EntityMixins.MessageRecipient = {
     }
 };
 
-// This signifies our entity posesses a field of vision of a given radius.
+// This signifies our entity possesses a field of vision of a given radius.
 Game.EntityMixins.Sight = {
     name: 'Sight',
     groupName: 'Sight',
@@ -417,8 +415,9 @@ Game.EntityMixins.Sight = {
         value = value || 1;
         // Add to sight radius.
         this._sightRadius += 1;
-        if(this.hasMixin(Game.EntityMixins.Player)){
-    		Game.sendMessage(this, "You are more aware of your surroundings!");
+    	console.log(this.hasMixin(Game.EntityMixins.PlayerActor));
+        if(this.hasMixin(Game.EntityMixins.PlayerActor)){
+    		Game.sendMessage(this, "%c{greenyellow}You are more aware of your surroundings!");
         }
     },
     getSightRadius: function() {
@@ -610,11 +609,14 @@ Game.EntityMixins.FoodConsumer = {
         this.modifyFullnessBy(-this._fullnessDepletionRate);
     },
     modifyFullnessBy: function(points) {
+    	if(points < -10){
+    		Game.sendMessage(this, "%c{red}That item you ate made you sick (lose "+points+" nutrition).");
+    	}
     	this._fullness = this._fullness + points;
         if (this._fullness <= 0) {
             this.kill("starvation", "You have died of starvation!");
         } else if (this._fullness > this._maxFullness) {
-            this.kill("gluttony", "You choke and die!");
+            this.kill("gluttony", "You choke while eating and die!");
         }
     },
     getHungerState: function() {
@@ -651,7 +653,6 @@ Game.EntityMixins.CorpseDropper = {
     init: function(template) {
         // Chance of dropping a corpse (out of 100).
         this._corpseDropRate = template['corpseDropRate'] || 100;
-        this._foodValue = template['foodValue'] || 50;
     },
     listeners: {
         onDeath: function(attacker) {
@@ -661,9 +662,52 @@ Game.EntityMixins.CorpseDropper = {
                 this._map.addItem(this.getX(), this.getY(), this.getZ(),
                     Game.ItemRepository.create('corpse', {
                         name: this._name + ' corpse',
-                        foreground: this._foreground,
-                        foodValue: this._foodValue
+                        foreground: this._foreground
                     }));
+            }    
+        }
+    }
+};
+
+Game.EntityMixins.MeatDropper = {
+    name: 'MeatDropper',
+    init: function(template) {
+        // Chance of dropping meat (out of 100).
+        this._meatDropRate = template['meatDropRate'] || 0;
+        this._foodValue = template['foodValue'] || 50;
+    },
+    listeners: {
+        onDeath: function(attacker) {
+            // Check if we should drop some meat.
+            if (Math.round(ROT.RNG.getUniform() * 100) <= this._meatDropRate) {
+                this._map.addItem(this.getX(), this.getY(), this.getZ(),
+                        Game.ItemRepository.create('meat', {
+                            name: this._name + ' meat',
+                            foreground: this._foreground,
+                            foodValue: this._foodValue
+                        }));
+            }    
+        }
+    }
+};
+
+Game.EntityMixins.ItemDropper = {
+    name: 'ItemDropper',
+    init: function(template) {
+        // Chance of dropping an item (out of 100).
+        this._itemDropRate = template['itemDropRate'] || 100;
+        this._itemDropList = template['itemDropList'] || [];
+    },
+    listeners: {
+        onDeath: function(attacker) {
+            // Check if we should drop an item.
+            if (Math.round(ROT.RNG.getUniform() * 100) <= this._itemDropRate) {
+            	if(this._itemDropList.length > 0){
+            		var newItem = this._itemDropList.random();
+            		console.log(newItem);
+                    this._map.addItem(this.getX(), this.getY(), this.getZ(),
+                            Game.ItemRepository.create(newItem));
+            	}
             }    
         }
     }
@@ -711,7 +755,7 @@ Game.EntityMixins.ExperienceGainer = {
         this._experience = template['experience'] || 0;
         this._statPointsPerLevel = template['statPointsPerLevel'] || 1;
         this._statPoints = 0;
-        // Determine what stats can be levelled up.
+        // Determine what stats can be leveled up.
         this._statOptions = [];
         if (this.hasMixin('Attacker')) {
             this._statOptions.push(['Increase attack value', this.increaseAttackValue]);
@@ -766,8 +810,8 @@ Game.EntityMixins.ExperienceGainer = {
         }
         // Check if we gained at least one level.
         if (levelsGained > 0) {
-        	if(this.hasMixin(Game.EntityMixins.Player)){
-        		Game.sendMessage(this, "You advance to level %d.", [this._level]);
+        	if(this.hasMixin(Game.EntityMixins.PlayerActor)){
+        		Game.sendMessage(this, "%c{greenyellow}You advance to level "+this._level+".");
         	}
             this.raiseEvent('onGainLevel');
         }

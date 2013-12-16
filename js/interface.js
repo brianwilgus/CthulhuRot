@@ -204,6 +204,17 @@ Game.Interface.Key.prototype.writeOutput = function() {
 				     		this._items['entities'][entity].getName()
 						]);
 
+				output += "<div class='monsterStats'>";
+				output += vsprintf("LV:%d HP:%d/%d AT:%d DF:%d", 
+				        [
+				     		this._items['entities'][entity].getLevel(),
+				     		this._items['entities'][entity].getHp(),
+				     		this._items['entities'][entity].getMaxHp(),
+				     		this._items['entities'][entity].getAttackValue(),
+				     		this._items['entities'][entity].getDefenseValue(),
+						]);
+				output += "</div>";
+
 				if(this._items['entities'][entity].hasMixin(Game.EntityMixins.FungusActor) ||
 				   this._items['entities'][entity].hasMixin(Game.EntityMixins.TaskActor) ||
 				   this._items['entities'][entity].hasMixin(Game.EntityMixins.Digger) ||
@@ -252,10 +263,10 @@ Game.Interface.Key.prototype.writeOutput = function() {
 					
 					if(this._items['entities'][entity].hasMixin(Game.ItemMixins.Equippable)){
 				    	if(this._items['entities'][entity].isWieldable()){
-							output += " <span class='condition' style='color:lightgreen'>wieldable</span>";
+							output += " <span style='color:lightgreen'>wieldable</span>";
 				    	}
 				    	if(this._items['entities'][entity].isWearable()){
-							output += " <span class='condition' style='color:lightgreen'>wearable</span>";
+							output += " <span style='color:lightgreen'>wearable</span>";
 				    	}
 				    }
 					output += "</div>";

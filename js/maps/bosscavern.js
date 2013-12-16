@@ -13,7 +13,7 @@ Game.Map.BossCavern = function() {
     this.addEntityAtRandomPosition(Game.EntityRepository.create('deepone'), 0);
     this.addEntityAtRandomPosition(Game.EntityRepository.create('deepone'), 0);
 
-    var artifacts = [ 'blade', 'tiara', 'bone', 'bone', 'bone', 'bone', 'bone', 'bone', 'bone', 'bone' ];
+    var artifacts = [ 'bone', 'bone', 'bone', 'bone', 'bone', 'bone', 'bone', 'bone' ];
     for (var i = 0; i < artifacts.length; i++) {
         this.addItemAtRandomPosition(Game.ItemRepository.create(artifacts[i]),0);
     }

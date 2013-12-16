@@ -34,8 +34,16 @@ Game.ItemRepository.define('rotten', {
 
 Game.ItemRepository.define('corpse', {
 	    name: 'Corpse',
+	    character: '%'
+	}, {
+	    disableRandomCreation: true
+	}
+);
+
+Game.ItemRepository.define('meat', {
+	    name: 'Meat',
 	    character: '%',
-	    foodValue: 75,
+	    foodValue: 50,
 	    consumptions: 1,
 	    mixins: [Game.ItemMixins.Edible]
 	}, {
@@ -68,6 +76,17 @@ Game.ItemRepository.define('bone', {
 Game.ItemRepository.define('dagger', {
     name: 'Cultist Dagger',
     character: '+',
+    foreground: 'gray',
+    attackValue: 6,
+    wieldable: true,
+    mixins: [Game.ItemMixins.Equippable]
+}, {
+    disableRandomCreation: true
+});
+
+Game.ItemRepository.define('mace', {
+    name: 'Heavy Mace',
+    character: 'M',
     foreground: 'gray',
     attackValue: 8,
     wieldable: true,
@@ -114,9 +133,9 @@ Game.ItemRepository.define('staff', {
 // Wearables
 //======================================
 Game.ItemRepository.define('robes', {
-    name: 'Padded Cloth Armor',
-    character: 'P',
-    foreground: 'white',
+    name: 'Cultist Robes',
+    character: 'R',
+    foreground: 'red',
     defenseValue: 4,
     wearable: true,
     mixins: [Game.ItemMixins.Equippable]
@@ -137,7 +156,7 @@ Game.ItemRepository.define('chainmail', {
 
 Game.ItemRepository.define('platemail', {
     name: 'Heavy Plate Mail',
-    character: 'H',
+    character: 'P',
     foreground: 'aliceblue',
     defenseValue: 14,
     wearable: true,
