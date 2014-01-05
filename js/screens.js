@@ -276,14 +276,22 @@ Game.Screen.playScreen = {
         }
         if (inputType === 'keydown') {
             // Movement
-            if (inputData.keyCode === ROT.VK_LEFT) {
+            if (inputData.keyCode === ROT.VK_LEFT || inputData.keyCode === ROT.VK_NUMPAD4) {
                 this.move(-1, 0, 0);
-            } else if (inputData.keyCode === ROT.VK_RIGHT) {
+            } else if (inputData.keyCode === ROT.VK_RIGHT || inputData.keyCode === ROT.VK_NUMPAD6) {
                 this.move(1, 0, 0);
-            } else if (inputData.keyCode === ROT.VK_UP) {
+            } else if (inputData.keyCode === ROT.VK_UP || inputData.keyCode === ROT.VK_NUMPAD8) {
                 this.move(0, -1, 0);
-            } else if (inputData.keyCode === ROT.VK_DOWN) {
+            } else if (inputData.keyCode === ROT.VK_DOWN || inputData.keyCode === ROT.VK_NUMPAD2) {
                 this.move(0, 1, 0);
+            } else if (inputData.keyCode === ROT.VK_NUMPAD9) {
+                this.move(1, -1, 0); 	// up right
+            } else if (inputData.keyCode === ROT.VK_NUMPAD3) {
+                this.move(1, 1, 0); 	// down right
+            } else if (inputData.keyCode === ROT.VK_NUMPAD7) {
+                this.move(-1, -1, 0); 	//up left
+            } else if (inputData.keyCode === ROT.VK_NUMPAD1) {
+                this.move(-1, 1, 0); 	// down left
             } else if (inputData.keyCode === ROT.VK_I) {
                 // Show the inventory screen
                 this.showItemsSubScreen(Game.Screen.inventoryScreen, this._player.getItems(),
@@ -341,17 +349,24 @@ Game.Screen.playScreen = {
             /** dev command to test win screen **/
     		} else if(inputData.keyCode === ROT.VK_F2) {
                 Game.switchScreen(Game.Screen.winScreen);
+            
+            /** dev command to test lose screen **/
+    		} else if(inputData.keyCode === ROT.VK_F3) {
+                Game.switchScreen(Game.Screen.loseScreen);
                 
-                /** dev command to test lose screen **/
-        		} else if(inputData.keyCode === ROT.VK_F3) {
-                    Game.switchScreen(Game.Screen.loseScreen);
+            } else if (inputData.keyCode === ROT.VK_SPACE || inputData.keyCode === ROT.VK_NUMPAD5) {
+            	// wait
+            	Game.sendMessage(this._player, "You rest a turn.");
                 
-            } else {
-                // Not a valid key
-                return; 
+    		} else {
+            	// Not a valid key
+            	Game.sendMessage(this._player, "Not a valid key command.  Press <?> for help.");
+            	// return;
             }
+            
             // Unlock the engine
             this._player.getMap().getEngine().unlock();
+            
         } else if (inputType === 'keypress') {
             var keyChar = String.fromCharCode(inputData.charCode);
             if (keyChar === '>') {

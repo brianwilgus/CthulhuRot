@@ -180,6 +180,8 @@ Game.Interface.Status.prototype.writeOutput = function() {
      		this._items['locationNames'][this._items['depth']-1],
 			this._items['depth']
 		]);
+
+	output += "<br/><span style='color:lightgreen'>Press &#60;?&#62; for help</span>"; 
 	return output;
 }
 
