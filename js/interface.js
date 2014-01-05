@@ -127,8 +127,24 @@ Game.Interface.PlayerStats.prototype.writeOutput = function() {
 		ncolor = "white"; 
 	}
 	
+	// conditions
+	var poisonStateOutput = "";
+	var poisonState = player.getPoisonState();
+	if(poisonState[0]){
+		// if poisoned append this snippet to conditions with the length
+		poisonStateOutput += ' <span style="color:yellowgreen">Poisoned';
+		if(poisonState[1]>0){
+			poisonStateOutput += ' ['+poisonState[1]+' turn';
+			if(poisonState[1]>1){
+				poisonStateOutput += 's';
+			}
+			poisonStateOutput += ']';
+		}
+		poisonStateOutput += '</span>';
+	}
+	
 	output += vsprintf(
-			'<br/>Attack:%d<br/>Defense:%d<br/>Sight:%d<br/>Nutrition:<span style="color:%s">%d</span>/%d<br/>Condition(s): <span style="color:%s">%s</span>',
+			'<br/>Attack:%d<br/>Defense:%d<br/>Sight:%d<br/>Nutrition:<span style="color:%s">%d</span>/%d<br/>Condition(s): <span style="color:%s">%s</span>%s',
 		[
 			player.getAttack(),
 			player.getDefense(),
@@ -137,7 +153,8 @@ Game.Interface.PlayerStats.prototype.writeOutput = function() {
 			fn,
 			mfn,
 			ncolor,
-			player.getHungerState()
+			player.getHungerState(),
+			poisonStateOutput
 		]);
     return output;
 }

@@ -5,6 +5,7 @@ Game.EntityMixins = {};
 Game.EntityMixins.PlayerActor = {
     name: 'PlayerActor',
     groupName: 'Actor',
+    conditions: {},
     act: function() {        
         if (this._acting) {
             return;
@@ -279,27 +280,28 @@ Game.EntityMixins.Poisonable = {
 	init: function(template) {
         this._poisonDmgRate = template['poisonDmgRate'] || 5;
         this._poisonedTurns = 0;
+        this._isPoisoned = false;
 	},
 	applyPoison: function(attacker, turns, dmg) {
 		this._poisonedTurns = turns;
 		this._poisonDmgRate = dmg;
 		this._attacker = attacker;
+        this._isPoisoned = true;
 	},
     actPoisonTurn: function() {
         if(this._poisonedTurns > 0 ){
         	this._poisonedTurns--;
+            this._isPoisoned = true;
         	if(this.hasMixin(Game.EntityMixins.Destructible)){
-        		Game.sendMessage(this, '%c{red}You take '+this._poisonDmgRate+' poison damage.');
+        		Game.sendMessage(this, '%c{yellowgreen}You take '+this._poisonDmgRate+' poison damage.');
         		this.takeDamage(this._attacker, this._poisonDmgRate);
         	}
+        } else {
+        	this._isPoisoned = false;
         }
     },
     getPoisonState: function() {
-    	if(this._poisonedTurns > 0 ){
-    		return true;
-    	} else {
-    		return false;
-    	}
+    	return [this._isPoisoned, this._poisonedTurns];
     }
 }
 
@@ -415,7 +417,7 @@ Game.EntityMixins.Sight = {
         value = value || 1;
         // Add to sight radius.
         this._sightRadius += 1;
-    	console.log(this.hasMixin(Game.EntityMixins.PlayerActor));
+    	//console.log(this.hasMixin(Game.EntityMixins.PlayerActor));
         if(this.hasMixin(Game.EntityMixins.PlayerActor)){
     		Game.sendMessage(this, "%c{greenyellow}You are more aware of your surroundings!");
         }

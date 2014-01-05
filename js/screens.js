@@ -326,7 +326,7 @@ Game.Screen.playScreen = {
                         'There is nothing here to pick up.');
                 } 
                 
-            /** dev command to test end boss 
+            /** dev command to test end boss  **/
             } else if (inputData.keyCode === ROT.VK_F1) {
             	console.log("warp to end boss");
                 Game.sendMessage(this._player, "warp to end boss");
@@ -336,11 +336,15 @@ Game.Screen.playScreen = {
                 		{
                 			depth:1,
                 			locationNames:["Lair of Shub-Niggurath"]
-                		}); **/
+                		});
                 
-            /** dev command to test win screen 
+            /** dev command to test win screen **/
     		} else if(inputData.keyCode === ROT.VK_F2) {
-                Game.switchScreen(Game.Screen.winScreen);**/
+                Game.switchScreen(Game.Screen.winScreen);
+                
+                /** dev command to test lose screen **/
+        		} else if(inputData.keyCode === ROT.VK_F3) {
+                    Game.switchScreen(Game.Screen.loseScreen);
                 
             } else {
                 // Not a valid key
@@ -402,7 +406,7 @@ Game.Screen.winScreen = {
 	render: function(display) {
         // Render our prompt to the screen
         display.drawText(2, 1, "%c{white}You have defeated the minions of Shub-Niggurath!");
-        display.drawText(2, 2, "%c{white}Into the darkness you run madly for your life.");
+        display.drawText(2, 2, "%c{white}Into the darkness you madly run for your life.");
         display.drawText(2, 3, "%c{white}You are alive, for now...");
         display.drawText(2, 5, "%c{lightgreen}Press [Enter] to start over.");
 
