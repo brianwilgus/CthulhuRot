@@ -284,14 +284,14 @@ Game.Screen.playScreen = {
                 this.move(0, -1, 0);
             } else if (inputData.keyCode === ROT.VK_DOWN || inputData.keyCode === ROT.VK_NUMPAD2) {
                 this.move(0, 1, 0);
-            } else if (inputData.keyCode === ROT.VK_NUMPAD9) {
-                this.move(1, -1, 0); 	// up right
-            } else if (inputData.keyCode === ROT.VK_NUMPAD3) {
-                this.move(1, 1, 0); 	// down right
-            } else if (inputData.keyCode === ROT.VK_NUMPAD7) {
-                this.move(-1, -1, 0); 	//up left
-            } else if (inputData.keyCode === ROT.VK_NUMPAD1) {
-                this.move(-1, 1, 0); 	// down left
+            } else if (inputData.keyCode === ROT.VK_NUMPAD9) { // up right
+                this.move(1, -1, 0); 	
+            } else if (inputData.keyCode === ROT.VK_NUMPAD3) { // down right
+                this.move(1, 1, 0); 	
+            } else if (inputData.keyCode === ROT.VK_NUMPAD7) { //up left
+                this.move(-1, -1, 0); 	
+            } else if (inputData.keyCode === ROT.VK_NUMPAD1) { // down left
+                this.move(-1, 1, 0); 	
             } else if (inputData.keyCode === ROT.VK_I) {
                 // Show the inventory screen
                 this.showItemsSubScreen(Game.Screen.inventoryScreen, this._player.getItems(),
@@ -341,10 +341,10 @@ Game.Screen.playScreen = {
                 this._player.switchMap(new Game.Map.BossCavern());
                 Game.sendMessage(this._player, "You enter the lair of Shub-Niggurath...");
                 Game.Interface.getStatus().updateItems(
-                		{
-                			depth:1,
-                			locationNames:["Lair of Shub-Niggurath"]
-                		});
+            		{
+            			depth:1,
+            			locationNames:["Lair of Shub-Niggurath"]
+            		});
                 
             /** dev command to test win screen **/
     		} else if(inputData.keyCode === ROT.VK_F2) {
@@ -354,14 +354,19 @@ Game.Screen.playScreen = {
     		} else if(inputData.keyCode === ROT.VK_F3) {
                 Game.switchScreen(Game.Screen.loseScreen);
                 
-            } else if (inputData.keyCode === ROT.VK_SPACE || inputData.keyCode === ROT.VK_NUMPAD5) {
-            	// wait
+            } else if (inputData.keyCode === ROT.VK_SPACE || inputData.keyCode === ROT.VK_NUMPAD5) { // wait
             	Game.sendMessage(this._player, "You rest a turn.");
-                
+            	
+            } else if(inputData.keyCode === ROT.VK_SHIFT) {
+                // passthrus SHIFT, ALT, CNTRL
+            	return;
     		} else {
             	// Not a valid key
-            	Game.sendMessage(this._player, "Not a valid key command.  Press <?> for help.");
-            	// return;
+    			//this.clearMessages();
+    			console.log(inputData.keyCode + " unrecognized.");
+    			Game.sendMessage(this._player, "Not a valid key command. Press <?> for help.");
+                Game.refresh();
+            	return;	
             }
             
             // Unlock the engine
@@ -373,9 +378,20 @@ Game.Screen.playScreen = {
                 this.move(0, 0, 1);
             } else if (keyChar === '<') {
                 this.move(0, 0, -1);
+                
+            } else if (keyChar === "?") { // help
+                // Show the wear screen
+                this.setSubScreen(Game.Screen.helpScreen);
+                
+            } else if (keyChar === "T") { // help
+                // Show the wear screen
+                this.setSubScreen(Game.Screen.tipsScreen);
+                
             } else {
                 // Not a valid key
-                return;
+            	// Game.sendMessage(this._player, "Not a valid key command.  Press <?> for help.");
+            	//this.clearMessages();
+    			return;
             }
             
             // Unlock the engine
@@ -751,3 +767,93 @@ Game.Screen.gainStatScreen = {
         }
     }
 };
+
+
+//Define our help screen
+Game.Screen.helpScreen = {
+	enter: function() { 
+		console.log("Entered help screen"); 
+		Game.Interface.clearAll();
+	},
+	exit: function() {
+		console.log("Exited help screen"); 
+	},
+	render: function(display) {
+		var i = 1;
+	      display.drawText(2, i++, "%c{white}To fight the minions of the elder ones, press the following keys:");
+	      i++;
+	      display.drawText(2, i++, "%c{lightgrey}Arrow Keys or Number Pad %c{lightgreen}to move and attack");
+	      display.drawText(2, i++, "%c{lightgrey}';' %c{lightgreen}to pick up items");
+	      display.drawText(2, i++, "%c{lightgrey}'w' %c{lightgreen}to wield an item as a weapon (+/- your Attack)");
+	      display.drawText(2, i++, "%c{lightgrey}'SHIFT + w' %c{lightgreen}to wear an item for protection (+/- your Defense)");
+	      display.drawText(2, i++, "%c{lightgrey}'e' %c{lightgreen}to eat an item (+/- nutrition)");
+	      display.drawText(2, i++, "%c{lightgrey}'i' %c{lightgreen}to view your inventory");
+	      display.drawText(2, i++, "%c{lightgrey}'d' %c{lightgreen}to drop an item from your inventory.");
+	      display.drawText(2, i++, "%c{lightgrey}'<' %c{lightgreen}to ascend a passage or stairs.");
+	      display.drawText(2, i++, "%c{lightgrey}'>' %c{lightgreen}to descend a passage or stairs.");
+	      display.drawText(2, i++, "%c{lightgrey}'?' %c{lightgreen}to show the help screen (this screen).");
+	      display.drawText(2, i++, "%c{lightgrey}'SHIFT + t' %c{lightgreen}to show gameplay tips.");
+	      i++;
+	      display.drawText(2, i++, "%c{lightgreen}Press [Esc] to return to the game");
+	},
+	handleInput: function(inputType, inputData) {
+		if(inputType == 'keyup') {
+			// If enter is pressed, start over
+	        if (inputData.keyCode === ROT.VK_ESCAPE) {
+	            // Switch back to the play screen.
+	            Game.Screen.playScreen.setSubScreen(undefined);
+	        }
+		}
+	}
+}
+
+
+//Define our tips screen
+Game.Screen.tipsScreen = {
+	enter: function() { 
+		console.log("Entered tips screen"); 
+		Game.Interface.clearAll();
+	},
+	exit: function() {
+		console.log("Exited tips screen"); 
+	},
+	render: function(display) {
+		var i = 1;
+	      display.drawText(2, i++, "%c{white}Here are some tips and suggestions to win:");
+	      i++;
+	      display.drawText(2, i++, "%c{lightgreen}Bump%c{grey} into enemies to %c{lightgrey}attack%c{grey} them.");
+	      i++;
+	      display.drawText(2, i++, "%c{grey}Some enemies (like wolves) %c{lightgrey}move faster and more often%c{grey} than you.");
+	      i++;
+	      display.drawText(2, i++, "%c{yellowgreen}Poison %c{grey}%c{lightgrey}damages over time and bypasses armor%c{grey}. Beware %c{yellowgreen}poisonous%c{grey} enemies!");
+	      i++;
+	      display.drawText(2, i++, "%c{grey}Do not be afraid to %c{lightgreen}run from strong enemies%c{grey}.");
+	      i++;
+	      display.drawText(2, i++, "%c{red}Hunting%c{grey} enemies chase by sight. %c{lightgreen}Hide to escape%c{grey}.");
+	      i++;
+	      display.drawText(2, i++, "%c{grey}Picking up corpses is a waste of inventory, %c{lightgrey}only carry the meat%c{grey}.");
+	      i++;
+	      display.drawText(2, i++, "%c{grey}Pay attention to info in the %c{orange}Key%c{grey}, it will save your life.");
+	      i++;
+	      display.drawText(2, i++, "%c{grey}Run out of food (Nutrition) and you will %c{lightcoral}starve%c{grey}.");
+	      display.drawText(2, i++, "%c{grey}Eat too much and you will %c{lightcoral}choke to death%c{grey}!");
+	      i++;
+	      display.drawText(2, i++, "%c{grey}Some items (like the staff) will enhance both %c{lightgrey}Attack%c{grey} and %c{lightgrey}Defense%c{grey}!");
+	      display.drawText(2, i++, "%c{grey}Likewise, some items are cursed and will %c{lightcoral}reduce%c{grey} your stats.");
+	      display.drawText(2, i++, "%c{grey}So pay attention to Attack and Defense %c{lightgrey}while equipping items%c{grey}.");
+	      i++; 
+	      display.drawText(2, i++, "%c{grey}You only recover health when you level up...");
+	      display.drawText(2, i++, "%c{grey}so %c{lightgrey}put stat points into health%c{grey} to survive long-term.");
+	      i++;
+	      display.drawText(2, i++, "%c{lightgreen}Press [Esc] to return to the game");
+	},
+	handleInput: function(inputType, inputData) {
+		if(inputType == 'keyup') {
+			// If enter is pressed, start over
+	        if (inputData.keyCode === ROT.VK_ESCAPE) {
+	            // Switch back to the play screen.
+	            Game.Screen.playScreen.setSubScreen(undefined);
+	        }
+		}
+	}
+}
