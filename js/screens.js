@@ -783,7 +783,7 @@ Game.Screen.helpScreen = {
 	      display.drawText(2, i++, "%c{white}To fight the minions of the elder ones, press the following keys:");
 	      i++;
 	      display.drawText(2, i++, "%c{lightgrey}Arrow Keys or Number Pad %c{lightgreen}to move and attack");
-	      display.drawText(2, i++, "%c{lightgrey}';' %c{lightgreen}to pick up items");
+	      display.drawText(2, i++, "%c{lightgrey}',' %c{lightgreen}to pick up items");
 	      display.drawText(2, i++, "%c{lightgrey}'w' %c{lightgreen}to wield an item as a weapon (+/- your Attack)");
 	      display.drawText(2, i++, "%c{lightgrey}'SHIFT + w' %c{lightgreen}to wear an item for protection (+/- your Defense)");
 	      display.drawText(2, i++, "%c{lightgrey}'e' %c{lightgreen}to eat an item (+/- nutrition)");
