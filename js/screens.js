@@ -363,7 +363,7 @@ Game.Screen.playScreen = {
     		} else {
             	// Not a valid key
     			//this.clearMessages();
-    			console.log(inputData.keyCode + " unrecognized.");
+    			//console.log(inputData.keyCode + " unrecognized.");
     			Game.sendMessage(this._player, "Not a valid key command. Press <?> for help.");
                 Game.refresh();
             	return;	
@@ -844,6 +844,9 @@ Game.Screen.tipsScreen = {
 	      i++; 
 	      display.drawText(2, i++, "%c{grey}You only recover health when you level up...");
 	      display.drawText(2, i++, "%c{grey}so %c{lightgrey}put stat points into health%c{grey} to survive long-term.");
+	      i++; 
+	      display.drawText(2, i++, "%c{grey}You can dig through %c{green}Forest %c{grey}and %c{brown}Dirt %c{grey}but not stone.");
+	      display.drawText(2, i++, "%c{grey}Bump into walls to dig. Some animals can dig as well.");
 	      i++;
 	      display.drawText(2, i++, "%c{lightgreen}Press [Esc] to return to the game");
 	},
