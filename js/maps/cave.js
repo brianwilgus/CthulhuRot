@@ -2,13 +2,13 @@ Game.Map.Cave = function(tiles, player) {
     // Call the Map constructor
     Game.Map.call(this, tiles);
     // Add the player
-    this.addEntityAtRandomPosition(player, 0);
+    var playerPosition = this.addEntityAtRandomPosition(player, 0);
     // Add random entities and items to each floor.
     for (var z = 0; z < this._depth; z++) {
         // 15 items per floor
         for (var i = 0; i < 15; i++) {
             // Add a random entity
-            this.addItemAtRandomPosition(Game.ItemRepository.createRandom(), z);
+            this.addItemAtRandomPosition(Game.ItemRepository.createRandom(), z, playerPosition);
         }
 
     	/** lets get more specific with monsters per level**/
@@ -29,8 +29,9 @@ Game.Map.Cave = function(tiles, player) {
         // 20 entities per floor
         for (var i = 0; i < 20; i++) {
             var entity = Game.EntityRepository.createRandomFromTypes(getTypes);
-            // Add a random entity
-            this.addEntityAtRandomPosition(entity, z);
+            
+            this.addEntityAtRandomPosition(entity, z, playerPosition);
+            
             // Level up the entity based on the floor
             var boost = z + Math.floor(3 * ROT.RNG.getUniform());
             if (entity.hasMixin('ExperienceGainer')) {
@@ -48,7 +49,7 @@ Game.Map.Cave = function(tiles, player) {
     var lowtemplates = ['staff', 'dagger', 'chainmail', 'leatherarmor', 'mace', 'axe'];
     for (var i = 0; i < lowtemplates.length; i++) {
         this.addItemAtRandomPosition(Game.ItemRepository.create(lowtemplates[i]),
-            Math.floor(4 * ROT.RNG.getUniform()));
+            Math.floor(4 * ROT.RNG.getUniform()), playerPosition);
     }
     var hightemplates = [ 'chainmail', 'mace', 'sword', 'axe', 'platemail', 'platemail', 'spikedarmor', 'spikedarmor' ];
     for (var i = 0; i < hightemplates.length; i++) {

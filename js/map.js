@@ -51,12 +51,45 @@ Game.Map.prototype.removeEntity = function(entity) {
     }
 };
 
-Game.Map.prototype.addEntityAtRandomPosition = function(entity, z) {
-    var position = this.getRandomFloorPosition(z);
-    entity.setX(position.x);
-    entity.setY(position.y);
-    entity.setZ(position.z);
-    this.addEntity(entity);
+Game.Map.prototype.addEntityAtRandomPosition = function(entity, z, playerPosition, recursion) {
+	var position = this.getRandomFloorPosition(z);
+    var cellRange = 5;
+	if(	z == 0 && playerPosition != undefined &&
+		
+		// just x
+		(position.x > (playerPosition.x + cellRange) || position.x < (playerPosition.x - cellRange)) &&
+		
+		// just y
+		(position.y > (playerPosition.y + cellRange) || position.y < (playerPosition.y - cellRange)) 
+	){
+		
+	    entity.setX(position.x);
+	    entity.setY(position.y);
+	    entity.setZ(position.z);
+	    this.addEntity(entity);
+	    return {
+	    	x:position.x,
+	    	y:position.y,
+	    	z:position.z
+		};
+	} else if(z == 0 && playerPosition != undefined) {
+		// too close to player, try again
+		if(recursion == undefined){
+			recursion = 0;
+		}
+		recursion++;
+		this.addEntityAtRandomPosition(entity, z, playerPosition, recursion); // recursive
+    } else {
+        entity.setX(position.x);
+        entity.setY(position.y);
+        entity.setZ(position.z);
+        this.addEntity(entity);
+        return {
+        	x:position.x,
+        	y:position.y,
+        	z:position.z
+    	};
+    }
 };
 
 Game.Map.prototype.getRandomFloorPosition = function(z) {
@@ -247,7 +280,25 @@ Game.Map.prototype.addItem = function(x, y, z, item) {
     }
 };
 
-Game.Map.prototype.addItemAtRandomPosition = function(item, z) {
-    var position = this.getRandomFloorPosition(z);
-    this.addItem(position.x, position.y, position.z, item);
+Game.Map.prototype.addItemAtRandomPosition = function(item, z, playerPosition, recursion) {
+	var position = this.getRandomFloorPosition(z);
+    var cellRange = 5;
+    if(	z == 0 && playerPosition != undefined &&
+		// just x
+		(position.x > (playerPosition.x + cellRange) || position.x < (playerPosition.x - cellRange)) &&
+		
+		// just y
+		(position.y > (playerPosition.y + cellRange) || position.y < (playerPosition.y - cellRange)) 
+	){
+	    this.addItem(position.x, position.y, position.z, item);
+	} else if(z == 0 && playerPosition != undefined ) {
+		// too close to player, try again
+		if(recursion == undefined){
+			recursion = 0;
+		}
+		recursion++;
+		this.addItemAtRandomPosition(item, z, playerPosition, recursion); // recursive
+	} else {
+        this.addItem(position.x, position.y, position.z, item);
+    }
 };

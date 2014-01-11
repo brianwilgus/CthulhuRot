@@ -258,7 +258,7 @@ Game.Interface.Key.prototype.writeOutput = function() {
 						output += " <span style='color:tomato'>infernal</span>";
 					}
 					if(this._items['entities'][entity].isPoisonous()){
-						output += " <span style='color:yellowgreen'>poisoning</span>";
+						output += " <span style='color:yellowgreen'>poisonous</span>";
 					}
 					output += "</div>";
 				}
